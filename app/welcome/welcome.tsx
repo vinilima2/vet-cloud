@@ -11,14 +11,14 @@ export function Welcome() {
         <img src={Vet} alt="Vet" className="mb-4  mx-auto" />
         <Input placeholder="Digite seu usuário" />
 
-        <Input type="password" placeholder="" />
+        <Input type="password" placeholder="Digite sua senha" />
         <Button
           variant={"default"}
           onClick={() => {
             alert("Button clicked!");
           }}
         >
-          Get Started
+          Acessar
         </Button>
         
 
