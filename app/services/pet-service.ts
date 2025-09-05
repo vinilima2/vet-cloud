@@ -1,9 +1,9 @@
-import { collection, addDoc, doc, deleteDoc } from 'firebase/firestore';
+import { collection, addDoc, doc, deleteDoc, getDocs } from 'firebase/firestore';
 import { database } from '~/database/firebase-config';
 
 export interface Pet {
     nome: string,
-    anoNascimento: number,
+    ano_nascimento: number,
     especie: string,
     raca: string,
     cor: string,
@@ -30,3 +30,17 @@ export async function excluirPet(id_clinica: string, id_tutor: string, id_pet: s
         console.log("Erro em 'excluirPet': ", error);
     }
 }
+
+export async function excluirPets(id_clinica: string, id_tutor: string) {
+    try {
+        const pet_collection = collection(database, `Clinica/${id_clinica}/Tutor/${id_tutor}/Pet`);
+        const pet_docs = await getDocs(pet_collection);
+        const promises = pet_docs.docs.map((pet_doc) => {
+            return deleteDoc(doc(database, pet_doc.ref.path));
+        });
+        await Promise.all(promises);
+    } catch(error) {
+        console.log(`Erro em 'excluirPets': `, error);
+    }
+}
+
