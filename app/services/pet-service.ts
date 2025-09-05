@@ -1,4 +1,4 @@
-import {collection, getDocs, addDoc } from 'firebase/firestore';
+import {collection, getDocs, addDoc, doc } from 'firebase/firestore';
 import { database } from '~/database/firebase-config';
 
 export interface Pet {
@@ -13,7 +13,10 @@ export interface Pet {
     observacoes?: null | string
 }
 
-export async function adicionarPet(pet: Pet) {
-    const colecaoTeste = collection(database, 'Clinica/0/Tutor/0/Pet');
-    await addDoc(colecaoTeste, pet)
+
+export async function adicionarPet(id_clinica: string, id_tutor: string, pet: Pet) {
+    
+    const pet_collection = collection(database, `Clinica/${id_clinica}/Tutor/${id_tutor}/Pet`);
+
+    await addDoc(pet_collection, pet)
 }
