@@ -1,4 +1,4 @@
-import { collection, addDoc, doc, deleteDoc, getDocs } from 'firebase/firestore';
+import { collection, addDoc, doc, deleteDoc, getDocs, updateDoc } from 'firebase/firestore';
 import { database } from '~/database/firebase-config';
 
 export interface Pet {
@@ -42,5 +42,14 @@ export async function excluirPets(id_clinica: string, id_tutor: string) {
     } catch(error) {
         console.log(`Erro em 'excluirPets': `, error);
     }
+}
+
+export async function atualizarPet(id_clinica: string, id_tutor: string, id_pet: string, novos_dados: Partial<Pet>) {
+    try {
+        const pet_document = doc(database, `Clinica/${id_clinica}/Tutor/${id_tutor}/Pet`, id_pet);
+        await updateDoc(pet_document, novos_dados);
+    } catch(error) {
+        console.log(`Erro em 'atualizarPet': `, error);
+    }    
 }
 
