@@ -1,4 +1,4 @@
-import {collection, getDocs, addDoc, doc } from 'firebase/firestore';
+import {collection, getDocs, addDoc, doc, setDoc } from 'firebase/firestore';
 import { database } from '~/database/firebase-config';
 
 export interface Pet {
@@ -15,8 +15,10 @@ export interface Pet {
 
 
 export async function adicionarPet(id_clinica: string, id_tutor: string, pet: Pet) {
-    
-    const pet_collection = collection(database, `Clinica/${id_clinica}/Tutor/${id_tutor}/Pet`);
-
-    await addDoc(pet_collection, pet)
+    try {
+        const pet_collection = collection(database, `Clinica/${id_clinica}/Tutor/${id_tutor}/Pet`);
+        await addDoc(pet_collection, pet);
+    } catch(error) {
+        console.log("Erro em 'adicionarPet': ", error);
+    }
 }
