@@ -1,6 +1,6 @@
 import { AppSidebar } from "~/components/app-side-bar";
 import { SidebarProvider, SidebarTrigger } from "~/components/ui/sidebar";
-import { adicionarPet } from "~/services/pet-service";
+import { adicionarPet, excluirPet } from "~/services/pet-service";
 import { Button } from "~/components/ui/button";
 
 export default function Dashboard() {
@@ -9,7 +9,7 @@ export default function Dashboard() {
             <AppSidebar />
             <SidebarTrigger />
         </SidebarProvider> */
-        <Button onClick={() => {
+        /*<Button onClick={() => {
             adicionarPet("0", "0", {
                     nome: "Jujuba",
                     anoNascimento: 2018,
@@ -22,6 +22,9 @@ export default function Dashboard() {
                     observacoes: "agressiva ao lidar com agulhas."
                 }
             )  
-        }}>Adicionar Pet</Button>
+        }}>Adicionar Pet</Button>*/
+        <Button onClick={() => {
+            excluirPet("0", "0", "lqhL5oDS9Ffv10sNPIt9")  
+        }}>Excluir Pet</Button>
     )
 }
