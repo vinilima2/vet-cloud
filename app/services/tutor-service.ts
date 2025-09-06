@@ -1,6 +1,6 @@
 import { collection, addDoc, doc, deleteDoc, getDocs, updateDoc, getDoc } from 'firebase/firestore';
 import { database } from '~/database/firebase-config';
-import { type PetView, type Pet, adicionarPet } from './pet-service';
+import { type PetView, type Pet, adicionarPet, excluirPets } from './pet-service';
 
 export interface Tutor {
     nome_completo: string,
@@ -30,6 +30,16 @@ export async function adicionarTutor(id_clinica: string, tutor: Tutor, pets: Pet
         pets.forEach((pet) => adicionarPet(id_clinica, novo_tutor.id, pet));
     } catch(error) {
         console.log("Erro em 'adicionarTutor': ", error);
+    }
+}
+
+export async function excluirTutor(id_clinica: string, id_tutor: string) {
+    try {
+        const tutor_document = doc(database, `Clinica/${id_clinica}/Tutor`, id_tutor);
+        excluirPets(id_clinica, id_tutor); // é necessário excluir os Pets separadamente
+        await deleteDoc(tutor_document);
+    } catch(error) {
+        console.log("Erro em 'excluirTutor': ", error);
     }
 }
 

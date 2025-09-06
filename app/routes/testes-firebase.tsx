@@ -1,6 +1,6 @@
 import { adicionarPet, atualizarPet, excluirPet, excluirPets, obterPet, obterPets } from "~/services/pet-service";
 import { Button } from "~/components/ui/button";
-import { adicionarTutor } from "~/services/tutor-service";
+import { adicionarTutor, excluirTutor } from "~/services/tutor-service";
 import { horaAtual } from "~/lib/utils";
 
 // const pet = await obterPet("0", "1", "0");
@@ -48,7 +48,7 @@ export default function TestesFirebase() {
             console.log(pets);          
         }}>Obter Pets</Button>*/
 
-        <Button onClick={() => {
+        /*<Button onClick={() => {
             adicionarTutor("0", {
                 nome_completo: "Amanda Klein Moreira Filho",
                 cpf: "93800012389",
@@ -68,19 +68,11 @@ export default function TestesFirebase() {
                         raca: "SRD",
                         sexo: "F",
                         observacoes: "Dificuldade para engolir comprimidos."
-                    },
-                    {
-                        nome: "Lucy",
-                        ano_nascimento: 2017,
-                        ativo: true,
-                        cor: "preto-branco",
-                        especie: "cachorro",
-                        peso: 8,
-                        raca: "SRD",
-                        sexo: "F",
-                        observacoes: "Tem alergia a pulgas. Não foi castrada."
-                    }                   
+                    }               
                 ])              
-        }}>Inserir Tutor</Button>
+        }}>Inserir Tutor</Button>*/
+        <Button onClick={() => {
+            excluirTutor("0", "MZlbdh17a4TdPUSraizD");
+        }}>Excluir Tutor</Button>
     )
 }
