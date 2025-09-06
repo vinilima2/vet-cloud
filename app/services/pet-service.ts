@@ -13,6 +13,11 @@ export interface Pet {
     observacoes?: null | string
 }
 
+export interface PetView {
+    id: string,
+    data: Pet
+}
+
 export async function adicionarPet(id_clinica: string, id_tutor: string, pet: Pet) {
     try {
         const pet_collection = collection(database, `Clinica/${id_clinica}/Tutor/${id_tutor}/Pet`);
@@ -53,13 +58,14 @@ export async function atualizarPet(id_clinica: string, id_tutor: string, id_pet:
     }    
 }
 
-export async function obterPet(id_clinica: string, id_tutor: string, id_pet: string): Promise<Pet | null> {
+export async function obterPet(id_clinica: string, id_tutor: string, id_pet: string): Promise<PetView | null> {
     try {
         const pet_document = doc(database, `Clinica/${id_clinica}/Tutor/${id_tutor}/Pet`, id_pet);
         const snapshot = await getDoc(pet_document);
-        return snapshot.exists() ? snapshot.data() as Pet : null;
+        return snapshot.exists() ? { id: snapshot.id, data: (snapshot.data() as Pet) } as PetView : null;
     } catch(error) {
         console.log(`Erro em 'obterPet': `, error);
         return null;
     }
 }
+
