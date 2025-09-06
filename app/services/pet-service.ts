@@ -1,4 +1,4 @@
-import { collection, addDoc, doc, deleteDoc, getDocs, updateDoc } from 'firebase/firestore';
+import { collection, addDoc, doc, deleteDoc, getDocs, updateDoc, getDoc } from 'firebase/firestore';
 import { database } from '~/database/firebase-config';
 
 export interface Pet {
@@ -53,3 +53,13 @@ export async function atualizarPet(id_clinica: string, id_tutor: string, id_pet:
     }    
 }
 
+export async function obterPet(id_clinica: string, id_tutor: string, id_pet: string): Promise<Pet | null> {
+    try {
+        const pet_document = doc(database, `Clinica/${id_clinica}/Tutor/${id_tutor}/Pet`, id_pet);
+        const snapshot = await getDoc(pet_document);
+        return snapshot.exists() ? snapshot.data() as Pet : null;
+    } catch(error) {
+        console.log(`Erro em 'obterPet': `, error);
+        return null;
+    }
+}

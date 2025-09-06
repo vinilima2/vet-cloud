@@ -1,5 +1,7 @@
-import { adicionarPet, atualizarPet, excluirPet, excluirPets } from "~/services/pet-service";
+import { adicionarPet, atualizarPet, excluirPet, excluirPets, obterPet } from "~/services/pet-service";
 import { Button } from "~/components/ui/button";
+
+const pet = await obterPet("0", "1", "0");
 
 export default function TestesFirebase() {
     return (
@@ -26,11 +28,14 @@ export default function TestesFirebase() {
             excluirPets("0", "2")  
         }}>Excluir Pets</Button> */
 
-        <Button onClick={() => {
+        /*<Button onClick={() => {
             atualizarPet("0", "1", "0", {
                 nome: "Francisca",
                 peso: 4.5
             }) 
-        }}>Atualizar Pet</Button>
+        }}>Atualizar Pet</Button>*/
+        <Button onClick={() => {
+            console.log(pet);          
+        }}>Obter Pet</Button>
     )
 }
