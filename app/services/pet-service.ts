@@ -69,3 +69,17 @@ export async function obterPet(id_clinica: string, id_tutor: string, id_pet: str
     }
 }
 
+export async function obterPets(id_clinica: string, id_tutor: string): Promise<PetView[] | null> {
+    try {
+        const pet_collection = collection(database, `Clinica/${id_clinica}/Tutor/${id_tutor}/Pet`);
+        const snapshot = await getDocs(pet_collection);
+        const pet_docs = snapshot.docs.map((pet_doc) => ({
+            id: pet_doc.id,
+            data: pet_doc.data() as Pet
+        } as PetView));
+        return pet_docs;
+    } catch(error) {
+        console.log(`Erro em 'obterPets': `, error);
+        return null;
+    }
+}
