@@ -52,3 +52,14 @@ export async function atualizarUsuarioClinica(id_clinica: string, id_usuario: st
         console.log("Erro em 'atualizarUsuarioClinica': ", error);
     }      
 }
+
+export async function obterUsuarioClinica(id_clinica: string, id_usuario: string): Promise<UsuarioClinicaView | null> {
+    try {
+        const usuario_document = doc(database, `Clinica/${id_clinica}/Usuario`, id_usuario);
+        const snapshot = await getDoc(usuario_document); 
+        return snapshot.exists() ? { id: snapshot.id, data: (snapshot.data() as UsuarioClinica) } as UsuarioClinicaView : null;
+    } catch(error) {
+        console.log("Erro em 'obterUsuarioClinica': ", error);
+    }  
+    return null;
+}
