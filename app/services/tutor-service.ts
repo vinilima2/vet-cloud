@@ -1,6 +1,6 @@
 import { collection, addDoc, doc, deleteDoc, getDocs, updateDoc, getDoc } from 'firebase/firestore';
 import { database } from '~/database/firebase-config';
-import { type PetView, type Pet, adicionarPet, excluirPets } from './pet-service';
+import { type Pet, adicionarPet, excluirPets } from './pet-service';
 import { horaAtual } from '~/lib/utils';
 
 export interface Tutor {
@@ -69,6 +69,21 @@ export async function obterTutor(id_clinica: string, id_tutor: string): Promise<
        return snapshot.exists() ? { id: snapshot.id, data: (snapshot.data() as Tutor) } as TutorView : null;
     } catch(error) {
         console.log("Erro em 'obterTutor': ", error);
+    }  
+    return null;
+}
+
+export async function obterTutores(id_clinica: string): Promise<TutorView[] | null> {
+    try {
+        const tutor_collection = collection(database, `Clinica/${id_clinica}/Tutor`);
+        const snapshot = await getDocs(tutor_collection);
+        const tutor_docs = snapshot.docs.map((tutor_doc) => ({
+            id: tutor_doc.id,
+            data: tutor_doc.data() as Tutor
+        } as TutorView));
+        return tutor_docs;
+    } catch(error) {
+        console.log("Erro em 'obterTutores': ", error);
     }  
     return null;
 }

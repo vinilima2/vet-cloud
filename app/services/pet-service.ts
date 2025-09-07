@@ -65,8 +65,8 @@ export async function obterPet(id_clinica: string, id_tutor: string, id_pet: str
         return snapshot.exists() ? { id: snapshot.id, data: (snapshot.data() as Pet) } as PetView : null;
     } catch(error) {
         console.log(`Erro em 'obterPet': `, error);
-        return null;
     }
+    return null;
 }
 
 export async function obterPets(id_clinica: string, id_tutor: string): Promise<PetView[] | null> {
@@ -80,6 +80,6 @@ export async function obterPets(id_clinica: string, id_tutor: string): Promise<P
         return pet_docs;
     } catch(error) {
         console.log(`Erro em 'obterPets': `, error);
-        return null;
     }
+    return null;
 }

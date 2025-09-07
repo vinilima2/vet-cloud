@@ -1,10 +1,11 @@
 import { adicionarPet, atualizarPet, excluirPet, excluirPets, obterPet, obterPets } from "~/services/pet-service";
 import { Button } from "~/components/ui/button";
-import { adicionarTutor, atualizarTutor, excluirTutor, excluirTutores, obterTutor } from "~/services/tutor-service";
+import { adicionarTutor, atualizarTutor, excluirTutor, excluirTutores, obterTutor, obterTutores } from "~/services/tutor-service";
 
 // const pet = await obterPet("0", "1", "0");
 // const pets = await obterPets("0", "2");
 const tutor = await obterTutor("0", "17IwrnnQkcpVcxJn1nXm");
+const tutores = await obterTutores("0");
 
 export default function TestesFirebase() {
     return (
@@ -82,8 +83,12 @@ export default function TestesFirebase() {
             })
         }}>Atualizar Tutor</Button>*/
 
-        <Button onClick={() => {
+        /*<Button onClick={() => {
             console.log(tutor);
-        }}>Obter Tutor</Button>
+        }}>Obter Tutor</Button>*/
+
+        <Button onClick={() => {
+            console.log(tutores);
+        }}>Obter Tutores</Button>
     )
 }
