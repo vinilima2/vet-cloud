@@ -2,7 +2,7 @@ import { adicionarPet, atualizarPet, excluirPet, excluirPets, obterPet, obterPet
 import { Button } from "~/components/ui/button";
 import { adicionarTutor, atualizarTutor, excluirTutor, excluirTutores, obterTutor, obterTutores } from "~/services/tutor-service";
 import { adicionarClinica, excluirClinica } from "~/services/clinica-service";
-import { adicionarUsuarioClinica, excluirUsuarioClinica } from "~/services/usuario-clinica-service";
+import { adicionarUsuarioClinica, excluirUsuarioClinica, excluirUsuariosClinica } from "~/services/usuario-clinica-service";
 
 // const pet = await obterPet("0", "1", "0");
 // const pets = await obterPets("0", "2");
@@ -111,11 +111,15 @@ export default function TestesFirebase() {
         }}>Excluir Clínica</Button>*/
 
         /*<Button onClick={() => {
-            adicionarUsuarioClinica("2lzHQxVAYJOeO53mzo4m", "teste1", "Root")          
+            adicionarUsuarioClinica("2lzHQxVAYJOeO53mzo4m", "teste3", "Root")          
         }}>Adicionar Usuário na Clínica</Button>*/
 
-        <Button onClick={() => {
+        /*<Button onClick={() => {
             excluirUsuarioClinica("2lzHQxVAYJOeO53mzo4m", "teste0")          
-        }}>Excluir Usuário da Clínica</Button>
+        }}>Excluir Usuário da Clínica</Button>*/
+
+        <Button onClick={() => {
+            excluirUsuariosClinica("2lzHQxVAYJOeO53mzo4m");         
+        }}>Excluir Usuários da Clínica</Button>
     )
 }

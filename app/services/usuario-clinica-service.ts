@@ -31,3 +31,15 @@ export async function excluirUsuarioClinica(id_clinica: string, id_usuario: stri
         console.log("Erro em 'excluirUsuarioClinica': ", error);
     }    
 }
+
+export async function excluirUsuariosClinica(id_clinica: string) {
+    try {
+        const usuario_collection = collection(database, `Clinica/${id_clinica}/Usuario`);
+        const usuario_docs = await getDocs(usuario_collection);
+        usuario_docs.docs.forEach((usuario_doc) => {
+            excluirUsuarioClinica(id_clinica, usuario_doc.id);
+        });
+    } catch(error) {
+        console.log("Erro em 'excluirUsuariosClinica': ", error);
+    }    
+}
