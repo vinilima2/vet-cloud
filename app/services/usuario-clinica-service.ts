@@ -63,3 +63,18 @@ export async function obterUsuarioClinica(id_clinica: string, id_usuario: string
     }  
     return null;
 }
+
+export async function obterUsuariosClinica(id_clinica: string): Promise<UsuarioClinicaView[] | null> {
+    try {
+        const usuario_collection = collection(database, `Clinica/${id_clinica}/Usuario`);
+        const snapshot = await getDocs(usuario_collection);
+        const usuario_docs = snapshot.docs.map((usuario_doc) => ({
+            id: usuario_doc.id,
+            data: usuario_doc.data() as UsuarioClinica
+        } as UsuarioClinicaView));
+        return usuario_docs;
+    } catch(error) {
+        console.log("Erro em 'obterTutores': ", error);
+    }     
+    return null;
+}

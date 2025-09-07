@@ -2,7 +2,7 @@ import { adicionarPet, atualizarPet, excluirPet, excluirPets, obterPet, obterPet
 import { Button } from "~/components/ui/button";
 import { adicionarTutor, atualizarTutor, excluirTutor, excluirTutores, obterTutor, obterTutores } from "~/services/tutor-service";
 import { adicionarClinica, excluirClinica } from "~/services/clinica-service";
-import { adicionarUsuarioClinica, excluirUsuarioClinica, excluirUsuariosClinica, obterUsuarioClinica } from "~/services/usuario-clinica-service";
+import { adicionarUsuarioClinica, excluirUsuarioClinica, excluirUsuariosClinica, obterUsuarioClinica, obterUsuariosClinica } from "~/services/usuario-clinica-service";
 
 // const pet = await obterPet("0", "1", "0");
 // const pets = await obterPets("0", "2");
@@ -17,7 +17,8 @@ import { adicionarUsuarioClinica, excluirUsuarioClinica, excluirUsuariosClinica,
     telefone: "(14) 7621-0912",
     biografia: "Especializado em exames clínicos"
 }, "usuario-clinica-1");*/
-const usuario_clinca = await obterUsuarioClinica("KKYPqnFZzDu37NIyUabY", "usuario-clinica-1");
+//const usuario_clinca = await obterUsuarioClinica("KKYPqnFZzDu37NIyUabY", "usuario-clinica-1");
+const usuarios_clinca = await obterUsuariosClinica("KKYPqnFZzDu37NIyUabY");
 
 export default function TestesFirebase() {
     return (
@@ -112,7 +113,8 @@ export default function TestesFirebase() {
         }}>Excluir Clínica</Button>*/
 
         /*<Button onClick={() => {
-            adicionarUsuarioClinica("2lzHQxVAYJOeO53mzo4m", "teste3", "Root")          
+            adicionarUsuarioClinica("KKYPqnFZzDu37NIyUabY", "usuario-clinica-10", "Admin");
+            adicionarUsuarioClinica("KKYPqnFZzDu37NIyUabY", "usuario-clinica-20", "Basic");        
         }}>Adicionar Usuário na Clínica</Button>*/
 
         /*<Button onClick={() => {
@@ -123,8 +125,12 @@ export default function TestesFirebase() {
             excluirUsuariosClinica("2lzHQxVAYJOeO53mzo4m");         
         }}>Excluir Usuários da Clínica</Button>*/
 
-        <Button onClick={() => {
+        /* <Button onClick={() => {
             console.log(usuario_clinca);            
-        }}>Obter Usuário da Clínica</Button>
+        }}>Obter Usuário da Clínica</Button> */
+
+        <Button onClick={() => {
+            console.log(usuarios_clinca);            
+        }}>Obter Usuários da Clínica</Button>
     )
 }
