@@ -22,3 +22,12 @@ export async function adicionarUsuarioClinica(id_clinica: string, id_usuario_app
         console.log("Erro em 'adicionarUsuarioClinica': ", error);
     }
 }
+
+export async function excluirUsuarioClinica(id_clinica: string, id_usuario: string) {
+    try {
+        const usuario_document = doc(database, `Clinica/${id_clinica}/Usuario`, id_usuario);
+        await deleteDoc(usuario_document);
+    } catch(error) {
+        console.log("Erro em 'excluirUsuarioClinica': ", error);
+    }    
+}
