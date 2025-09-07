@@ -43,4 +43,16 @@ export async function excluirTutor(id_clinica: string, id_tutor: string) {
     }
 }
 
+export async function excluirTutores(id_clinica: string) {
+    try {
+        const tutor_collection = collection(database, `Clinica/${id_clinica}/Tutor`);
+        const tutor_docs = await getDocs(tutor_collection);
+        tutor_docs.docs.forEach((tutor_doc) => {
+            excluirTutor(id_clinica, tutor_doc.id); 
+        });
+    } catch(error) {
+        console.log("Erro em 'excluirTutores': ", error);
+    }    
+}
+
 

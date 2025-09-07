@@ -1,6 +1,6 @@
 import { adicionarPet, atualizarPet, excluirPet, excluirPets, obterPet, obterPets } from "~/services/pet-service";
 import { Button } from "~/components/ui/button";
-import { adicionarTutor, excluirTutor } from "~/services/tutor-service";
+import { adicionarTutor, excluirTutor, excluirTutores } from "~/services/tutor-service";
 import { horaAtual } from "~/lib/utils";
 
 // const pet = await obterPet("0", "1", "0");
@@ -71,8 +71,11 @@ export default function TestesFirebase() {
                     }               
                 ])              
         }}>Inserir Tutor</Button>*/
-        <Button onClick={() => {
+        /*<Button onClick={() => {
             excluirTutor("0", "MZlbdh17a4TdPUSraizD");
-        }}>Excluir Tutor</Button>
+        }}>Excluir Tutor</Button>*/
+        <Button onClick={() => {
+            excluirTutores("0");
+        }}>Excluir Tutores</Button>
     )
 }
