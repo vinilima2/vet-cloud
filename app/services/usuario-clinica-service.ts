@@ -43,3 +43,12 @@ export async function excluirUsuariosClinica(id_clinica: string) {
         console.log("Erro em 'excluirUsuariosClinica': ", error);
     }    
 }
+
+export async function atualizarUsuarioClinica(id_clinica: string, id_usuario: string, novo_nivel_acesso: "Root" | "Admin" | "Basic") {
+    try {
+        const usuario_document = doc(database, `Clinica/${id_clinica}/Usuario`, id_usuario);
+        await updateDoc(usuario_document, ({ nivel_acesso: novo_nivel_acesso, ultima_atualizacao: horaAtual() }) as Partial<UsuarioClinica>);
+    } catch(error) {
+        console.log("Erro em 'atualizarUsuarioClinica': ", error);
+    }      
+}

@@ -54,7 +54,7 @@ export async function excluirTutores(id_clinica: string) {
 
 export async function atualizarTutor(id_clinica: string, id_tutor: string, novos_dados: Partial<Tutor>) {
     try {
-       const tutor_document = doc(database, `Clinica/${id_clinica}/Tutor`, id_tutor);
+        const tutor_document = doc(database, `Clinica/${id_clinica}/Tutor`, id_tutor);
         await updateDoc(tutor_document, novos_dados);
         await updateDoc(tutor_document, ({ ultima_atualizacao: horaAtual() }) as Partial<Tutor>);
     } catch(error) {
