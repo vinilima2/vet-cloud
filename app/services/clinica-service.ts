@@ -1,7 +1,7 @@
 import { collection, addDoc, doc, deleteDoc, getDocs, updateDoc, getDoc } from 'firebase/firestore';
 import { database } from '~/database/firebase-config';
 import { excluirTutores } from './tutor-service';
-import { adicionarUsuarioClinica } from './usuario-clinica-service';
+import { adicionarUsuarioClinica, excluirUsuariosClinica } from './usuario-clinica-service';
 
 export interface Clinica {
     nome: string,
@@ -34,6 +34,7 @@ export async function excluirClinica(id_clinica: string) {
     try {
         const clinica_document = doc(database, `Clinica`, id_clinica);
         excluirTutores(id_clinica); // é necessário excluir os Tutores separadamente
+        excluirUsuariosClinica(id_clinica); // é necessário excluir os Usuários separadamente
         await deleteDoc(clinica_document);
     } catch(error) {
         console.log("Erro em 'excluirClinica': ", error);
