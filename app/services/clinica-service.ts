@@ -1,6 +1,7 @@
 import { collection, addDoc, doc, deleteDoc, getDocs, updateDoc, getDoc } from 'firebase/firestore';
 import { database } from '~/database/firebase-config';
 import { excluirTutores } from './tutor-service';
+import { adicionarUsuarioClinica } from './usuario-clinica-service';
 
 export interface Clinica {
     nome: string,
@@ -17,10 +18,11 @@ export interface ClinicaView {
     data: Clinica
 }
 
-export async function adicionarClinica(clinica: Clinica): Promise<string | null> {
+export async function adicionarClinica(clinica: Clinica, id_usuario_root: string): Promise<string | null> {
     try {
         const clinica_collection = collection(database, `Clinica`);
         const nova_clinica = await addDoc(clinica_collection, clinica);
+        adicionarUsuarioClinica(nova_clinica.id, id_usuario_root, "Root");
         return nova_clinica.id;
     } catch(error) {
         console.log("Erro em 'adicionarClinica': ", error);
