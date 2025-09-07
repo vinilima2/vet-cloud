@@ -7,7 +7,7 @@ export interface Tutor {
     nome_completo: string,
     cpf: string,
     endereco: string,
-    contato: string,
+    telefone: string,
     email: string,
     data_criacao?: string,
     ultima_atualizacao?: string,
@@ -15,8 +15,7 @@ export interface Tutor {
 
 export interface TutorView {
     id: string,
-    info: Tutor,
-    pets?: PetView
+    data: Tutor,
 }
 
 export async function adicionarTutor(id_clinica: string, tutor: Tutor, pets: Pet[] = []) {
@@ -63,4 +62,13 @@ export async function atualizarTutor(id_clinica: string, id_tutor: string, novos
     }      
 }
 
-
+export async function obterTutor(id_clinica: string, id_tutor: string): Promise<TutorView | null> {
+    try {
+       const tutor_document = doc(database, `Clinica/${id_clinica}/Tutor`, id_tutor);
+       const snapshot = await getDoc(tutor_document); 
+       return snapshot.exists() ? { id: snapshot.id, data: (snapshot.data() as Tutor) } as TutorView : null;
+    } catch(error) {
+        console.log("Erro em 'obterTutor': ", error);
+    }  
+    return null;
+}
