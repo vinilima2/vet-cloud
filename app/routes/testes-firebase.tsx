@@ -2,12 +2,13 @@ import { adicionarPet, atualizarPet, excluirPet, excluirPets, obterPet, obterPet
 import { Button } from "~/components/ui/button";
 import { adicionarTutor, atualizarTutor, excluirTutor, excluirTutores, obterTutor, obterTutores } from "~/services/tutor-service";
 import { adicionarClinica, excluirClinica } from "~/services/clinica-service";
+import { adicionarUsuarioClinica } from "~/services/usuario-clinica-service";
 
 // const pet = await obterPet("0", "1", "0");
 // const pets = await obterPets("0", "2");
 // const tutor = await obterTutor("0", "17IwrnnQkcpVcxJn1nXm");
 // const tutores = await obterTutores("0")
-/*const clinica_id = await adicionarClinica({
+const clinica_id = await adicionarClinica({
     nome: "PetLovers Bauru",
     documento_representante: "64733932000126",
     email: "contato@petlovers.com.br",
@@ -15,7 +16,7 @@ import { adicionarClinica, excluirClinica } from "~/services/clinica-service";
     registro_crmv: "77182-SP",
     telefone: "(14) 3812-4563",
     biografia: "Especializada em tratamento oncológico e animais exóticos."
-});*/
+});
 
 export default function TestesFirebase() {
     return (
@@ -105,8 +106,12 @@ export default function TestesFirebase() {
             console.log(clinica_id);    
         }}>Adicionar Clinica</Button>*/
 
-        <Button onClick={() => {
+        /*<Button onClick={() => {
             excluirClinica("pGvVE3dml3M3ssY6Jaqr");       
-        }}>Excluir Clínica</Button>
+        }}>Excluir Clínica</Button>*/
+
+        <Button onClick={() => {
+            adicionarUsuarioClinica("2lzHQxVAYJOeO53mzo4m", "teste0", "Root")          
+        }}>Adicionar Usuário na Clínica</Button>
     )
 }
