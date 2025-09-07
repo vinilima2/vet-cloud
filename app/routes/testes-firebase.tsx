@@ -1,14 +1,11 @@
 import { adicionarPet, atualizarPet, excluirPet, excluirPets, obterPet, obterPets } from "~/services/pet-service";
 import { Button } from "~/components/ui/button";
-import { adicionarTutor, excluirTutor, excluirTutores } from "~/services/tutor-service";
-import { horaAtual } from "~/lib/utils";
+import { adicionarTutor, atualizarTutor, excluirTutor, excluirTutores } from "~/services/tutor-service";
 
 // const pet = await obterPet("0", "1", "0");
 // const pets = await obterPets("0", "2");
 
 export default function TestesFirebase() {
-    const agora = horaAtual();
-    
     return (
         /*<Button onClick={() => {
             adicionarPet("0", "2", {
@@ -55,8 +52,6 @@ export default function TestesFirebase() {
                 endereco: "Rua Bananeira, Jd. Ypê, 1-10, CEP 6666-999, Bauru-SP",
                 contato: "(14) 98123-1823",
                 email: "amandakleinmf@gmail.com",
-                data_criacao: agora,
-                ultima_atualizacao: agora, 
             }, [
                     {
                         nome: "Cheetara",
@@ -74,8 +69,14 @@ export default function TestesFirebase() {
         /*<Button onClick={() => {
             excluirTutor("0", "MZlbdh17a4TdPUSraizD");
         }}>Excluir Tutor</Button>*/
-        <Button onClick={() => {
+        /*<Button onClick={() => {
             excluirTutores("0");
-        }}>Excluir Tutores</Button>
+        }}>Excluir Tutores</Button>*/
+        <Button onClick={() => {
+            atualizarTutor("0", "17IwrnnQkcpVcxJn1nXm", {
+                contato: "(18) 97671-4599",
+                nome_completo: "Joana D'arc Silva"
+            })
+        }}>Atualizar Tutor</Button>
     )
 }
