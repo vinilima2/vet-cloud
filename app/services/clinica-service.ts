@@ -72,3 +72,18 @@ export async function obterClinica(id_clinica: string): Promise<ClinicaView | nu
     }      
     return null;
 }
+
+export async function obterClinicas(): Promise<ClinicaView[] | null> {
+    try {
+        const clinica_collection = collection(database, `Clinica`);
+        const snapshot = await getDocs(clinica_collection);
+        const clinica_docs = snapshot.docs.map((clinica_doc) => ({
+            id: clinica_doc.id,
+            data: clinica_doc.data() as Clinica
+        } as ClinicaView));
+        return clinica_docs;            
+    } catch(error) {
+        console.log("Erro em 'obterClinicas': ", error);
+    }  
+    return null;
+}

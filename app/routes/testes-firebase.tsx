@@ -1,7 +1,7 @@
 import { adicionarPet, atualizarPet, excluirPet, excluirPets, obterPet, obterPets } from "~/services/pet-service";
 import { Button } from "~/components/ui/button";
 import { adicionarTutor, atualizarTutor, excluirTutor, excluirTutores, obterTutor, obterTutores } from "~/services/tutor-service";
-import { adicionarClinica, atualizarClinica, excluirClinica, obterClinica } from "~/services/clinica-service";
+import { adicionarClinica, atualizarClinica, excluirClinica, obterClinica, obterClinicas } from "~/services/clinica-service";
 import { adicionarUsuarioClinica, excluirUsuarioClinica, excluirUsuariosClinica, obterUsuarioClinica, obterUsuariosClinica } from "~/services/usuario-clinica-service";
 
 // const pet = await obterPet("0", "1", "0");
@@ -18,8 +18,9 @@ import { adicionarUsuarioClinica, excluirUsuarioClinica, excluirUsuariosClinica,
     biografia: "Especializado em exames clínicos"
 }, "usuario-clinica-1");*/
 //const usuario_clinca = await obterUsuarioClinica("KKYPqnFZzDu37NIyUabY", "usuario-clinica-1");
-const clinica = await obterClinica("KKYPqnFZzDu37NIyUabY");
 //const usuarios_clinca = await obterUsuariosClinica("KKYPqnFZzDu37NIyUabY");
+//const clinica = await obterClinica("KKYPqnFZzDu37NIyUabY");
+const clinicas = await obterClinicas();
 
 export default function TestesFirebase() {
     return (
@@ -141,8 +142,12 @@ export default function TestesFirebase() {
             });    
         }}>Atualizar Clínica</Button>*/
 
-        <Button onClick={() => {
+        /*<Button onClick={() => {
             console.log(clinica);            
-        }}>Obter Clínica</Button>
+        }}>Obter Clínica</Button>*/
+
+        <Button onClick={() => {
+            console.log(clinicas);            
+        }}>Obter Clínicas</Button>
     )
 }
