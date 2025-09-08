@@ -40,3 +40,15 @@ export async function excluirClinica(id_clinica: string) {
         console.log("Erro em 'excluirClinica': ", error);
     }
 }
+
+export async function excluirClinicas() { // cuidado com essa função, pois apaga todas as clínicas do sistema 
+    try {
+        const clinica_collection = collection(database, `Clinica`);
+        const clinica_docs = await getDocs(clinica_collection);
+        clinica_docs.docs.forEach((clinica_doc) => {
+            excluirClinica(clinica_doc.id); 
+        });        
+    } catch(error) {
+        console.log("Erro em 'excluirClinicas': ", error);
+    }    
+}
