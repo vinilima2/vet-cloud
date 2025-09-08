@@ -23,7 +23,7 @@ import { adicionarUsuario } from "~/services/usuario-service";
 //const clinica = await obterClinica("KKYPqnFZzDu37NIyUabY");
 //const clinicas = await obterClinicas();
 
-const novo_usuario = await adicionarUsuario({
+/*const novo_usuario = await adicionarUsuario({
     nome_completo: "Paulo Silvestre Rahal",
     ativo: true,
     cpf: "74511192019",
@@ -32,7 +32,7 @@ const novo_usuario = await adicionarUsuario({
     registro_crmv: "88812-SP",
     senha: "sfHHdasdhBYU8**dadjn*&",
     telefone: "(14) 98123-4500"
-});
+});*/
 
 export default function TestesFirebase() {
     return (
@@ -126,10 +126,11 @@ export default function TestesFirebase() {
             excluirClinica("rGGURnvW5qk1GEVCE5eJ");       
         }}>Excluir Clínica</Button>*/
 
-        /*<Button onClick={() => {
-            adicionarUsuarioClinica("KKYPqnFZzDu37NIyUabY", "usuario-clinica-10", "Admin");
-            adicionarUsuarioClinica("KKYPqnFZzDu37NIyUabY", "usuario-clinica-20", "Basic");        
-        }}>Adicionar Usuário na Clínica</Button>*/
+        <Button onClick={() => {
+            adicionarUsuarioClinica("2lzHQxVAYJOeO53mzo4m", "ejpxmbJtFaPyc1fGBao0", "Admin");
+            adicionarUsuarioClinica("KKYPqnFZzDu37NIyUabY", "ejpxmbJtFaPyc1fGBao0", "Basic");
+            adicionarUsuarioClinica("2lzHQxVAYJOeO53mzo4m", "iYdaCw9NkRDdIZGjOwUy", "Root");        
+        }}>Adicionar Usuário na Clínica</Button>
 
         /*<Button onClick={() => {
             excluirUsuarioClinica("2lzHQxVAYJOeO53mzo4m", "teste0")          
@@ -162,8 +163,8 @@ export default function TestesFirebase() {
             console.log(clinicas);            
         }}>Obter Clínicas</Button>*/
 
-        <Button onClick={() => {
+        /*<Button onClick={() => {
             console.log(novo_usuario);            
-        }}>Adicionar Usuário</Button>        
+        }}>Adicionar Usuário</Button>*/        
     )
 }

@@ -1,6 +1,7 @@
 import { collection, addDoc, doc, deleteDoc, getDocs, updateDoc, getDoc, setDoc } from 'firebase/firestore';
 import { database } from '~/database/firebase-config';
 import { horaAtual } from '~/lib/utils';
+import { adicionarClinicaNoUsuario } from './usuario-service';
 
 export interface UsuarioClinica {
     nivel_acesso: "Basic" | "Admin" | "Root"
@@ -18,6 +19,7 @@ export async function adicionarUsuarioClinica(id_clinica: string, id_usuario_app
         const usuario_doc = doc(database, `Clinica/${id_clinica}/Usuario`, id_usuario_app);
         const agora = horaAtual();
         await setDoc(usuario_doc, { nivel_acesso: nivel_acesso, data_inclusao: agora, ultima_atualizacao: agora } as UsuarioClinica);
+        adicionarClinicaNoUsuario(id_usuario_app, id_clinica);
     } catch(error) {
         console.log("Erro em 'adicionarUsuarioClinica': ", error);
     }

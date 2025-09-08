@@ -1,4 +1,4 @@
-import { collection, addDoc, doc, deleteDoc, getDocs, updateDoc, getDoc } from 'firebase/firestore';
+import { collection, addDoc, doc, deleteDoc, getDocs, updateDoc, getDoc, setDoc } from 'firebase/firestore';
 import { database } from '~/database/firebase-config';
 import { horaAtual } from '~/lib/utils';
 
@@ -12,7 +12,7 @@ export interface Usuario {
     senha: string,
     ativo: boolean,
     data_criacao?: string,
-    ultima_atualizacao?: string
+    ultima_atualizacao?: string,
 } 
 
 export interface UsuarioView {
@@ -31,4 +31,13 @@ export async function adicionarUsuario(usuario: Usuario): Promise<string | null>
         console.log("Erro em 'adicionarUsuario': ", error);
     }        
     return null;
+}
+
+export async function adicionarClinicaNoUsuario(id_usuario: string, id_clinica: string) { // espelha as clínicas das quais faz parte
+    try {
+        const clinica_ref = collection(database, `Usuario/${id_usuario}/ClinicaRef`);
+        await addDoc(clinica_ref, { id: id_clinica });
+    } catch(error) {
+        console.log("Erro em 'adicionarClinicaNoUsuario': ", error);
+    } 
 }
