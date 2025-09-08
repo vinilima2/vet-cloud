@@ -58,6 +58,17 @@ export async function atualizarClinica(id_clinica: string, novos_dados: Partial<
         const clinica_document = doc(database, `Clinica`, id_clinica);
         await updateDoc(clinica_document, novos_dados);
     } catch(error) {
-        console.log("Erro em 'atualizarTutor': ", error);
+        console.log("Erro em 'atualizarClinica': ", error);
     }         
+}
+
+export async function obterClinica(id_clinica: string): Promise<ClinicaView | null> {
+    try {
+       const clinica_document = doc(database, `Clinica`, id_clinica);
+       const snapshot = await getDoc(clinica_document); 
+       return snapshot.exists() ? { id: snapshot.id, data: (snapshot.data() as Clinica) } as ClinicaView : null;
+    } catch(error) {
+        console.log("Erro em 'obterClinica': ", error);
+    }      
+    return null;
 }

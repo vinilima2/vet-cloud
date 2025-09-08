@@ -1,7 +1,7 @@
 import { adicionarPet, atualizarPet, excluirPet, excluirPets, obterPet, obterPets } from "~/services/pet-service";
 import { Button } from "~/components/ui/button";
 import { adicionarTutor, atualizarTutor, excluirTutor, excluirTutores, obterTutor, obterTutores } from "~/services/tutor-service";
-import { adicionarClinica, atualizarClinica, excluirClinica } from "~/services/clinica-service";
+import { adicionarClinica, atualizarClinica, excluirClinica, obterClinica } from "~/services/clinica-service";
 import { adicionarUsuarioClinica, excluirUsuarioClinica, excluirUsuariosClinica, obterUsuarioClinica, obterUsuariosClinica } from "~/services/usuario-clinica-service";
 
 // const pet = await obterPet("0", "1", "0");
@@ -18,7 +18,8 @@ import { adicionarUsuarioClinica, excluirUsuarioClinica, excluirUsuariosClinica,
     biografia: "Especializado em exames clínicos"
 }, "usuario-clinica-1");*/
 //const usuario_clinca = await obterUsuarioClinica("KKYPqnFZzDu37NIyUabY", "usuario-clinica-1");
-const usuarios_clinca = await obterUsuariosClinica("KKYPqnFZzDu37NIyUabY");
+const clinica = await obterClinica("KKYPqnFZzDu37NIyUabY");
+//const usuarios_clinca = await obterUsuariosClinica("KKYPqnFZzDu37NIyUabY");
 
 export default function TestesFirebase() {
     return (
@@ -133,11 +134,15 @@ export default function TestesFirebase() {
             console.log(usuarios_clinca);            
         }}>Obter Usuários da Clínica</Button>*/
 
-        <Button onClick={() => {
+        /*<Button onClick={() => {
             atualizarClinica("2lzHQxVAYJOeO53mzo4m", {
                 nome: "PetLover Plus Bauru",
                 email: "contato@petloverplus.com.br"
             });    
-        }}>Atualizar Clínica</Button>
+        }}>Atualizar Clínica</Button>*/
+
+        <Button onClick={() => {
+            console.log(clinica);            
+        }}>Obter Clínica</Button>
     )
 }
