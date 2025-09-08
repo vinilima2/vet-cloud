@@ -1,7 +1,7 @@
 import { adicionarPet, atualizarPet, excluirPet, excluirPets, obterPet, obterPets } from "~/services/pet-service";
 import { Button } from "~/components/ui/button";
 import { adicionarTutor, atualizarTutor, excluirTutor, excluirTutores, obterTutor, obterTutores } from "~/services/tutor-service";
-import { adicionarClinica, excluirClinica } from "~/services/clinica-service";
+import { adicionarClinica, atualizarClinica, excluirClinica } from "~/services/clinica-service";
 import { adicionarUsuarioClinica, excluirUsuarioClinica, excluirUsuariosClinica, obterUsuarioClinica, obterUsuariosClinica } from "~/services/usuario-clinica-service";
 
 // const pet = await obterPet("0", "1", "0");
@@ -129,8 +129,15 @@ export default function TestesFirebase() {
             console.log(usuario_clinca);            
         }}>Obter Usuário da Clínica</Button> */
 
-        <Button onClick={() => {
+        /*<Button onClick={() => {
             console.log(usuarios_clinca);            
-        }}>Obter Usuários da Clínica</Button>
+        }}>Obter Usuários da Clínica</Button>*/
+
+        <Button onClick={() => {
+            atualizarClinica("2lzHQxVAYJOeO53mzo4m", {
+                nome: "PetLover Plus Bauru",
+                email: "contato@petloverplus.com.br"
+            });    
+        }}>Atualizar Clínica</Button>
     )
 }

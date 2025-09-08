@@ -52,3 +52,12 @@ export async function excluirClinicas() { // cuidado com essa função, pois apa
         console.log("Erro em 'excluirClinicas': ", error);
     }    
 }
+
+export async function atualizarClinica(id_clinica: string, novos_dados: Partial<Clinica>) {
+    try {
+        const clinica_document = doc(database, `Clinica`, id_clinica);
+        await updateDoc(clinica_document, novos_dados);
+    } catch(error) {
+        console.log("Erro em 'atualizarTutor': ", error);
+    }         
+}
