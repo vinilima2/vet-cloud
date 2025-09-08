@@ -3,6 +3,7 @@ import { Button } from "~/components/ui/button";
 import { adicionarTutor, atualizarTutor, excluirTutor, excluirTutores, obterTutor, obterTutores } from "~/services/tutor-service";
 import { adicionarClinica, atualizarClinica, excluirClinica, obterClinica, obterClinicas } from "~/services/clinica-service";
 import { adicionarUsuarioClinica, excluirUsuarioClinica, excluirUsuariosClinica, obterUsuarioClinica, obterUsuariosClinica } from "~/services/usuario-clinica-service";
+import { adicionarUsuario } from "~/services/usuario-service";
 
 // const pet = await obterPet("0", "1", "0");
 // const pets = await obterPets("0", "2");
@@ -20,7 +21,18 @@ import { adicionarUsuarioClinica, excluirUsuarioClinica, excluirUsuariosClinica,
 //const usuario_clinca = await obterUsuarioClinica("KKYPqnFZzDu37NIyUabY", "usuario-clinica-1");
 //const usuarios_clinca = await obterUsuariosClinica("KKYPqnFZzDu37NIyUabY");
 //const clinica = await obterClinica("KKYPqnFZzDu37NIyUabY");
-const clinicas = await obterClinicas();
+//const clinicas = await obterClinicas();
+
+const novo_usuario = await adicionarUsuario({
+    nome_completo: "Paulo Silvestre Rahal",
+    ativo: true,
+    cpf: "74511192019",
+    email_contato: "drpaulosilvestre@outlook.com",
+    email_login: "paulosrahal@gmail.com",
+    registro_crmv: "88812-SP",
+    senha: "sfHHdasdhBYU8**dadjn*&",
+    telefone: "(14) 98123-4500"
+});
 
 export default function TestesFirebase() {
     return (
@@ -146,8 +158,12 @@ export default function TestesFirebase() {
             console.log(clinica);            
         }}>Obter Clínica</Button>*/
 
-        <Button onClick={() => {
+        /*<Button onClick={() => {
             console.log(clinicas);            
-        }}>Obter Clínicas</Button>
+        }}>Obter Clínicas</Button>*/
+
+        <Button onClick={() => {
+            console.log(novo_usuario);            
+        }}>Adicionar Usuário</Button>        
     )
 }
