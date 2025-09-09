@@ -126,16 +126,16 @@ export default function TestesFirebase() {
             excluirClinica("rGGURnvW5qk1GEVCE5eJ");       
         }}>Excluir Clínica</Button>*/
 
-        /*<Button onClick={() => {
+        <Button onClick={() => {
             adicionarUsuarioClinica("2lzHQxVAYJOeO53mzo4m", "ejpxmbJtFaPyc1fGBao0", "Admin");
             adicionarUsuarioClinica("KKYPqnFZzDu37NIyUabY", "ejpxmbJtFaPyc1fGBao0", "Basic");
             adicionarUsuarioClinica("2lzHQxVAYJOeO53mzo4m", "iYdaCw9NkRDdIZGjOwUy", "Root");        
-        }}>Adicionar Usuário na Clínica</Button>*/
+        }}>Adicionar Usuário na Clínica</Button>
 
-        <Button onClick={() => {
+        /*<Button onClick={() => {
             excluirUsuarioClinica("2lzHQxVAYJOeO53mzo4m", "ejpxmbJtFaPyc1fGBao0");
             excluirUsuarioClinica("KKYPqnFZzDu37NIyUabY", "ejpxmbJtFaPyc1fGBao0");          
-        }}>Excluir Usuário da Clínica</Button>
+        }}>Excluir Usuário da Clínica</Button>*/
 
         /*<Button onClick={() => {
             excluirUsuariosClinica("2lzHQxVAYJOeO53mzo4m");         

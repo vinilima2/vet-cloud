@@ -10,7 +10,6 @@ export interface Usuario {
     email_contato: string,
     email_login: string,
     senha: string,
-    ativo: boolean,
     data_criacao?: string,
     ultima_atualizacao?: string,
 } 
@@ -49,4 +48,8 @@ export async function removerClinicaDoUsuario(id_usuario: string, id_clinica: st
     } catch(error) {
         console.log("Erro em 'removerClinicaDoUsuario': ", error);
     }  
+}
+
+export async function excluirUsuario(id_usuario: string) {
+
 }

@@ -5,6 +5,7 @@ import { adicionarClinicaNoUsuario, removerClinicaDoUsuario } from './usuario-se
 
 export interface UsuarioClinica {
     nivel_acesso: "Basic" | "Admin" | "Root"
+    ativo: boolean,
     data_inclusao?: string,
     ultima_atualizacao?: string
 }
@@ -18,7 +19,7 @@ export async function adicionarUsuarioClinica(id_clinica: string, id_usuario_app
     try {
         const usuario_doc = doc(database, `Clinica/${id_clinica}/Usuario`, id_usuario_app);
         const agora = horaAtual();
-        await setDoc(usuario_doc, { nivel_acesso: nivel_acesso, data_inclusao: agora, ultima_atualizacao: agora } as UsuarioClinica);
+        await setDoc(usuario_doc, { nivel_acesso: nivel_acesso, ativo: true, data_inclusao: agora, ultima_atualizacao: agora } as UsuarioClinica);
         adicionarClinicaNoUsuario(id_usuario_app, id_clinica);
     } catch(error) {
         console.log("Erro em 'adicionarUsuarioClinica': ", error);
