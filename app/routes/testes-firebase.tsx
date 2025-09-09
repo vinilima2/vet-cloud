@@ -3,7 +3,7 @@ import { Button } from "~/components/ui/button";
 import { adicionarTutor, atualizarTutor, excluirTutor, excluirTutores, obterTutor, obterTutores } from "~/services/tutor-service";
 import { adicionarClinica, atualizarClinica, excluirClinica, obterClinica, obterClinicas } from "~/services/clinica-service";
 import { adicionarUsuarioClinica, excluirUsuarioClinica, excluirUsuariosClinica, obterUsuarioClinica, obterUsuariosClinica } from "~/services/usuario-clinica-service";
-import { adicionarUsuario, excluirUsuario } from "~/services/usuario-service";
+import { adicionarUsuario, excluirUsuario, excluirUsuarios } from "~/services/usuario-service";
 
 // const pet = await obterPet("0", "1", "0");
 // const pets = await obterPets("0", "2");
@@ -167,8 +167,12 @@ export default function TestesFirebase() {
             console.log(novo_usuario);            
         }}>Adicionar Usuário</Button>*/    
         
-        <Button onClick={() => {
+        /*<Button onClick={() => {
             excluirUsuario("ejpxmbJtFaPyc1fGBao0");               
-        }}>Excluir Usuário</Button>
+        }}>Excluir Usuário</Button>*/
+
+        <Button onClick={() => {
+            excluirUsuarios();               
+        }}>Excluir Usuários</Button>
     )
 }

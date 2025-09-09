@@ -65,3 +65,15 @@ export async function excluirUsuario(id_usuario: string) {
         console.log("Erro em 'excluirUsuario': ", error);
     }      
 }
+
+export async function excluirUsuarios() { // utilizar somente em ambiente de desenvolvimento.
+    try {
+        const usuario_collection = collection(database, `Usuario`);
+        const usuario_docs = await getDocs(usuario_collection);
+        usuario_docs.docs.forEach((usuario_doc) => {
+            excluirUsuario(usuario_doc.id);    
+        });
+    } catch(error) {
+        console.log("Erro em 'excluirUsuarios': ", error);
+    }   
+}
