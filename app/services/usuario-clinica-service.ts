@@ -17,7 +17,7 @@ export interface UsuarioClinicaView {
 
 export async function adicionarUsuarioClinica(id_clinica: string, id_usuario_app: string, nivel_acesso: string) {
     try {
-        const usuario_doc = doc(database, `Clinica/${id_clinica}/Usuario`, id_usuario_app);
+        const usuario_doc = doc(database, `Clinica/${id_clinica}/UsuarioRef`, id_usuario_app);
         const agora = horaAtual();
         await setDoc(usuario_doc, { nivel_acesso: nivel_acesso, ativo: true, data_inclusao: agora, ultima_atualizacao: agora } as UsuarioClinica);
         adicionarClinicaNoUsuario(id_usuario_app, id_clinica);
@@ -28,7 +28,7 @@ export async function adicionarUsuarioClinica(id_clinica: string, id_usuario_app
 
 export async function excluirUsuarioClinica(id_clinica: string, id_usuario: string) {
     try {
-        const usuario_document = doc(database, `Clinica/${id_clinica}/Usuario`, id_usuario);
+        const usuario_document = doc(database, `Clinica/${id_clinica}/UsuarioRef`, id_usuario);
         await deleteDoc(usuario_document);
         removerClinicaDoUsuario(id_usuario, id_clinica);
     } catch(error) {
@@ -38,7 +38,7 @@ export async function excluirUsuarioClinica(id_clinica: string, id_usuario: stri
 
 export async function excluirUsuariosClinica(id_clinica: string) {
     try {
-        const usuario_collection = collection(database, `Clinica/${id_clinica}/Usuario`);
+        const usuario_collection = collection(database, `Clinica/${id_clinica}/UsuarioRef`);
         const usuario_docs = await getDocs(usuario_collection);
         usuario_docs.docs.forEach((usuario_doc) => {
             excluirUsuarioClinica(id_clinica, usuario_doc.id);
@@ -50,8 +50,9 @@ export async function excluirUsuariosClinica(id_clinica: string) {
 
 export async function atualizarUsuarioClinica(id_clinica: string, id_usuario: string, novos_dados: Partial<UsuarioClinica>) {
     try {
-        const usuario_document = doc(database, `Clinica/${id_clinica}/Usuario`, id_usuario);
+        const usuario_document = doc(database, `Clinica/${id_clinica}/UsuarioRef`, id_usuario);
         await updateDoc(usuario_document, novos_dados);
+        await updateDoc(usuario_document, ({ ultima_atualizacao: horaAtual() }) as Partial<UsuarioClinica> )
     } catch(error) {
         console.log("Erro em 'atualizarUsuarioClinica': ", error);
     }      
@@ -59,7 +60,7 @@ export async function atualizarUsuarioClinica(id_clinica: string, id_usuario: st
 
 export async function obterUsuarioClinica(id_clinica: string, id_usuario: string): Promise<UsuarioClinicaView | null> {
     try {
-        const usuario_document = doc(database, `Clinica/${id_clinica}/Usuario`, id_usuario);
+        const usuario_document = doc(database, `Clinica/${id_clinica}/UsuarioRef`, id_usuario);
         const snapshot = await getDoc(usuario_document); 
         return snapshot.exists() ? { id: snapshot.id, data: (snapshot.data() as UsuarioClinica) } as UsuarioClinicaView : null;
     } catch(error) {
@@ -70,7 +71,7 @@ export async function obterUsuarioClinica(id_clinica: string, id_usuario: string
 
 export async function obterUsuariosClinica(id_clinica: string): Promise<UsuarioClinicaView[] | null> {
     try {
-        const usuario_collection = collection(database, `Clinica/${id_clinica}/Usuario`);
+        const usuario_collection = collection(database, `Clinica/${id_clinica}/UsuarioRef`);
         const snapshot = await getDocs(usuario_collection);
         const usuario_docs = snapshot.docs.map((usuario_doc) => ({
             id: usuario_doc.id,
@@ -78,7 +79,7 @@ export async function obterUsuariosClinica(id_clinica: string): Promise<UsuarioC
         } as UsuarioClinicaView));
         return usuario_docs;
     } catch(error) {
-        console.log("Erro em 'obterTutores': ", error);
+        console.log("Erro em 'obterUsuariosClinica': ", error);
     }     
     return null;
 }

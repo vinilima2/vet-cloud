@@ -77,3 +77,13 @@ export async function excluirUsuarios() { // utilizar somente em ambiente de des
         console.log("Erro em 'excluirUsuarios': ", error);
     }   
 }
+
+export async function atualizarUsuario(id_usuario: string, novos_dados: Partial<Usuario>) {
+    try {
+        const usuario_document = doc(database, `Usuario`, id_usuario);
+        await updateDoc(usuario_document, novos_dados);
+        await updateDoc(usuario_document, { ultima_atualizacao: horaAtual() } as Partial<Usuario>)
+    } catch(error) {
+        console.log("Erro em 'atualizarUsuario': ", error);
+    }    
+}

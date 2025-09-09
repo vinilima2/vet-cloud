@@ -3,7 +3,7 @@ import { Button } from "~/components/ui/button";
 import { adicionarTutor, atualizarTutor, excluirTutor, excluirTutores, obterTutor, obterTutores } from "~/services/tutor-service";
 import { adicionarClinica, atualizarClinica, excluirClinica, obterClinica, obterClinicas } from "~/services/clinica-service";
 import { adicionarUsuarioClinica, excluirUsuarioClinica, excluirUsuariosClinica, obterUsuarioClinica, obterUsuariosClinica } from "~/services/usuario-clinica-service";
-import { adicionarUsuario, excluirUsuario, excluirUsuarios } from "~/services/usuario-service";
+import { adicionarUsuario, atualizarUsuario, excluirUsuario, excluirUsuarios } from "~/services/usuario-service";
 
 // const pet = await obterPet("0", "1", "0");
 // const pets = await obterPets("0", "2");
@@ -171,8 +171,20 @@ export default function TestesFirebase() {
             excluirUsuario("ejpxmbJtFaPyc1fGBao0");               
         }}>Excluir Usuário</Button>*/
 
-        <Button onClick={() => {
+        /*<Button onClick={() => {
             excluirUsuarios();               
-        }}>Excluir Usuários</Button>
+        }}>Excluir Usuários</Button>*/
+
+        <Button onClick={() => {
+            atualizarUsuario("ZqwxCRfwF4nXl3L487GF", {
+                cpf: "88800172399",
+                email_contato: "rogeriofurtado@yahoo.com.br",
+                email_login: "rogerioff@gmail.com",
+                nome_completo: "Rogério Faria Furtado",
+                registro_crmv: "09177-SP",
+                senha: "haybuiedrfvgyuyuhsred&",
+                telefone: "(11) 98172-5560"
+            });               
+        }}>Atualizar Usuário</Button>
     )
 }
