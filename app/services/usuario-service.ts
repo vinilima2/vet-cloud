@@ -1,4 +1,4 @@
-import { collection, addDoc, doc, deleteDoc, getDocs, updateDoc, getDoc, setDoc } from 'firebase/firestore';
+import { collection, addDoc, doc, deleteDoc, getDocs, updateDoc, getDoc, setDoc, snapshotEqual } from 'firebase/firestore';
 import { database } from '~/database/firebase-config';
 import { horaAtual } from '~/lib/utils';
 import { atualizarUsuarioClinica } from './usuario-clinica-service';
@@ -22,7 +22,7 @@ export interface UsuarioView {
 
 export async function adicionarUsuario(usuario: Usuario): Promise<string | null> {
     try {
-        const usuario_collection = collection(database, `Usuario`);
+        const usuario_collection = collection(database, 'Usuario');
         const novo_usuario = await addDoc(usuario_collection, usuario);
         const agora = horaAtual();
         await updateDoc(novo_usuario, ({data_criacao: agora, ultima_atualizacao: agora}) as Partial<Usuario>);
@@ -59,7 +59,7 @@ export async function excluirUsuario(id_usuario: string) {
             atualizarUsuarioClinica(clinica.id, id_usuario, { ativo: false }); // deixa o status 'ativo' da referência do usuário como 'false'
             removerClinicaDoUsuario(id_usuario, clinica.id); // é necessário remover todos os itens de 'ClinicaRef' separadamente.
         });
-        const usuario_document = doc(database, `Usuario`, id_usuario);
+        const usuario_document = doc(database, 'Usuario', id_usuario);
         deleteDoc(usuario_document);
     } catch(error) {
         console.log("Erro em 'excluirUsuario': ", error);
@@ -68,7 +68,7 @@ export async function excluirUsuario(id_usuario: string) {
 
 export async function excluirUsuarios() { // utilizar somente em ambiente de desenvolvimento.
     try {
-        const usuario_collection = collection(database, `Usuario`);
+        const usuario_collection = collection(database, 'Usuario');
         const usuario_docs = await getDocs(usuario_collection);
         usuario_docs.docs.forEach((usuario_doc) => {
             excluirUsuario(usuario_doc.id);    
@@ -80,10 +80,56 @@ export async function excluirUsuarios() { // utilizar somente em ambiente de des
 
 export async function atualizarUsuario(id_usuario: string, novos_dados: Partial<Usuario>) {
     try {
-        const usuario_document = doc(database, `Usuario`, id_usuario);
+        const usuario_document = doc(database, 'Usuario', id_usuario);
         await updateDoc(usuario_document, novos_dados);
         await updateDoc(usuario_document, { ultima_atualizacao: horaAtual() } as Partial<Usuario>)
     } catch(error) {
         console.log("Erro em 'atualizarUsuario': ", error);
     }    
+}
+
+export async function obterUsuario(id_usuario: string, tipo_retorno: "contatos" | "login" | "sem-login" | "completo" = "completo"): Promise<Partial<UsuarioView> | null> {
+    try {
+        const usuario_document = doc(database, 'Usuario', id_usuario);
+        const snapshot = await getDoc(usuario_document); 
+        if (snapshot.exists()) {
+            switch(tipo_retorno) {
+                case "contatos":
+                    return { 
+                        id: snapshot.id, 
+                        data: {
+                            nome_completo: snapshot.data().nome_completo,
+                            telefone: snapshot.data().telefone,
+                            email_contato: snapshot.data().email_contato
+                        }
+                    } as Partial<UsuarioView>;
+                case "login":
+                    return { 
+                        id: snapshot.id, 
+                        data: {
+                            email_login: snapshot.data().email_login,
+                            senha: snapshot.data().senha
+                        }
+                    } as Partial<UsuarioView>;    
+                case "sem-login":
+                    return { 
+                        id: snapshot.id, 
+                        data: {
+                            cpf: snapshot.data().cpf,
+                            email_contato: snapshot.data().email_contato,
+                            nome_completo: snapshot.data().nome_completo,
+                            registro_crmv: snapshot.data().registro_crmv,
+                            telefone: snapshot.data().telefone,
+                            data_criacao: snapshot.data().data_criacao,
+                            ultima_atualizacao: snapshot.data().ultima_atualizacao
+                        }
+                    } as Partial<UsuarioView>; 
+                default:
+                    return { id: snapshot.id, data: snapshot.data() } as Partial<UsuarioView>;                   
+            }
+        }
+    } catch(error) {
+        console.log("Erro em 'obterUsuario': ", error);
+    }      
+    return null;
 }

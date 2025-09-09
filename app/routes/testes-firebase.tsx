@@ -3,7 +3,7 @@ import { Button } from "~/components/ui/button";
 import { adicionarTutor, atualizarTutor, excluirTutor, excluirTutores, obterTutor, obterTutores } from "~/services/tutor-service";
 import { adicionarClinica, atualizarClinica, excluirClinica, obterClinica, obterClinicas } from "~/services/clinica-service";
 import { adicionarUsuarioClinica, excluirUsuarioClinica, excluirUsuariosClinica, obterUsuarioClinica, obterUsuariosClinica } from "~/services/usuario-clinica-service";
-import { adicionarUsuario, atualizarUsuario, excluirUsuario, excluirUsuarios } from "~/services/usuario-service";
+import { adicionarUsuario, atualizarUsuario, excluirUsuario, excluirUsuarios, obterUsuario } from "~/services/usuario-service";
 
 // const pet = await obterPet("0", "1", "0");
 // const pets = await obterPets("0", "2");
@@ -32,6 +32,8 @@ import { adicionarUsuario, atualizarUsuario, excluirUsuario, excluirUsuarios } f
     senha: "sfHHdasdhBYU8**dadjn*&",
     telefone: "(14) 98123-4500"
 });*/
+
+const usuario = await obterUsuario("6zGByG9EIW5S1bCU1SxI", "sem-login");
 
 export default function TestesFirebase() {
     return (
@@ -175,7 +177,7 @@ export default function TestesFirebase() {
             excluirUsuarios();               
         }}>Excluir Usuários</Button>*/
 
-        <Button onClick={() => {
+        /*<Button onClick={() => {
             atualizarUsuario("ZqwxCRfwF4nXl3L487GF", {
                 cpf: "88800172399",
                 email_contato: "rogeriofurtado@yahoo.com.br",
@@ -185,6 +187,10 @@ export default function TestesFirebase() {
                 senha: "haybuiedrfvgyuyuhsred&",
                 telefone: "(11) 98172-5560"
             });               
-        }}>Atualizar Usuário</Button>
+        }}>Atualizar Usuário</Button>*/
+
+        <Button onClick={() => {
+            console.log(usuario);           
+        }}>Obter Usuário</Button>
     )
 }
