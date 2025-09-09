@@ -3,7 +3,7 @@ import { Button } from "~/components/ui/button";
 import { adicionarTutor, atualizarTutor, excluirTutor, excluirTutores, obterTutor, obterTutores } from "~/services/tutor-service";
 import { adicionarClinica, atualizarClinica, excluirClinica, obterClinica, obterClinicas } from "~/services/clinica-service";
 import { adicionarUsuarioClinica, excluirUsuarioClinica, excluirUsuariosClinica, obterUsuarioClinica, obterUsuariosClinica } from "~/services/usuario-clinica-service";
-import { adicionarUsuario, atualizarUsuario, excluirUsuario, excluirUsuarios, obterUsuario } from "~/services/usuario-service";
+import { adicionarUsuario, atualizarUsuario, excluirUsuario, excluirUsuarios, obterUsuario, obterUsuarios } from "~/services/usuario-service";
 
 // const pet = await obterPet("0", "1", "0");
 // const pets = await obterPets("0", "2");
@@ -34,6 +34,7 @@ import { adicionarUsuario, atualizarUsuario, excluirUsuario, excluirUsuarios, ob
 });*/
 
 const usuario = await obterUsuario("6zGByG9EIW5S1bCU1SxI", "sem-login");
+const usuarios = await obterUsuarios();
 
 export default function TestesFirebase() {
     return (
@@ -189,8 +190,12 @@ export default function TestesFirebase() {
             });               
         }}>Atualizar Usuário</Button>*/
 
-        <Button onClick={() => {
+        /*<Button onClick={() => {
             console.log(usuario);           
-        }}>Obter Usuário</Button>
+        }}>Obter Usuário</Button>*/
+
+        <Button onClick={() => {
+            console.log(usuarios);           
+        }}>Obter Usuários</Button>
     )
 }
