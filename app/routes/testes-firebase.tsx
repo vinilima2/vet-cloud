@@ -3,7 +3,7 @@ import { Button } from "~/components/ui/button";
 import { adicionarTutor, atualizarTutor, excluirTutor, excluirTutores, obterTutor, obterTutores } from "~/services/tutor-service";
 import { adicionarClinica, atualizarClinica, excluirClinica, obterClinica, obterClinicas } from "~/services/clinica-service";
 import { adicionarUsuarioClinica, excluirUsuarioClinica, excluirUsuariosClinica, obterUsuarioClinica, obterUsuariosClinica } from "~/services/usuario-clinica-service";
-import { adicionarUsuario } from "~/services/usuario-service";
+import { adicionarUsuario, excluirUsuario } from "~/services/usuario-service";
 
 // const pet = await obterPet("0", "1", "0");
 // const pets = await obterPets("0", "2");
@@ -25,7 +25,6 @@ import { adicionarUsuario } from "~/services/usuario-service";
 
 /*const novo_usuario = await adicionarUsuario({
     nome_completo: "Paulo Silvestre Rahal",
-    ativo: true,
     cpf: "74511192019",
     email_contato: "drpaulosilvestre@outlook.com",
     email_login: "paulosrahal@gmail.com",
@@ -126,11 +125,11 @@ export default function TestesFirebase() {
             excluirClinica("rGGURnvW5qk1GEVCE5eJ");       
         }}>Excluir Clínica</Button>*/
 
-        <Button onClick={() => {
+        /*<Button onClick={() => {
             adicionarUsuarioClinica("2lzHQxVAYJOeO53mzo4m", "ejpxmbJtFaPyc1fGBao0", "Admin");
             adicionarUsuarioClinica("KKYPqnFZzDu37NIyUabY", "ejpxmbJtFaPyc1fGBao0", "Basic");
             adicionarUsuarioClinica("2lzHQxVAYJOeO53mzo4m", "iYdaCw9NkRDdIZGjOwUy", "Root");        
-        }}>Adicionar Usuário na Clínica</Button>
+        }}>Adicionar Usuário na Clínica</Button>*/
 
         /*<Button onClick={() => {
             excluirUsuarioClinica("2lzHQxVAYJOeO53mzo4m", "ejpxmbJtFaPyc1fGBao0");
@@ -166,6 +165,10 @@ export default function TestesFirebase() {
 
         /*<Button onClick={() => {
             console.log(novo_usuario);            
-        }}>Adicionar Usuário</Button>*/        
+        }}>Adicionar Usuário</Button>*/    
+        
+        <Button onClick={() => {
+            excluirUsuario("ejpxmbJtFaPyc1fGBao0");               
+        }}>Excluir Usuário</Button>
     )
 }

@@ -48,10 +48,10 @@ export async function excluirUsuariosClinica(id_clinica: string) {
     }    
 }
 
-export async function atualizarUsuarioClinica(id_clinica: string, id_usuario: string, novo_nivel_acesso: "Root" | "Admin" | "Basic") {
+export async function atualizarUsuarioClinica(id_clinica: string, id_usuario: string, novos_dados: Partial<UsuarioClinica>) {
     try {
         const usuario_document = doc(database, `Clinica/${id_clinica}/Usuario`, id_usuario);
-        await updateDoc(usuario_document, ({ nivel_acesso: novo_nivel_acesso, ultima_atualizacao: horaAtual() }) as Partial<UsuarioClinica>);
+        await updateDoc(usuario_document, novos_dados);
     } catch(error) {
         console.log("Erro em 'atualizarUsuarioClinica': ", error);
     }      

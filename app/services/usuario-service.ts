@@ -1,6 +1,7 @@
 import { collection, addDoc, doc, deleteDoc, getDocs, updateDoc, getDoc, setDoc } from 'firebase/firestore';
 import { database } from '~/database/firebase-config';
 import { horaAtual } from '~/lib/utils';
+import { atualizarUsuarioClinica } from './usuario-clinica-service';
 
 export interface Usuario {
     nome_completo: string,
@@ -51,5 +52,16 @@ export async function removerClinicaDoUsuario(id_usuario: string, id_clinica: st
 }
 
 export async function excluirUsuario(id_usuario: string) {
-
+    try {
+        const clinica_ref_collection = collection(database, `Usuario/${id_usuario}/ClinicaRef`);
+        const clinica_ref_docs = await getDocs(clinica_ref_collection);
+        clinica_ref_docs.docs.forEach((clinica) => {
+            atualizarUsuarioClinica(clinica.id, id_usuario, { ativo: false }); // deixa o status 'ativo' da referência do usuário como 'false'
+            removerClinicaDoUsuario(id_usuario, clinica.id); // é necessário remover todos os itens de 'ClinicaRef' separadamente.
+        });
+        const usuario_document = doc(database, `Usuario`, id_usuario);
+        deleteDoc(usuario_document);
+    } catch(error) {
+        console.log("Erro em 'excluirUsuario': ", error);
+    }      
 }
