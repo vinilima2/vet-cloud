@@ -148,3 +148,18 @@ export async function obterUsuarios() { // somente para ambiente de desenvolvime
     }     
     return null;    
 }
+
+export async function obterClinicasDoUsuario(id_usuario: string) {
+    try {
+        const clinica_ref_collection = collection(database, `Usuario/${id_usuario}/ClinicaRef`);
+        const snapshot = await getDocs(clinica_ref_collection);
+        const usuario_docs = snapshot.docs.map((clinica_doc) => ({
+            id: clinica_doc.id,
+            data: clinica_doc.data() as Usuario
+        } as UsuarioView));
+        return usuario_docs;
+    } catch(error) {
+        console.log("Erro em 'obterClinicasDoUsuario': ", error);
+    }     
+    return null;      
+}

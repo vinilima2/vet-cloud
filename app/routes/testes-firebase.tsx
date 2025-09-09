@@ -3,7 +3,7 @@ import { Button } from "~/components/ui/button";
 import { adicionarTutor, atualizarTutor, excluirTutor, excluirTutores, obterTutor, obterTutores } from "~/services/tutor-service";
 import { adicionarClinica, atualizarClinica, excluirClinica, obterClinica, obterClinicas } from "~/services/clinica-service";
 import { adicionarUsuarioClinica, excluirUsuarioClinica, excluirUsuariosClinica, obterUsuarioClinica, obterUsuariosClinica } from "~/services/usuario-clinica-service";
-import { adicionarUsuario, atualizarUsuario, excluirUsuario, excluirUsuarios, obterUsuario, obterUsuarios } from "~/services/usuario-service";
+import { adicionarUsuario, atualizarUsuario, excluirUsuario, excluirUsuarios, obterClinicasDoUsuario, obterUsuario, obterUsuarios } from "~/services/usuario-service";
 
 // const pet = await obterPet("0", "1", "0");
 // const pets = await obterPets("0", "2");
@@ -24,17 +24,18 @@ import { adicionarUsuario, atualizarUsuario, excluirUsuario, excluirUsuarios, ob
 //const clinicas = await obterClinicas();
 
 /*const novo_usuario = await adicionarUsuario({
-    nome_completo: "Paulo Silvestre Rahal",
-    cpf: "74511192019",
-    email_contato: "drpaulosilvestre@outlook.com",
-    email_login: "paulosrahal@gmail.com",
-    registro_crmv: "88812-SP",
-    senha: "sfHHdasdhBYU8**dadjn*&",
-    telefone: "(14) 98123-4500"
+    nome_completo: "Marina Borges",
+    cpf: "09299923482",
+    email_contato: "dramarinabrgs@outlook.com",
+    email_login: "marinabb2021@gmail.com",
+    registro_crmv: "00123-SP",
+    senha: "hjnbfdhjunberfzdfs",
+    telefone: "(14) 99171-8700"
 });*/
 
-const usuario = await obterUsuario("6zGByG9EIW5S1bCU1SxI", "sem-login");
-const usuarios = await obterUsuarios();
+//const usuario = await obterUsuario("6zGByG9EIW5S1bCU1SxI", "sem-login");
+//const usuarios = await obterUsuarios();
+const clinicas_usuario = await obterClinicasDoUsuario("xpyffITcUC9RqFqEu3bn");
 
 export default function TestesFirebase() {
     return (
@@ -129,9 +130,9 @@ export default function TestesFirebase() {
         }}>Excluir Clínica</Button>*/
 
         /*<Button onClick={() => {
-            adicionarUsuarioClinica("2lzHQxVAYJOeO53mzo4m", "ejpxmbJtFaPyc1fGBao0", "Admin");
-            adicionarUsuarioClinica("KKYPqnFZzDu37NIyUabY", "ejpxmbJtFaPyc1fGBao0", "Basic");
-            adicionarUsuarioClinica("2lzHQxVAYJOeO53mzo4m", "iYdaCw9NkRDdIZGjOwUy", "Root");        
+            adicionarUsuarioClinica("2lzHQxVAYJOeO53mzo4m", "", "Admin");
+            adicionarUsuarioClinica("KKYPqnFZzDu37NIyUabY", "", "Basic");
+            adicionarUsuarioClinica("2lzHQxVAYJOeO53mzo4m", "", "Root");        
         }}>Adicionar Usuário na Clínica</Button>*/
 
         /*<Button onClick={() => {
@@ -168,7 +169,7 @@ export default function TestesFirebase() {
 
         /*<Button onClick={() => {
             console.log(novo_usuario);            
-        }}>Adicionar Usuário</Button>*/    
+        }}>Adicionar Usuário</Button>*/   
         
         /*<Button onClick={() => {
             excluirUsuario("ejpxmbJtFaPyc1fGBao0");               
@@ -194,8 +195,12 @@ export default function TestesFirebase() {
             console.log(usuario);           
         }}>Obter Usuário</Button>*/
 
-        <Button onClick={() => {
+        /*<Button onClick={() => {
             console.log(usuarios);           
-        }}>Obter Usuários</Button>
+        }}>Obter Usuários</Button>*/
+
+        <Button onClick={() => {
+            console.log(clinicas_usuario);           
+        }}>Obter Clínicas do Usuário</Button>
     )
 }
