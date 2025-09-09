@@ -1,7 +1,7 @@
 import { collection, addDoc, doc, deleteDoc, getDocs, updateDoc, getDoc, setDoc } from 'firebase/firestore';
 import { database } from '~/database/firebase-config';
 import { horaAtual } from '~/lib/utils';
-import { adicionarClinicaNoUsuario } from './usuario-service';
+import { adicionarClinicaNoUsuario, removerClinicaDoUsuario } from './usuario-service';
 
 export interface UsuarioClinica {
     nivel_acesso: "Basic" | "Admin" | "Root"
@@ -29,6 +29,7 @@ export async function excluirUsuarioClinica(id_clinica: string, id_usuario: stri
     try {
         const usuario_document = doc(database, `Clinica/${id_clinica}/Usuario`, id_usuario);
         await deleteDoc(usuario_document);
+        removerClinicaDoUsuario(id_usuario, id_clinica);
     } catch(error) {
         console.log("Erro em 'excluirUsuarioClinica': ", error);
     }    

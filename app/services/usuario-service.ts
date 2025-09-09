@@ -43,5 +43,10 @@ export async function adicionarClinicaNoUsuario(id_usuario: string, id_clinica: 
 }
 
 export async function removerClinicaDoUsuario(id_usuario: string, id_clinica: string) { // sincroniza com as clínicas das quais faz parte
-
+    try {
+        const clinica_ref_document = doc(database, `Usuario/${id_usuario}/ClinicaRef`, id_clinica);
+        await deleteDoc(clinica_ref_document);
+    } catch(error) {
+        console.log("Erro em 'removerClinicaDoUsuario': ", error);
+    }  
 }
