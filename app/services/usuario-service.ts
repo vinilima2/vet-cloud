@@ -33,11 +33,15 @@ export async function adicionarUsuario(usuario: Usuario): Promise<string | null>
     return null;
 }
 
-export async function adicionarClinicaNoUsuario(id_usuario: string, id_clinica: string) { // espelha as clínicas das quais faz parte
+export async function adicionarClinicaNoUsuario(id_usuario: string, id_clinica: string) { // sincroniza com as clínicas das quais faz parte
     try {
-        const clinica_ref = collection(database, `Usuario/${id_usuario}/ClinicaRef`);
-        await addDoc(clinica_ref, { id: id_clinica });
+        const clinica_doc = doc(database, `Usuario/${id_usuario}/ClinicaRef`, id_clinica);
+        await setDoc(clinica_doc, { id: id_clinica });
     } catch(error) {
         console.log("Erro em 'adicionarClinicaNoUsuario': ", error);
     } 
+}
+
+export async function removerClinicaDoUsuario(id_usuario: string, id_clinica: string) { // sincroniza com as clínicas das quais faz parte
+
 }
