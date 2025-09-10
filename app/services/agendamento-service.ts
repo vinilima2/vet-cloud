@@ -44,3 +44,12 @@ export async function excluirAgendamentos(id_clinica: string) {
         console.log("Erro em 'excluirAgendamentos': ", error);
     }    
 }    
+
+export async function atualizarAgendamento(id_clinica: string, id_agendamento: string, novos_dados: Partial<Agendamento>) {
+    try {
+        const agendamento_document = doc(database, `Clinica/${id_clinica}/Agendamento`, id_agendamento);
+        await updateDoc(agendamento_document, novos_dados);
+    } catch(error) {
+        console.log("Erro em 'atualizarAgendamento': ", error);
+    }       
+}
