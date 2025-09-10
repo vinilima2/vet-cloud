@@ -23,3 +23,12 @@ export async function adicionarAgendamento(id_clinica: string, agendamento: Agen
         console.log("Erro em 'adicionarAgendamento': ", error);
     }  
 }
+
+export async function excluirAgendamento(id_clinica: string, id_agendamento: string) {
+    try {
+        const agendamento_document = doc(database, `Clinica/${id_clinica}/Agendamento/`, id_agendamento);
+        deleteDoc(agendamento_document);
+    } catch(error) {
+        console.log("Erro em 'excluirAgendamento': ", error);
+    }       
+}
