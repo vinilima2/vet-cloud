@@ -4,7 +4,7 @@ import { adicionarTutor, atualizarTutor, excluirTutor, excluirTutores, obterTuto
 import { adicionarClinica, atualizarClinica, excluirClinica, obterClinica, obterClinicas } from "~/services/clinica-service";
 import { adicionarUsuarioClinica, excluirUsuarioClinica, excluirUsuariosClinica, obterUsuarioClinica, obterUsuariosClinica } from "~/services/usuario-clinica-service";
 import { adicionarUsuario, atualizarUsuario, excluirUsuario, excluirUsuarios, obterClinicasDoUsuario, obterIdUsuarioPorEmail, obterUsuario, obterUsuarios } from "~/services/usuario-service";
-import { adicionarAgendamento, excluirAgendamento } from "~/services/agendamento-service";
+import { adicionarAgendamento, excluirAgendamento, excluirAgendamentos } from "~/services/agendamento-service";
 
 // const pet = await obterPet("0", "1", "0");
 // const pets = await obterPets("0", "2");
@@ -231,8 +231,13 @@ export default function TestesFirebase() {
                 status: "CANCELADO"
             });
         }}>Adicionar Agendamento</Button>*/
-        <Button onClick={() => {
+        
+        /*<Button onClick={() => {
             excluirAgendamento("2lzHQxVAYJOeO53mzo4m", "SMV56dOSgb0NlMqD3vBq");              
-        }}>Excluir Agendamento</Button>
+        }}>Excluir Agendamento</Button>*/
+        
+        <Button onClick={() => {
+            excluirAgendamentos("2lzHQxVAYJOeO53mzo4m");              
+        }}>Excluir Agendamentos</Button>
     )
 }

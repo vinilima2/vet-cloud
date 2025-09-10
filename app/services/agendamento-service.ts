@@ -32,3 +32,15 @@ export async function excluirAgendamento(id_clinica: string, id_agendamento: str
         console.log("Erro em 'excluirAgendamento': ", error);
     }       
 }
+
+export async function excluirAgendamentos(id_clinica: string) {
+    try {
+        const agendamento_collection = collection(database, `Clinica/${id_clinica}/Agendamento`);
+        const agendamento_docs = await getDocs(agendamento_collection);
+        agendamento_docs.docs.forEach((agendamento) => {
+            excluirAgendamento(id_clinica, agendamento.id);
+        });
+    } catch(error) {
+        console.log("Erro em 'excluirAgendamentos': ", error);
+    }    
+}    
