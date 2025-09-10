@@ -69,3 +69,18 @@ export async function obterAgendamento(id_clinica: string, id_agendamento: strin
     }  
     return null;
 }
+
+export async function obterAgendamentos(id_clinica: string): Promise<AgendamentoView[] | null> {
+    try {
+        const agendamento_collection = collection(database, `Clinica/${id_clinica}/Agendamento`);
+        const snapshot = await getDocs(agendamento_collection);
+        const agendamento_docs = snapshot.docs.map((agendamento) => ({
+            id: agendamento.id,
+            data: agendamento.data() as Agendamento
+        } as AgendamentoView));
+        return agendamento_docs;
+    } catch(error) {
+        console.log("Erro em 'obterAgendamentos': ", error);
+    }  
+    return null;
+}
