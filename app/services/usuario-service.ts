@@ -1,4 +1,4 @@
-import { collection, addDoc, doc, deleteDoc, getDocs, updateDoc, getDoc, setDoc, snapshotEqual } from 'firebase/firestore';
+import { collection, addDoc, doc, deleteDoc, getDocs, updateDoc, getDoc, setDoc, query, where } from 'firebase/firestore';
 import { database } from '~/database/firebase-config';
 import { horaAtual } from '~/lib/utils';
 import { atualizarUsuarioClinica } from './usuario-clinica-service';
@@ -18,6 +18,12 @@ export interface Usuario {
 export interface UsuarioView {
     id: string,
     data: Usuario
+}
+
+export interface ValidacaoUsuario {
+    status: boolean,
+    msg?: string,
+    id_usuario?: string
 }
 
 export async function adicionarUsuario(usuario: Usuario): Promise<string | null> {
@@ -162,4 +168,20 @@ export async function obterClinicasDoUsuario(id_usuario: string) {
         console.log("Erro em 'obterClinicasDoUsuario': ", error);
     }     
     return null;      
+}
+
+export async function obterIdUsuarioPorEmail(email: string): Promise<ValidacaoUsuario>  {
+    try {
+        const usuario_collection = collection(database, 'Usuario');
+        const q = query(usuario_collection, where("email_login", "==", email));
+        const snapshot = await getDocs(q);
+        const res = snapshot.docs;
+        if (res.length == 0) {
+            return { status: false, msg: "Usuário não encontrado." } as ValidacaoUsuario;
+        }
+        return { status: true, id_usuario: res[0].id } as ValidacaoUsuario; // retorna o id do usuário associado a esse e-mail de login.   
+    } catch(error) {
+        console.log("Erro em 'obterIdUsuarioPorEmail': ", error);
+        return { status: false, msg: "Erro de consulta ao banco de dados." } as ValidacaoUsuario; // caso ocorra erro interno no servidor.
+    }      
 }
