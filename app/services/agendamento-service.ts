@@ -84,3 +84,20 @@ export async function obterAgendamentos(id_clinica: string): Promise<Agendamento
     }  
     return null;
 }
+
+export async function obterAgendamentosPor(id_clinica: string, id: string, filtro_pesquisa: "pet" | "tutor" | "usuario" = "usuario"): Promise<AgendamentoView[] | null> {
+    try {
+        const agendamento_collection = collection(database, `Clinica/${id_clinica}/Agendamento`);
+        const filtro_campo = "id_" + filtro_pesquisa;
+        const q = query(agendamento_collection, where(filtro_campo, "==", id)); 
+        const snapshot = await getDocs(q);
+        const agendamentos = snapshot.docs.map((agendamento) => ({
+            id: agendamento.id,
+            data: agendamento.data() as Agendamento
+        } as AgendamentoView));
+        return agendamentos;
+    } catch(error) {
+        console.log("Erro em 'obterAgendamentoPor': ", error);
+    }  
+    return null;    
+}

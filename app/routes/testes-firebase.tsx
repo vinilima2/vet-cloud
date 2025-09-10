@@ -4,7 +4,7 @@ import { adicionarTutor, atualizarTutor, excluirTutor, excluirTutores, obterTuto
 import { adicionarClinica, atualizarClinica, excluirClinica, obterClinica, obterClinicas } from "~/services/clinica-service";
 import { adicionarUsuarioClinica, excluirUsuarioClinica, excluirUsuariosClinica, obterUsuarioClinica, obterUsuariosClinica } from "~/services/usuario-clinica-service";
 import { adicionarUsuario, atualizarUsuario, excluirUsuario, excluirUsuarios, obterClinicasDoUsuario, obterIdUsuarioPorEmail, obterUsuario, obterUsuarios } from "~/services/usuario-service";
-import { adicionarAgendamento, atualizarAgendamento, excluirAgendamento, excluirAgendamentos, obterAgendamento, obterAgendamentos } from "~/services/agendamento-service";
+import { adicionarAgendamento, atualizarAgendamento, excluirAgendamento, excluirAgendamentos, obterAgendamento, obterAgendamentosPor, obterAgendamentos } from "~/services/agendamento-service";
 
 // const pet = await obterPet("0", "1", "0");
 // const pets = await obterPets("0", "2");
@@ -39,7 +39,8 @@ import { adicionarAgendamento, atualizarAgendamento, excluirAgendamento, excluir
 //const clinicas_usuario = await obterClinicasDoUsuario("xpyffITcUC9RqFqEu3bn");
 //const usuario_por_email = await obterIdUsuarioPorEmail("paulosrahal@gmail.com");
 //const agendamento = await obterAgendamento("2lzHQxVAYJOeO53mzo4m", "xDAIZxF4kZhnNY9yCajl");
-const agendamentos = await obterAgendamentos("2lzHQxVAYJOeO53mzo4m");
+//const agendamentos = await obterAgendamentos("2lzHQxVAYJOeO53mzo4m");
+const agendamento_por = await obterAgendamentosPor("2lzHQxVAYJOeO53mzo4m", "", "usuario");
 
 export default function TestesFirebase() {
     return (
@@ -254,8 +255,12 @@ export default function TestesFirebase() {
             console.log(agendamento);           
         }}>Obter Agendamento</Button>*/
 
-        <Button onClick={() => {
+        /*<Button onClick={() => {
             console.log(agendamentos);           
-        }}>Obter Agendamento</Button>
+        }}>Obter Agendamento</Button>*/
+
+        <Button onClick={() => {
+            console.log(agendamento_por);           
+        }}>Obter Agendamento Por Filtro</Button>
     )
 }
