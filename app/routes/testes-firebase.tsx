@@ -4,7 +4,7 @@ import { adicionarTutor, atualizarTutor, excluirTutor, excluirTutores, obterTuto
 import { adicionarClinica, atualizarClinica, excluirClinica, obterClinica, obterClinicas } from "~/services/clinica-service";
 import { adicionarUsuarioClinica, excluirUsuarioClinica, excluirUsuariosClinica, obterUsuarioClinica, obterUsuariosClinica } from "~/services/usuario-clinica-service";
 import { adicionarUsuario, atualizarUsuario, excluirUsuario, excluirUsuarios, obterClinicasDoUsuario, obterIdUsuarioPorEmail, obterUsuario, obterUsuarios } from "~/services/usuario-service";
-import { adicionarAgendamento, atualizarAgendamento, excluirAgendamento, excluirAgendamentos } from "~/services/agendamento-service";
+import { adicionarAgendamento, atualizarAgendamento, excluirAgendamento, excluirAgendamentos, obterAgendamento } from "~/services/agendamento-service";
 
 // const pet = await obterPet("0", "1", "0");
 // const pets = await obterPets("0", "2");
@@ -38,6 +38,7 @@ import { adicionarAgendamento, atualizarAgendamento, excluirAgendamento, excluir
 //const usuarios = await obterUsuarios();
 //const clinicas_usuario = await obterClinicasDoUsuario("xpyffITcUC9RqFqEu3bn");
 //const usuario_por_email = await obterIdUsuarioPorEmail("paulosrahal@gmail.com");
+const agendamento = await obterAgendamento("2lzHQxVAYJOeO53mzo4m", "xDAIZxF4kZhnNY9yCajl");
 
 export default function TestesFirebase() {
     return (
@@ -240,12 +241,16 @@ export default function TestesFirebase() {
             excluirAgendamentos("2lzHQxVAYJOeO53mzo4m");              
         }}>Excluir Agendamentos</Button>*/
 
-        <Button onClick={() => {
+        /*<Button onClick={() => {
             atualizarAgendamento("2lzHQxVAYJOeO53mzo4m", "xDAIZxF4kZhnNY9yCajl", {
                 hora_marcada: "16:40",
                 status: "EM ABERTO"
             });              
-        }}>Atualizar Agendamento</Button>
+        }}>Atualizar Agendamento</Button>*/
 
+
+        <Button onClick={() => {
+            console.log(agendamento);           
+        }}>Obter Agendamento</Button>
     )
 }

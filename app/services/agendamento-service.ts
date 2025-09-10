@@ -14,6 +14,11 @@ export interface Agendamento {
     email_tutor?: string // desnormalizado para facilitar na automação de envio de e-mail
 }
 
+export interface AgendamentoView {
+    id: string,
+    data: Agendamento
+}
+
 export async function adicionarAgendamento(id_clinica: string, agendamento: Agendamento) {
     try {
         const agendamento_collection = collection(database, `Clinica/${id_clinica}/Agendamento`);
@@ -52,4 +57,15 @@ export async function atualizarAgendamento(id_clinica: string, id_agendamento: s
     } catch(error) {
         console.log("Erro em 'atualizarAgendamento': ", error);
     }       
+}
+
+export async function obterAgendamento(id_clinica: string, id_agendamento: string): Promise<AgendamentoView | null> {
+    try {
+        const agendamento_document = doc(database, `Clinica/${id_clinica}/Agendamento`, id_agendamento);
+        const snapshot = await getDoc(agendamento_document); 
+        return snapshot.exists() ? { id: snapshot.id, data: (snapshot.data() as Agendamento) } as AgendamentoView : null;
+    } catch(error) {
+        console.log("Erro em 'obterAgendamento': ", error);
+    }  
+    return null;
 }
