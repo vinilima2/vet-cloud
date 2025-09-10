@@ -4,6 +4,7 @@ import { adicionarTutor, atualizarTutor, excluirTutor, excluirTutores, obterTuto
 import { adicionarClinica, atualizarClinica, excluirClinica, obterClinica, obterClinicas } from "~/services/clinica-service";
 import { adicionarUsuarioClinica, excluirUsuarioClinica, excluirUsuariosClinica, obterUsuarioClinica, obterUsuariosClinica } from "~/services/usuario-clinica-service";
 import { adicionarUsuario, atualizarUsuario, excluirUsuario, excluirUsuarios, obterClinicasDoUsuario, obterIdUsuarioPorEmail, obterUsuario, obterUsuarios } from "~/services/usuario-service";
+import { adicionarAgendamento } from "~/services/agendamento-service";
 
 // const pet = await obterPet("0", "1", "0");
 // const pets = await obterPets("0", "2");
@@ -36,7 +37,7 @@ import { adicionarUsuario, atualizarUsuario, excluirUsuario, excluirUsuarios, ob
 //const usuario = await obterUsuario("6zGByG9EIW5S1bCU1SxI", "sem-login");
 //const usuarios = await obterUsuarios();
 //const clinicas_usuario = await obterClinicasDoUsuario("xpyffITcUC9RqFqEu3bn");
-const usuario_por_email = await obterIdUsuarioPorEmail("paulosrahal@gmail.com");
+//const usuario_por_email = await obterIdUsuarioPorEmail("paulosrahal@gmail.com");
 
 export default function TestesFirebase() {
     return (
@@ -79,7 +80,7 @@ export default function TestesFirebase() {
         }}>Obter Pets</Button>*/
 
         /*<Button onClick={() => {
-            adicionarTutor("0", {
+            adicionarTutor("2lzHQxVAYJOeO53mzo4m", {
                 nome_completo: "Amanda Klein Moreira Filho",
                 cpf: "93800012389",
                 endereco: "Rua Bananeira, Jd. Ypê, 1-10, CEP 6666-999, Bauru-SP",
@@ -96,6 +97,17 @@ export default function TestesFirebase() {
                         raca: "SRD",
                         sexo: "F",
                         observacoes: "Dificuldade para engolir comprimidos."
+                    },
+                    {
+                        nome: "Paçoca",
+                        ano_nascimento: 2017,
+                        ativo: true,
+                        cor: "caramelo-branco",
+                        especie: "porquinho-da-Índia",
+                        peso: 0.2,
+                        raca: "Pelo curto",
+                        sexo: "F",
+                        observacoes: "Idosa, problemas com os dentes"
                     }               
                 ])              
         }}>Inserir Tutor</Button>*/
@@ -204,8 +216,20 @@ export default function TestesFirebase() {
             console.log(clinicas_usuario);           
         }}>Obter Clínicas do Usuário</Button>*/
 
-        <Button onClick={() => {
+        /*<Button onClick={() => {
             console.log(usuario_por_email);           
-        }}>Obter Usuário por E-mail de Login</Button>
+        }}>Obter Usuário por E-mail de Login</Button>*/
+
+        <Button onClick={() => {
+            adicionarAgendamento("2lzHQxVAYJOeO53mzo4m", {
+                atividade: "Extração de dentes",
+                data_marcada: "15/09/2025",
+                hora_marcada: "17:00",
+                id_pet: "PkX8L8lHQ5dFDw1FX9NX",
+                id_tutor: "MdVyU0hUjnutJVvvDTsS",
+                id_usuario: "xpyffITcUC9RqFqEu3bn",
+                status: "CANCELADO"
+            });
+        }}>Adicionar Agendamento</Button>
     )
 }
