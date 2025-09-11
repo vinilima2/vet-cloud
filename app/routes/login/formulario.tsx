@@ -3,45 +3,60 @@ import { Button } from "~/components/ui/button"
 import { Input } from "~/components/ui/input"
 import { Label } from "~/components/ui/label"
 import { useNavigate } from "react-router"
+import { useState } from "react"
+import type { Login } from "~/services/autenticacao-service"
+import Logo from "../../assets/vet.png";
 
 export function Formulario({
   className,
   ...props
 }: React.ComponentProps<"form">) {
   const navigate = useNavigate()
+  const [login, setLogin] = useState<Partial<Login>>()
 
   return (
-    <form className={cn("flex flex-col gap-6", className)} {...props}>
-      <div className="flex flex-col items-center gap-2 text-center">
-        <h1 className="text-2xl font-bold">Entre e aproveite agora mesmo</h1>
-      </div>
-      <div className="grid gap-6">
-        <div className="grid gap-3">
-          <Label htmlFor="email">E-mail</Label>
-          <Input id="email" type="email" placeholder="email@exemplo.com" required />
+    <div className="flex flex-col gap-4 p-6 md:p-10">
+      <div className="flex flex-1 items-center justify-center">
+        <div className="w-full max-w-xs">
+          <img src={Logo} />
+          <form className={cn("flex flex-col gap-6", className)} {...props}>
+            <div className="flex flex-col items-center gap-2 text-center">
+              <h1 className="text-2xl font-bold">Entre e aproveite agora mesmo</h1>
+            </div>
+            <div className="grid gap-6">
+              <div className="grid gap-3">
+                <Label htmlFor="email">E-mail</Label>
+                <Input id="email" type="email" value={login?.login} onChange={(event) => setLogin({
+                  login: event.target.value
+                })} required />
+              </div>
+              <div className="grid gap-3">
+                <div className="flex items-center">
+                  <Label htmlFor="password">Senha</Label>
+                  <a
+                    href="#"
+                    className="ml-auto text-sm underline-offset-4 hover:underline"
+                  >
+                    Esqueci minha senha?
+                  </a>
+                </div>
+                <Input id="password" type="password" value={login?.senha} onChange={(event) => setLogin({
+                  senha: event.target.value
+                })} required />
+              </div>
+              <Button type="button" className="w-full" onClick={() => navigate('dash')}>
+                Entrar
+              </Button>
+            </div>
+            <div className="text-center text-sm">
+              Não tenho registro{" "}
+              <a href="#" className="underline underline-offset-4">
+                Registrar-se
+              </a>
+            </div>
+          </form>
         </div>
-        <div className="grid gap-3">
-          <div className="flex items-center">
-            <Label htmlFor="password">Senha</Label>
-            <a
-              href="#"
-              className="ml-auto text-sm underline-offset-4 hover:underline"
-            >
-              Esqueci minha senha?
-            </a>
-          </div>
-          <Input id="password" type="password" required />
-        </div>
-        <Button type="submit" className="w-full" onClick={() => navigate('dash')}>
-          Entrar
-        </Button>
       </div>
-      <div className="text-center text-sm">
-        Não tenho registro{" "}
-        <a href="#" className="underline underline-offset-4">
-          Registrar-se
-        </a>
-      </div>
-    </form>
+    </div>
   )
 }
