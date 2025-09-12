@@ -50,8 +50,8 @@
   --radius: 0.625rem;
   --background: #F5F5F5;
   --foreground: #4B734B;
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.147 0.004 49.25);
+  --card: #fbfbfb;
+  --card-foreground: #4B734B;
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.147 0.004 49.25);
   --primary: #4B734B;

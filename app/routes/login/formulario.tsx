@@ -44,13 +44,13 @@ export function Formulario({
                   senha: event.target.value
                 })} required />
               </div>
-              <Button type="button" className="w-full" onClick={() => navigate('dash')}>
+              <Button type="button" className="w-full" onClick={() => navigate('/dash')}>
                 Entrar
               </Button>
             </div>
             <div className="text-center text-sm">
               Não tenho registro{" "}
-              <a href="#" className="underline underline-offset-4">
+              <a href="/registro" className="underline underline-offset-4">
                 Registrar-se
               </a>
             </div>
