@@ -1,18 +1,18 @@
-import { Calendar, ChevronsLeftRight, Home, Inbox, LogOut, PawPrint, Pencil, Search, Settings, Syringe, User2, UserLock } from "lucide-react"
-
+import { Calendar, Home, Inbox, LogOut, Pencil, Settings, Syringe, User, User2, UserLock } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "~/components/ui/sidebar"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
+import { Switch } from "./ui/switch"
+import { useTheme } from "~/providers/theme-provider"
 
 // Menu items.
 const items = [
@@ -42,11 +42,6 @@ const items = [
     icon: UserLock,
   },
   {
-    title: "Animais",
-    url: "#",
-    icon: PawPrint,
-  },
-  {
     title: "Vacinas",
     url: "#",
     icon: Syringe,
@@ -55,29 +50,38 @@ const items = [
 ]
 
 export function AppSidebar() {
+  const { theme, setTheme } = useTheme()
   return (
     <Sidebar>
       <SidebarHeader>
         <SidebarMenuButton
           size="lg"
-          className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+          className="cursor-pointer"
         >
-          <Avatar className="h-8 w-8 rounded-lg grayscale">
-            <AvatarImage />
-            <AvatarFallback className="rounded-lg">VC</AvatarFallback>
+          <Avatar className="h-8 w-8 rounded-lg bg-primary flex justify-center items-center">
+            <User className="text-background" />
           </Avatar>
           <div className="grid flex-1 text-left text-sm leading-tight">
-            <span className="truncate font-medium"></span>
+            <span className="truncate font-medium">Joãozinho</span>
             <span className="text-muted-foreground truncate text-xs">
-
+              Admin
             </span>
           </div>
-          <Pencil className="ml-auto size-4" />
         </SidebarMenuButton>
+        <SidebarMenuButton>
+          <Switch checked={theme === 'dark'} onClick={() => {
+            if (theme === 'dark') {
+              setTheme('light')
+            } else {
+              setTheme('dark')
+            }
+          }} />
+          <span className="truncate font-medium text-primary">Tema Escuro</span>
+        </SidebarMenuButton>
+
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="mt-10">
         <SidebarGroup>
-          <SidebarGroupLabel>VetCloud</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
@@ -97,14 +101,14 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenuButton
           size="lg"
-          className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+          className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer"
         >
           <span>Configurações</span>
           <Settings className="ml-auto size-4" />
         </SidebarMenuButton>
         <SidebarMenuButton
           size="lg"
-          className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+          className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer"
         >
           <span>Sair</span>
           <LogOut className="ml-auto size-4" />
