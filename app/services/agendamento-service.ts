@@ -85,11 +85,10 @@ export async function obterAgendamentos(id_clinica: string): Promise<Agendamento
     return null;
 }
 
-export async function obterAgendamentosPor(id_clinica: string, id: string, filtro_pesquisa: "pet" | "tutor" | "usuario" = "usuario"): Promise<AgendamentoView[] | null> {
+export async function obterAgendamentosPor(id_clinica: string, valor: string, filtro_pesquisa: "id_pet" | "id_tutor" | "id_usuario" | "data_marcada" | "status"): Promise<AgendamentoView[] | null> {
     try {
         const agendamento_collection = collection(database, `Clinica/${id_clinica}/Agendamento`);
-        const filtro_campo = "id_" + filtro_pesquisa;
-        const q = query(agendamento_collection, where(filtro_campo, "==", id)); 
+        const q = query(agendamento_collection, where(filtro_pesquisa, "==", valor)); 
         const snapshot = await getDocs(q);
         const agendamentos = snapshot.docs.map((agendamento) => ({
             id: agendamento.id,
