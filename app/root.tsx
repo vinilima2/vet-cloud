@@ -43,7 +43,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <ThemeProvider defaultTheme="dark">
+  return <ThemeProvider defaultTheme="light">
     <Outlet />
   </ThemeProvider>;
 }
