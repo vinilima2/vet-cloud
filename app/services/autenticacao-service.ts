@@ -1,5 +1,5 @@
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "~/database/firebase-config";
+import {signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail} from "firebase/auth";
+import {auth} from "~/database/firebase-config";
 
 export interface Autenticacao {
     email: string,
@@ -30,4 +30,8 @@ export async function solicitarLogin(autenticacao: Autenticacao) {
             const errorMessage = error.message;
             return null;
         });
+}
+
+export async function recuperarSenha(email: string) {
+    return sendPasswordResetEmail(auth, email)
 }
