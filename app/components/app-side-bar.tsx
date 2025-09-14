@@ -1,24 +1,28 @@
-import { Calendar, ChevronsLeftRight, Home, Inbox, LogOut, PawPrint, Pencil, Search, Settings, Syringe, User2, UserLock } from "lucide-react"
-
+import { Calendar, Home, Inbox, LogOut, Pencil, Settings, Syringe, User, User2, UserLock } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "~/components/ui/sidebar"
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
+import { Avatar } from "./ui/avatar"
+import { Switch } from "./ui/switch"
+import { useTheme } from "~/providers/theme-provider"
+import { useLocation, useNavigate } from "react-router"
+import { useAuth } from "~/providers/auth-provider"
+import { AlertDialogTrigger } from "./ui/alert-dialog"
+import Dialog from "./dialog"
 
 // Menu items.
 const items = [
   {
     title: "Início",
-    url: "#",
+    url: "/home",
     icon: Home,
   },
   {
@@ -42,11 +46,6 @@ const items = [
     icon: UserLock,
   },
   {
-    title: "Animais",
-    url: "#",
-    icon: PawPrint,
-  },
-  {
     title: "Vacinas",
     url: "#",
     icon: Syringe,
@@ -55,34 +54,48 @@ const items = [
 ]
 
 export function AppSidebar() {
+  const { theme, setTheme } = useTheme()
+  const { realizarLogout } = useAuth()
+  const navigate = useNavigate()
+
+  const location = useLocation()
+
   return (
     <Sidebar>
       <SidebarHeader>
         <SidebarMenuButton
           size="lg"
-          className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+          className="cursor-pointer"
         >
-          <Avatar className="h-8 w-8 rounded-lg grayscale">
-            <AvatarImage />
-            <AvatarFallback className="rounded-lg">VC</AvatarFallback>
+          <Avatar className="h-8 w-8 rounded-lg bg-primary flex justify-center items-center">
+            <User className="text-background" />
           </Avatar>
           <div className="grid flex-1 text-left text-sm leading-tight">
-            <span className="truncate font-medium"></span>
+            <span className="truncate font-medium">Joãozinho</span>
             <span className="text-muted-foreground truncate text-xs">
-
+              Admin
             </span>
           </div>
-          <Pencil className="ml-auto size-4" />
         </SidebarMenuButton>
+        <SidebarContent>
+          <Switch checked={theme === 'dark'} onClick={() => {
+            if (theme === 'dark') {
+              setTheme('light')
+            } else {
+              setTheme('dark')
+            }
+          }} />
+          <span className="truncate font-medium text-primary">Tema Escuro</span>
+        </SidebarContent>
+
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="mt-10">
         <SidebarGroup>
-          <SidebarGroupLabel>VetCloud</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild className={item.disabled ? 'cursor-not-allowed bg-gray-500/5' : ''}>
+                  <SidebarMenuButton isActive={location?.pathname.includes(item.url)} asChild className={item.disabled ? 'cursor-not-allowed' : ''}>
                     <a href={item.url}>
                       <item.icon />
                       <span>{item.title}</span> {item.disabled && <i className="text-right"><small>Em breve</small></i>}
@@ -97,18 +110,26 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenuButton
           size="lg"
-          className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+          className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer"
         >
           <span>Configurações</span>
           <Settings className="ml-auto size-4" />
         </SidebarMenuButton>
-        <SidebarMenuButton
-          size="lg"
-          className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-        >
-          <span>Sair</span>
-          <LogOut className="ml-auto size-4" />
-        </SidebarMenuButton>
+
+        <Dialog titulo="Deseja realmente sair?" conteudo="Confirme para sair do VetCloud" onConfirm={() => {
+          realizarLogout()
+          navigate('/')
+        }} >
+          <AlertDialogTrigger>
+            <SidebarMenuButton
+              size="lg"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer"
+            >
+              <span>Sair</span>
+              <LogOut className="ml-auto size-4" />
+            </SidebarMenuButton>
+          </AlertDialogTrigger>
+        </Dialog>
       </SidebarFooter>
     </Sidebar>
   )

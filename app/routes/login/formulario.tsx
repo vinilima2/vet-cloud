@@ -4,15 +4,17 @@ import { Input } from "~/components/ui/input"
 import { Label } from "~/components/ui/label"
 import { useNavigate } from "react-router"
 import { useState } from "react"
-import type { Login } from "~/services/autenticacao-service"
+import { type Autenticacao } from "~/services/autenticacao-service"
 import Logo from "../../assets/vet.png";
+import { useAuth } from "~/providers/auth-provider"
 
 export function Formulario({
   className,
   ...props
 }: React.ComponentProps<"form">) {
   const navigate = useNavigate()
-  const [login, setLogin] = useState<Partial<Login>>()
+  const [login, setLogin] = useState<Partial<Autenticacao>>()
+  const { realizarLogin } = useAuth()
 
   return (
     <div className="flex flex-col gap-4 p-6 md:p-10">
@@ -26,8 +28,9 @@ export function Formulario({
             <div className="grid gap-6">
               <div className="grid gap-3">
                 <Label htmlFor="email">E-mail</Label>
-                <Input id="email" type="email" value={login?.login} onChange={(event) => setLogin({
-                  login: event.target.value
+                <Input id="email" type="email" value={login?.email} onChange={(event) => setLogin({
+                  email: event.target.value,
+                  senha: login?.senha
                 })} required />
               </div>
               <div className="grid gap-3">
@@ -41,10 +44,13 @@ export function Formulario({
                   </a>
                 </div>
                 <Input id="password" type="password" value={login?.senha} onChange={(event) => setLogin({
-                  senha: event.target.value
+                 email: login?.email,
+                 senha: event.target.value
                 })} required />
               </div>
-              <Button type="button" className="w-full" onClick={() => navigate('/dash')}>
+              <Button type="button" className="w-full" onClick={() => {
+                realizarLogin(login).then(() => navigate('/home'))
+              }}>
                 Entrar
               </Button>
             </div>

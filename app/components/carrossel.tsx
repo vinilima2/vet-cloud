@@ -1,11 +1,13 @@
 import { Cat, CatIcon, Dog, Heart, LucideMouse, PawPrint, Rabbit } from "lucide-react";
 import AutoScroll from "embla-carousel-auto-scroll"
 import { Carousel, CarouselContent, CarouselItem } from "~/components/ui/carousel";
+import { useIsMobile } from "~/hooks/use-mobile";
 
 
-export default function Carrossel() {
+export default function Carrossel({ reverse }: { reverse?: boolean }) {
+    const mobile = useIsMobile()
     return (
-        <div className="h-dvh">
+        <div className="lg:h-dvh sm:h-2">
             <Carousel
                 plugins={[
                     AutoScroll({
@@ -14,13 +16,13 @@ export default function Carrossel() {
                         stopOnMouseEnter: false,
                         stopOnInteraction: false,
                         stopOnFocusIn: false,
-                        startDelay: 500,
+                        startDelay: 500
                     })
                 ]}
-                orientation="vertical" opts={{
-                    loop: true, axis: 'y', align: 'start', dragFree: true
+                orientation={mobile ? "horizontal" : "vertical"} opts={{
+                    loop: true, direction: reverse ? 'ltr' : 'rtl'
                 }}>
-                <CarouselContent className="h-dvh">
+                <CarouselContent className="lg:h-dvh  md:h-2">
                     <CarouselItem className="basis-1/4 m-5 flex justify-center items-center align-middle">
                         <PawPrint size={80} className="text-amber-100" />
                     </CarouselItem>
