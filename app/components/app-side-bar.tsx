@@ -18,8 +18,14 @@ import { useAuth } from "~/providers/auth-provider"
 import { AlertDialogTrigger } from "./ui/alert-dialog"
 import Dialog from "./dialog"
 
+interface AppSidebarProps {
+  title: string,
+  url: string,
+  icon: any,
+  disabled?: boolean
+}
 // Menu items.
-const items = [
+const items : Array<AppSidebarProps> = [
   {
     title: "Início",
     url: "/home",
@@ -37,7 +43,7 @@ const items = [
   },
   {
     title: "Tutores",
-    url: "#",
+    url: "/tutor",
     icon: User2,
   },
   {
