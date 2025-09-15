@@ -6,6 +6,7 @@ import { Card } from "~/components/ui/card"
 import { Dialog, DialogTrigger } from "~/components/ui/dialog"
 import { ScrollArea } from "~/components/ui/scroll-area"
 import { SidebarGroup } from "~/components/ui/sidebar"
+import FormularioAgendamento from "./formulario-agendamento"
 
 
 export default function Agendamento() {
@@ -17,7 +18,7 @@ export default function Agendamento() {
                 <h1 className="text-3xl">Agendamentos</h1>
                 <Dialog>
                     <DialogTrigger><Button>Novo Agendamento <Plus /></Button></DialogTrigger>
-
+                    <FormularioAgendamento/>
                 </Dialog>
             </SidebarGroup>
             <SidebarGroup className="flex-row gap-2">
