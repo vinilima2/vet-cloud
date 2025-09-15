@@ -38,7 +38,7 @@ const items : Array<AppSidebarProps> = [
   },
   {
     title: "Agendamentos",
-    url: "#",
+    url: "/agendamento",
     icon: Calendar,
   },
   {

@@ -5,6 +5,7 @@ export default [
     route("registro", "routes/registro/registro.tsx"),
     layout("routes/home/home-layout.tsx", [
         route("tutor", "routes/tutor/tutor.tsx"),
+        route("agendamento", "routes/agendamento/agendamento.tsx"),
         ...prefix("home", [
             index("routes/home/home.tsx")
         ]),
