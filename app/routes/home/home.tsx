@@ -1,19 +1,22 @@
 import { CalendarCheck2, CalendarX2, UserPlus } from "lucide-react";
-import { toast } from "sonner";
 import Logo from "~/assets/vet.png";
-import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import { SidebarGroup } from "~/components/ui/sidebar";
+import {ListaClinicas} from "~/routes/home/lista-clinicas";
 
 export default function Home() {
     return (
         <>
-            <SidebarGroup className="items-center justify-center">
-                <img src={Logo} className="w-80" />
-            </SidebarGroup>
-            <SidebarGroup>
-                <h1 className="text-4xl text-center">Bem vindo de volta, segue abaixo resumo do mês</h1>
-            </SidebarGroup>
+            <div className="space-y-8">
+                <SidebarGroup className="items-center justify-center">
+                    <img src={Logo} className="w-80" alt="Logo da clínica" />
+                </SidebarGroup>
+
+                <SidebarGroup>
+                    <h1 className="text-4xl text-center mb-8">Bem-vindo de volta!</h1>
+                    <ListaClinicas />
+                </SidebarGroup>
+            </div>
             <SidebarGroup className="justify-between p-10 lg:flex-row">
                 <Card className="h-60 lg:w-3/12 bg-red-400  justify-center items-center m-4">
                     <CardHeader className="w-full text-red-100 text-2xl  text-center">
