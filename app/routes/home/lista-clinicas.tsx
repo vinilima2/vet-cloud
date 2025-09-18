@@ -92,27 +92,27 @@ export function ListaClinicas() {
                     <p className="text-muted-foreground">Nenhuma clínica cadastrada</p>
                 </div>
             ) : (
-                <div className="space-y-3">
-                    {clinicas.map((clinica) => (
-                        <Card key={clinica.id} className="p-4 flex justify-between items-center" onClick={()=> alterarClinicaSelecionada(clinica)}>
+                <div className="space-y-3 grid grid-cols-3 gap-5">
+                    {clinicas.map((clinicaCard) => (
+                        <Card key={clinicaCard.id} className={`p-4 flex cursor-pointer ${clinicaCard.id === clinica.id && 'bg-teal-700' }`}  onClick={()=> alterarClinicaSelecionada(clinicaCard)}>
                             <div className="flex items-center gap-4">
                                 <Avatar className="h-10 w-10 rounded-lg bg-primary flex items-center justify-center">
                                     <Building className="text-background" />
                                 </Avatar>
                                 <div>
-                                    <h3 className="font-medium">{clinica.data.nome}</h3>
-                                    <p className="text-sm text-muted-foreground">{clinica.data.endereco}</p>
+                                    <h3 className="font-medium">{clinicaCard.data.nome}</h3>
+                                    <p className="text-sm text-muted-foreground">{clinicaCard.data.endereco}</p>
                                 </div>
                             </div>
-                            <div className="flex gap-2">
-                                <Button
-                                    variant="outline"
-                                    size="icon"
-                                    onClick={() => abrirFormularioEdicao(clinica)}
-                                >
-                                    <Pencil className="h-4 w-4" />
-                                </Button>
-                            </div>
+                            {/*<div className="flex gap-2">*/}
+                            {/*    <Button*/}
+                            {/*        variant="outline"*/}
+                            {/*        size="icon"*/}
+                            {/*        onClick={() => abrirFormularioEdicao(clinica)}*/}
+                            {/*    >*/}
+                            {/*        <Pencil className="h-4 w-4" />*/}
+                            {/*    </Button>*/}
+                            {/*</div>*/}
                         </Card>
                     ))}
                 </div>

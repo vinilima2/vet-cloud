@@ -87,3 +87,25 @@ export async function obterTutores(id_clinica: string): Promise<TutorView[] | nu
     }  
     return null;
 }
+
+export async function buscarTutorPorNome(id_clinica: string, termo: string): Promise<TutorView[] | null> {
+    try {
+        const tutor_collection = collection(database, `Clinica/${id_clinica}/Tutor`);
+        const snapshot = await getDocs(tutor_collection);
+        
+        const tutor_docs = snapshot.docs
+            .map((tutor_doc) => ({
+                id: tutor_doc.id,
+                data: tutor_doc.data() as Tutor
+            } as TutorView))
+            .filter(tutor => 
+                tutor.data.nome_completo.toLowerCase().includes(termo.toLowerCase())
+            );
+            
+        return tutor_docs;
+    } catch(error) {
+        console.log("Erro em 'buscarTutorPorNome': ", error);
+    }  
+    return null;
+}
+
