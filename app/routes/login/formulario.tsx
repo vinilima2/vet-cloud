@@ -1,28 +1,28 @@
-import {cn} from "~/lib/utils"
-import {Button} from "~/components/ui/button"
-import {Input} from "~/components/ui/input"
-import {Label} from "~/components/ui/label"
-import {useNavigate} from "react-router"
-import {useState} from "react"
-import {type Autenticacao, recuperarSenha} from "~/services/autenticacao-service"
+import { cn } from "~/lib/utils"
+import { Button } from "~/components/ui/button"
+import { Input } from "~/components/ui/input"
+import { Label } from "~/components/ui/label"
+import { useNavigate } from "react-router"
+import { useState } from "react"
+import { type Autenticacao, recuperarSenha, solicitarLogin } from "~/services/autenticacao-service"
 import Logo from "../../assets/vet.png";
-import {useAuth} from "~/providers/auth-provider"
-import {Toaster, toast} from "sonner";
+import { Toaster, toast } from "sonner";
+import { useAuth } from "~/providers/auth-provider"
 
 export function Formulario({
-                               className,
-                               ...props
-                           }: React.ComponentProps<"form">) {
+    className,
+    ...props
+}: React.ComponentProps<"form">) {
     const navigate = useNavigate()
     const [login, setLogin] = useState<Partial<Autenticacao>>()
-    const {realizarLogin} = useAuth()
+    const { realizarLogin, setDadosUsuario } = useAuth()
 
     return (
         <div className="flex flex-col gap-4 p-6 md:p-10">
-            <Toaster/>
+            <Toaster />
             <div className="flex flex-1 items-center justify-center">
                 <div className="w-full max-w-xs">
-                    <img src={Logo}/>
+                    <img src={Logo} />
                     <form className={cn("flex flex-col gap-6", className)} {...props}>
                         <div className="flex flex-col items-center gap-2 text-center">
                             <h1 className="text-2xl font-bold">Entre e aproveite agora mesmo</h1>
@@ -33,7 +33,7 @@ export function Formulario({
                                 <Input id="email" type="email" value={login?.email} onChange={(event) => setLogin({
                                     email: event.target.value,
                                     senha: login?.senha
-                                })} required/>
+                                })} required />
                             </div>
                             <div className="grid gap-3">
                                 <div className="flex items-center">
@@ -52,17 +52,19 @@ export function Formulario({
                                         }}
                                         className="ml-auto text-sm underline-offset-4 hover:underline cursor-pointer"
                                     >
-                    Esqueci minha senha?
-                  </span>
+                                        Esqueci minha senha?
+                                    </span>
                                 </div>
                                 <Input id="password" type="password" value={login?.senha}
-                                       onChange={(event) => setLogin({
-                                           email: login?.email,
-                                           senha: event.target.value
-                                       })} required/>
+                                    onChange={(event) => setLogin({
+                                        email: login?.email,
+                                        senha: event.target.value
+                                    })} required />
                             </div>
                             <Button type="button" className="w-full" onClick={() => {
-                                realizarLogin(login).then(() => navigate('/home'))
+                                realizarLogin(login).then((usuarioLogado) => {
+                                    if (usuarioLogado) navigate('/home')
+                                })
                             }}>
                                 Entrar
                             </Button>

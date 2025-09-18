@@ -4,15 +4,22 @@ import {
     type User,
 } from "firebase/auth";
 import { createContext, useContext, useEffect, useState } from "react";
+import { toast } from "sonner";
 import { auth } from "~/database/firebase-config";
 import { criarUsuario, solicitarLogin, type Autenticacao } from "~/services/autenticacao-service";
+import { type Clinica } from "~/services/clinica-service";
+import { obterUsuario } from "~/services/usuario-service";
 
 type AuthProviderState = {
     usuario: User | null | undefined,
     realizarCriacaoUsuario: (autenticacao: Autenticacao | any) => any,
-    realizarLogin: (autenticacao: Autenticacao | any) => any,
+    realizarLogin: (autenticacao: Autenticacao | any) => Promise<any>,
     realizarLogout: () => any,
-    loading: boolean
+    loading: boolean,
+    setDadosUsuario: (usuario: any) => void,
+    dadosUsuario: any,
+    clinica?: any,
+    alterarClinicaSelecionada: Function
 }
 
 const initialState: AuthProviderState = {
@@ -20,29 +27,45 @@ const initialState: AuthProviderState = {
     realizarCriacaoUsuario: async (undefined) => { },
     realizarLogin: async (undefined) => { },
     realizarLogout: async () => { },
-    loading: true
+    loading: true,
+    setDadosUsuario: () => { },
+    dadosUsuario: null,
+    clinica: null,
+    alterarClinicaSelecionada: () => {}
 }
 
 export const AuthContext = createContext<AuthProviderState>(initialState);
 
 const AuthProvider = ({ children }: any) => {
     const [usuario, setUsuario] = useState<User | null>();
+    const [dadosUsuario, setDadosUsuario] = useState<any>();
     const [loading, setLoading] = useState(true);
+    const [clinica, setClinicaSelecionada] = useState<Clinica | null>(null)
+
+    function alterarClinicaSelecionada(clinica: any) {
+        setClinicaSelecionada(clinica)
+    }
 
     function realizarCriacaoUsuario(autenticacao: Autenticacao) {
         return criarUsuario(autenticacao);
     };
 
-    async function realizarLogin(autenticacao: Autenticacao) {
-        const teste = await solicitarLogin(autenticacao)
-        if (teste) {
-            setUsuario(teste)
+    async function realizarLogin(autenticacao: Autenticacao): Promise<any> {
+        const usuarioLogado = await solicitarLogin(autenticacao)
+        if (usuarioLogado) {
+            let a = await obterUsuario(usuarioLogado.uid, 'sem-login')
+            setDadosUsuario(a?.data)
+            setUsuario(usuarioLogado)
+        } else {
+            toast('Usuário ou senha inválidos.')
         }
-    };
+
+        return usuarioLogado;
+    }
 
     function realizarLogout() {
         return signOut(auth);
-    };
+    }
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (usuario) => {
@@ -62,7 +85,11 @@ const AuthProvider = ({ children }: any) => {
         usuario,
         realizarLogin,
         realizarLogout,
-        loading
+        setDadosUsuario,
+        dadosUsuario,
+        loading,
+        clinica,
+        alterarClinicaSelecionada
     };
 
     return (
