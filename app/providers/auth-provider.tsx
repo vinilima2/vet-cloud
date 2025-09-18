@@ -3,12 +3,12 @@ import {
     signOut,
     type User,
 } from "firebase/auth";
-import { createContext, useContext, useEffect, useState } from "react";
-import { toast } from "sonner";
-import { auth } from "~/database/firebase-config";
-import { criarUsuario, solicitarLogin, type Autenticacao } from "~/services/autenticacao-service";
-import { type Clinica } from "~/services/clinica-service";
-import { obterUsuario } from "~/services/usuario-service";
+import {createContext, useContext, useEffect, useState} from "react";
+import {toast} from "sonner";
+import {auth} from "~/database/firebase-config";
+import {criarUsuario, solicitarLogin, type Autenticacao} from "~/services/autenticacao-service";
+import {type Clinica, type ClinicaView, obterClinica} from "~/services/clinica-service";
+import {obterUsuario} from "~/services/usuario-service";
 
 type AuthProviderState = {
     usuario: User | null | undefined,
@@ -24,25 +24,31 @@ type AuthProviderState = {
 
 const initialState: AuthProviderState = {
     usuario: null,
-    realizarCriacaoUsuario: async (undefined) => { },
-    realizarLogin: async (undefined) => { },
-    realizarLogout: async () => { },
+    realizarCriacaoUsuario: async (undefined) => {
+    },
+    realizarLogin: async (undefined) => {
+    },
+    realizarLogout: async () => {
+    },
     loading: true,
-    setDadosUsuario: () => { },
+    setDadosUsuario: () => {
+    },
     dadosUsuario: null,
     clinica: null,
-    alterarClinicaSelecionada: () => {}
+    alterarClinicaSelecionada: () => {
+    }
 }
 
 export const AuthContext = createContext<AuthProviderState>(initialState);
 
-const AuthProvider = ({ children }: any) => {
+const AuthProvider = ({children}: any) => {
     const [usuario, setUsuario] = useState<User | null>();
     const [dadosUsuario, setDadosUsuario] = useState<any>();
     const [loading, setLoading] = useState(true);
-    const [clinica, setClinicaSelecionada] = useState<Clinica | null>(null)
+    const [clinica, setClinicaSelecionada] = useState<ClinicaView | null>(null)
 
     function alterarClinicaSelecionada(clinica: any) {
+        localStorage.setItem('clinicaSelecionada', clinica.id)
         setClinicaSelecionada(clinica)
     }
 
@@ -53,8 +59,8 @@ const AuthProvider = ({ children }: any) => {
     async function realizarLogin(autenticacao: Autenticacao): Promise<any> {
         const usuarioLogado = await solicitarLogin(autenticacao)
         if (usuarioLogado) {
-            let a = await obterUsuario(usuarioLogado.uid, 'sem-login')
-            setDadosUsuario(a?.data)
+            let usuario = await obterUsuario(usuarioLogado.uid, 'sem-login')
+            setDadosUsuario(usuario?.data)
             setUsuario(usuarioLogado)
         } else {
             toast('Usuário ou senha inválidos.')
@@ -68,11 +74,21 @@ const AuthProvider = ({ children }: any) => {
     }
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (usuario) => {
+        const unsubscribe = onAuthStateChanged(auth, async (usuario) => {
+            if (usuario) {
+                let usuarioEncontrado = await obterUsuario(usuario.uid, 'sem-login')
+                setDadosUsuario(usuarioEncontrado?.data)
+            }
             setUsuario(usuario ?? undefined);
+
+            let clinicaSelecionada = localStorage.getItem('clinicaSelecionada')
+            if (clinicaSelecionada) {
+                setClinicaSelecionada((await obterClinica(clinicaSelecionada)) ?? null)
+            }
+
             setTimeout(() => {
                 setLoading(false);
-            }, 1000)
+            }, 500)
         });
 
         return () => {
