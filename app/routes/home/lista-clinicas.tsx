@@ -9,10 +9,10 @@ import { FormularioClinica } from "~/routes/home/formulario-clinica";
 import { Card } from "~/components/ui/card";
 import { Avatar } from "~/components/ui/avatar";
 import { obterClinicasDoUsuario } from "~/services/usuario-service";
+import { Skeleton } from "~/components/ui/skeleton";
 
 export function ListaClinicas() {
     const [clinicas, setClinicas] = useState<ClinicaView[]>([]);
-    const [carregando, setCarregando] = useState(true);
     const [dialogAberto, setDialogAberto] = useState(false);
     const [clinicaSelecionada, setClinicaSelecionada] = useState<ClinicaView | null>(null);
     const { clinica, alterarClinicaSelecionada, usuario } = useAuth()
@@ -24,14 +24,11 @@ export function ListaClinicas() {
                 for (let clinicaDoUsuario of (clinicasUsuario ?? [])) {
                     clinicasDoUsuario.push(await obterClinica(clinicaDoUsuario.id))
                 }
-               
                 setClinicas(clinicasDoUsuario ?? [])
             });
         } catch (error) {
             console.error('Erro ao carregar clínicas:', error);
             toast.error('Erro ao carregar a lista de clínicas');
-        } finally {
-            setCarregando(false);
         }
     };
 
@@ -53,9 +50,8 @@ export function ListaClinicas() {
         carregarClinicas().then();
     };
 
-    if (carregando) {
-        return <div className="text-center p-4">Carregando clínicas...</div>;
-    }
+    const listaFixa = Array(6).fill(1)
+
 
     return (
         <div className="space-y-4">
@@ -63,7 +59,7 @@ export function ListaClinicas() {
                 <h2 className="text-2xl font-semibold">Minhas Clínicas</h2>
                 <Dialog open={dialogAberto} onOpenChange={setDialogAberto}>
                     <DialogTrigger asChild>
-                        <Button onClick={() => setClinicaSelecionada(null)}>
+                        <Button className="cursor-pointer" onClick={() => setClinicaSelecionada(null)}>
                             Nova Clínica <Plus className="ml-2" size={16} />
                         </Button>
                     </DialogTrigger>
@@ -73,14 +69,6 @@ export function ListaClinicas() {
                                 <DialogTitle>
                                     {clinicaSelecionada ? 'Editar Clínica' : 'Nova Clínica'}
                                 </DialogTitle>
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-8 w-8"
-                                    onClick={fecharDialog}
-                                >
-                                    <X className="h-4 w-4" />
-                                </Button>
                             </div>
                         </DialogHeader>
                         <FormularioClinica
@@ -93,14 +81,19 @@ export function ListaClinicas() {
             </div>
 
             {clinicas.length === 0 ? (
-                <div className="text-center p-8 border-2 border-dashed rounded-lg">
-                    <p className="text-muted-foreground">Nenhuma clínica cadastrada</p>
+                <div className="grid grid-cols-3 gap-5">
+                    {listaFixa.map((card, indice) => (<Skeleton key={card + indice} className={'p-4 flex'}>
+                        <div className="flex items-center gap-4">
+                            <Skeleton className="h-10 w-10 rounded-lg bg-primary flex items-center justify-center" />
+                            <Skeleton className="h-5" />
+                        </div>
+                    </Skeleton>))}
                 </div>
             ) : (
-                <div className="space-y-3 grid grid-cols-3 gap-5">
+                <div className="grid grid-cols-3 gap-5">
                     {clinicas.map((clinicaCard) => (
                         <Card key={clinicaCard.id} className={`p-4 flex cursor-pointer ${clinicaCard.id === clinica?.id && 'bg-teal-700'}`} onClick={() => alterarClinicaSelecionada(clinicaCard)}>
-                            <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-4 relative">
                                 <Avatar className="h-10 w-10 rounded-lg bg-primary flex items-center justify-center">
                                     <Building className="text-background" />
                                 </Avatar>
@@ -108,16 +101,16 @@ export function ListaClinicas() {
                                     <h3 className="font-medium">{clinicaCard.data.nome}</h3>
                                     <p className="text-sm text-muted-foreground">{clinicaCard.data.endereco}</p>
                                 </div>
+                                <div className="flex gap-2 absolute right-2 cursor-pointer">
+                                    <Button
+                                        size="icon"
+                                        className="cursor-pointer bg-green-400"
+                                        onClick={() => abrirFormularioEdicao(clinicaCard as ClinicaView)}
+                                    >
+                                        <Pencil className="h-4 w-4" />
+                                    </Button>
+                                </div>
                             </div>
-                            {/*<div className="flex gap-2">*/}
-                            {/*    <Button*/}
-                            {/*        variant="outline"*/}
-                            {/*        size="icon"*/}
-                            {/*        onClick={() => abrirFormularioEdicao(clinica)}*/}
-                            {/*    >*/}
-                            {/*        <Pencil className="h-4 w-4" />*/}
-                            {/*    </Button>*/}
-                            {/*</div>*/}
                         </Card>
                     ))}
                 </div>

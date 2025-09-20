@@ -3,6 +3,7 @@ import { AppSidebar } from "~/components/app-side-bar";
 import { SidebarContent, SidebarProvider, SidebarTrigger } from "~/components/ui/sidebar";
 import Middleware from "../middleware/middleware";
 import { Toaster } from "sonner";
+import Loading from "~/components/loading";
 
 export default function Layout() {
     return (
@@ -15,6 +16,7 @@ export default function Layout() {
                     <Toaster />
                 </SidebarContent>
             </SidebarProvider>
+            <Loading />
         </Middleware>
     );
 }
