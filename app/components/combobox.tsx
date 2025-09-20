@@ -8,12 +8,12 @@ import { cn } from "~/lib/utils";
 
 interface ComboboxProps {
     label: string,
-    onChange?: (props: any) => any
+    onChange?: (props: any) => any,
+    lista: Array<any>
 }
 export default function Combobox(props: ComboboxProps) {
     const [abrirPopover, setAbrirPopover] = useState(false)
     const [valorSelecionado, setValorSelecionado] = useState("")
-    const [lista, setLista] = useState<Array<any>>([])
 
     return (
         <Popover open={abrirPopover} onOpenChange={setAbrirPopover}>
@@ -24,24 +24,25 @@ export default function Combobox(props: ComboboxProps) {
                     className="w-[200px] justify-between"
                 >
                     {valorSelecionado
-                        ? lista.find((objeto) => objeto.value === valorSelecionado)?.label as string
+                        ? props.lista.find((objeto) => objeto.value === valorSelecionado)?.label as string
                         : props.label}
                     <ChevronsUpDown className="opacity-50" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-full p-0">
                 <Command className="w-full">
-                    <CommandInput placeholder={props.label} className="h-9 w-full" />
-                    <CommandList>
+                    <CommandInput placeholder={props.label}  className="h-9 w-full" />
+                    <CommandList results={5}>
                         <CommandEmpty>Nenhum resultado encontrado.</CommandEmpty>
                         <CommandGroup>
-                            {lista.map((objeto) => (
+                            {props.lista.map((objeto) => (
                                 <CommandItem
                                     key={objeto.value}
                                     value={objeto.value}
                                     onSelect={(currentValue) => {
                                         setValorSelecionado(currentValue === valorSelecionado ? "" : currentValue)
                                         setAbrirPopover(false)
+                                        props.onChange?.(currentValue)
                                     }}
                                 >
                                     {objeto.label}

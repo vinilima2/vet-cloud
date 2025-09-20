@@ -16,7 +16,7 @@ export default function Carrossel({ reverse }: { reverse?: boolean }) {
                         stopOnMouseEnter: false,
                         stopOnInteraction: false,
                         stopOnFocusIn: false,
-                        startDelay: 500
+                        startDelay: 500,
                     })
                 ]}
                 orientation={mobile ? "horizontal" : "vertical"} opts={{
@@ -24,16 +24,16 @@ export default function Carrossel({ reverse }: { reverse?: boolean }) {
                 }}>
                 <CarouselContent className="lg:h-dvh  md:h-2">
                     <CarouselItem className="basis-1/4 m-5 flex justify-center items-center align-middle">
-                        <PawPrint size={80} className="text-amber-100" />
+                        <PawPrint size={80} className="text-amber-200" />
                     </CarouselItem>
                     <CarouselItem className="basis-1/4 m-5 flex justify-center items-center align-middle">
-                        <Cat size={80} className="text-blue-100" />
+                        <Cat size={80} className="text-blue-200" />
                     </CarouselItem>
                     <CarouselItem className="basis-1/4 m-5 flex justify-center items-center align-middle ">
-                        <Dog size={80} className="text-pink-100" />
+                        <Dog size={80} className="text-pink-200" />
                     </CarouselItem>
                     <CarouselItem className="basis-1/4 m-5 flex justify-center items-center">
-                        <Heart size={80} className="text-green-100" />
+                        <Rabbit size={80} className="text-green-200" />
                     </CarouselItem>
                 </CarouselContent>
             </Carousel>

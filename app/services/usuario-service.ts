@@ -13,7 +13,8 @@ export interface Usuario {
     senha: string,
     data_criacao?: string,
     ultima_atualizacao?: string,
-} 
+    id?: string
+}
 
 export interface UsuarioView {
     id: string,
@@ -28,33 +29,31 @@ export interface ValidacaoUsuario {
 
 export async function adicionarUsuario(usuario: Usuario): Promise<string | null> {
     try {
-        const usuario_collection = collection(database, 'Usuario');
-        const novo_usuario = await addDoc(usuario_collection, usuario);
-        const agora = horaAtual();
-        await updateDoc(novo_usuario, ({data_criacao: agora, ultima_atualizacao: agora}) as Partial<Usuario>);
-        return novo_usuario.id;
-    } catch(error) {
+        const usuarioRef = doc(database, "Usuario", usuario.id ?? '');
+        await setDoc(usuarioRef, usuario);
+        return usuario.id ?? '';
+    } catch (error) {
         console.log("Erro em 'adicionarUsuario': ", error);
-    }        
-    return null;
+        return null;
+    }
 }
 
 export async function adicionarClinicaNoUsuario(id_usuario: string, id_clinica: string) { // sincroniza com as clínicas das quais faz parte
     try {
         const clinica_doc = doc(database, `Usuario/${id_usuario}/ClinicaRef`, id_clinica);
         await setDoc(clinica_doc, { id: id_clinica });
-    } catch(error) {
+    } catch (error) {
         console.log("Erro em 'adicionarClinicaNoUsuario': ", error);
-    } 
+    }
 }
 
 export async function removerClinicaDoUsuario(id_usuario: string, id_clinica: string) { // sincroniza com as clínicas das quais faz parte
     try {
         const clinica_ref_document = doc(database, `Usuario/${id_usuario}/ClinicaRef`, id_clinica);
         await deleteDoc(clinica_ref_document);
-    } catch(error) {
+    } catch (error) {
         console.log("Erro em 'removerClinicaDoUsuario': ", error);
-    }  
+    }
 }
 
 export async function excluirUsuario(id_usuario: string) {
@@ -67,9 +66,9 @@ export async function excluirUsuario(id_usuario: string) {
         });
         const usuario_document = doc(database, 'Usuario', id_usuario);
         deleteDoc(usuario_document);
-    } catch(error) {
+    } catch (error) {
         console.log("Erro em 'excluirUsuario': ", error);
-    }      
+    }
 }
 
 export async function excluirUsuarios() { // utilizar somente em ambiente de desenvolvimento.
@@ -77,11 +76,11 @@ export async function excluirUsuarios() { // utilizar somente em ambiente de des
         const usuario_collection = collection(database, 'Usuario');
         const usuario_docs = await getDocs(usuario_collection);
         usuario_docs.docs.forEach((usuario_doc) => {
-            excluirUsuario(usuario_doc.id);    
+            excluirUsuario(usuario_doc.id);
         });
-    } catch(error) {
+    } catch (error) {
         console.log("Erro em 'excluirUsuarios': ", error);
-    }   
+    }
 }
 
 export async function atualizarUsuario(id_usuario: string, novos_dados: Partial<Usuario>) {
@@ -89,20 +88,20 @@ export async function atualizarUsuario(id_usuario: string, novos_dados: Partial<
         const usuario_document = doc(database, 'Usuario', id_usuario);
         await updateDoc(usuario_document, novos_dados);
         await updateDoc(usuario_document, { ultima_atualizacao: horaAtual() } as Partial<Usuario>)
-    } catch(error) {
+    } catch (error) {
         console.log("Erro em 'atualizarUsuario': ", error);
-    }    
+    }
 }
 
 export async function obterUsuario(id_usuario: string, tipo_retorno: "contatos" | "login" | "sem-login" | "completo" = "completo"): Promise<Partial<UsuarioView> | null> {
     try {
         const usuario_document = doc(database, 'Usuario', id_usuario);
-        const snapshot = await getDoc(usuario_document); 
+        const snapshot = await getDoc(usuario_document);
         if (snapshot.exists()) {
-            switch(tipo_retorno) {
+            switch (tipo_retorno) {
                 case "contatos":
-                    return { 
-                        id: snapshot.id, 
+                    return {
+                        id: snapshot.id,
                         data: {
                             nome_completo: snapshot.data().nome_completo,
                             telefone: snapshot.data().telefone,
@@ -110,16 +109,16 @@ export async function obterUsuario(id_usuario: string, tipo_retorno: "contatos" 
                         }
                     } as Partial<UsuarioView>;
                 case "login":
-                    return { 
-                        id: snapshot.id, 
+                    return {
+                        id: snapshot.id,
                         data: {
                             email_login: snapshot.data().email_login,
                             senha: snapshot.data().senha
                         }
-                    } as Partial<UsuarioView>;    
+                    } as Partial<UsuarioView>;
                 case "sem-login":
-                    return { 
-                        id: snapshot.id, 
+                    return {
+                        id: snapshot.id,
                         data: {
                             cpf: snapshot.data().cpf,
                             email_contato: snapshot.data().email_contato,
@@ -129,14 +128,14 @@ export async function obterUsuario(id_usuario: string, tipo_retorno: "contatos" 
                             data_criacao: snapshot.data().data_criacao,
                             ultima_atualizacao: snapshot.data().ultima_atualizacao
                         }
-                    } as Partial<UsuarioView>; 
+                    } as Partial<UsuarioView>;
                 default:
-                    return { id: snapshot.id, data: snapshot.data() } as Partial<UsuarioView>;                   
+                    return { id: snapshot.id, data: snapshot.data() } as Partial<UsuarioView>;
             }
         }
-    } catch(error) {
+    } catch (error) {
         console.log("Erro em 'obterUsuario': ", error);
-    }      
+    }
     return null;
 }
 
@@ -149,10 +148,10 @@ export async function obterUsuarios() { // somente para ambiente de desenvolvime
             data: usuario_doc.data() as Usuario
         } as UsuarioView));
         return usuario_docs;
-    } catch(error) {
+    } catch (error) {
         console.log("Erro em 'obterUsuarios': ", error);
-    }     
-    return null;    
+    }
+    return null;
 }
 
 export async function obterClinicasDoUsuario(id_usuario: string) {
@@ -164,13 +163,13 @@ export async function obterClinicasDoUsuario(id_usuario: string) {
             data: clinica_doc.data() as Usuario
         } as UsuarioView));
         return usuario_docs;
-    } catch(error) {
+    } catch (error) {
         console.log("Erro em 'obterClinicasDoUsuario': ", error);
-    }     
-    return null;      
+    }
+    return null;
 }
 
-export async function obterIdUsuarioPorEmail(email: string): Promise<ValidacaoUsuario>  {
+export async function obterIdUsuarioPorEmail(email: string): Promise<ValidacaoUsuario> {
     try {
         const usuario_collection = collection(database, 'Usuario');
         const q = query(usuario_collection, where("email_login", "==", email));
@@ -180,8 +179,8 @@ export async function obterIdUsuarioPorEmail(email: string): Promise<ValidacaoUs
             return { status: false, msg: "Usuário não encontrado." } as ValidacaoUsuario;
         }
         return { status: true, id_usuario: res[0].id } as ValidacaoUsuario; // retorna o id do usuário associado a esse e-mail de login.   
-    } catch(error) {
+    } catch (error) {
         console.log("Erro em 'obterIdUsuarioPorEmail': ", error);
         return { status: false, msg: "Erro de consulta ao banco de dados." } as ValidacaoUsuario; // caso ocorra erro interno no servidor.
-    }      
+    }
 }

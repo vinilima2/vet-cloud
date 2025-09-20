@@ -6,12 +6,12 @@ export interface Autenticacao {
     senha: string
 }
 
-export async function criarUsuario(autenticacao: Autenticacao) {
-    createUserWithEmailAndPassword(auth, autenticacao.email, autenticacao.senha)
+export async function criarUsuario(autenticacao: Autenticacao) : Promise<string>{
+    return createUserWithEmailAndPassword(auth, autenticacao.email, autenticacao.senha)
         .then((userCredential) => {
             // Signed in 
             const user = userCredential.user;
-            const ID_USUARIO_BD = user.uid
+            return user.uid
         })
         .catch((error) => {
             const errorCode = error.code;

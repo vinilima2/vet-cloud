@@ -10,7 +10,8 @@ export interface Pet {
     sexo: 'F' | 'M',
     peso: number,
     ativo: boolean,
-    observacoes?: null | string
+    observacoes?: null | string,
+    castrado?: boolean
 }
 
 export interface PetView {
