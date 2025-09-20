@@ -7,7 +7,7 @@ export interface DialogProps {
     onConfirm: Function
 }
 
-export default function Dialog(props: DialogProps) {
+export function Dialog(props: DialogProps) {
     return (
         <AlertDialog>
             {props.children}

@@ -1,4 +1,4 @@
-import {Button} from "~/components/ui/button";
+import { Button } from "~/components/ui/button";
 import {
     DialogClose,
     DialogContent,
@@ -7,13 +7,16 @@ import {
     DialogHeader,
     DialogTitle
 } from "~/components/ui/dialog";
-import {Input} from "~/components/ui/input";
-import {Label} from "~/components/ui/label";
-import {adicionarClinica, atualizarClinica, type ClinicaView, excluirClinica} from "~/services/clinica-service";
-import {useState} from "react";
-import {useAuth} from "~/providers/auth-provider";
-import {toast} from "sonner";
-import {Textarea} from "~/components/ui/textarea";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { adicionarClinica, atualizarClinica, type ClinicaView, excluirClinica } from "~/services/clinica-service";
+import { useEffect, useState } from "react";
+import { useAuth } from "~/providers/auth-provider";
+import { toast } from "sonner";
+import { Textarea } from "~/components/ui/textarea";
+import { useLoading } from "~/providers/loading-provider";
+import { Dialog } from "~/components/dialog";
+import { AlertDialogTrigger } from "~/components/ui/alert-dialog";
 
 
 interface FormularioClinicaProps {
@@ -22,14 +25,23 @@ interface FormularioClinicaProps {
     onClose: () => void;
 }
 
-export function FormularioClinica({clinica, onSuccess, onClose}: FormularioClinicaProps) {
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const {usuario} = useAuth()
+export function FormularioClinica({ clinica, onSuccess, onClose }: FormularioClinicaProps) {
+    const { usuario } = useAuth()
+    const { setLoading } = useLoading()
+
+    useEffect(() => {
+        if (clinica?.id && clinica?.data) {
+            Object.keys(clinica.data).forEach(key => {
+                document.getElementById(key).value = clinica.data[key]
+            });
+        }
+    }, [clinica])
+
     const onSubmit = async (event: any) => {
+        setLoading(true)
         event.preventDefault()
         const data = Object.fromEntries(new FormData(event.target).entries()) as any
         try {
-            setIsSubmitting(true);
             if (clinica) {
                 await atualizarClinica(clinica.id, data);
                 toast.success('Clínica atualizada com sucesso!');
@@ -44,12 +56,12 @@ export function FormularioClinica({clinica, onSuccess, onClose}: FormularioClini
             console.error('Erro ao salvar clínica:', error);
             toast.error('Erro ao salvar clínica. Tente novamente.');
         } finally {
-            setIsSubmitting(false);
+            setLoading(false)
         }
     };
 
-    const handleExcluir = async () => {
-        if (clinica && confirm('Tem certeza que deseja excluir esta clínica?')) {
+    const deletarClinica = async () => {
+        if (clinica) {
             try {
                 await excluirClinica(clinica.id);
                 toast.success('Clínica excluída com sucesso!');
@@ -71,6 +83,8 @@ export function FormularioClinica({clinica, onSuccess, onClose}: FormularioClini
                         id="nome"
                         placeholder="Nome da clínica"
                         name={"nome"}
+                        required
+                        maxLength={50}
                     />
 
                 </div>
@@ -81,6 +95,9 @@ export function FormularioClinica({clinica, onSuccess, onClose}: FormularioClini
                         id="documento_representante"
                         placeholder="000.000.000-00"
                         name={"documento_representante"}
+                        required
+                        pattern="\d{3}\.\d{3}\.\d{3}-\d{2}"
+                        maxLength={14}
                     />
                 </div>
             </div>
@@ -99,7 +116,8 @@ export function FormularioClinica({clinica, onSuccess, onClose}: FormularioClini
                     <Label htmlFor="telefone">Telefone *</Label>
                     <Input
                         id="telefone"
-                        placeholder="(00) 00000-0000"
+                        placeholder="(00) 90000-0000"
+                        pattern="\(\d{2}\)\s9\d{4}-\d{4}"
                         name={"telefone"}
                     />
                 </div>
@@ -111,6 +129,7 @@ export function FormularioClinica({clinica, onSuccess, onClose}: FormularioClini
                     id="email"
                     type="email"
                     placeholder="email@exemplo.com"
+                    required
                     name={"email"}
                 />
             </div>
@@ -121,6 +140,8 @@ export function FormularioClinica({clinica, onSuccess, onClose}: FormularioClini
                     id="endereco"
                     placeholder="Rua, número - Bairro, Cidade - Estado"
                     name={"endereco"}
+                    required
+                    maxLength={100}
                 />
             </div>
 
@@ -131,33 +152,39 @@ export function FormularioClinica({clinica, onSuccess, onClose}: FormularioClini
                     placeholder="Conte um pouco sobre a clínica..."
                     rows={4}
                     name={"biografia"}
+                    maxLength={100}
                 />
             </div>
 
             <div className="flex justify-between pt-4">
                 <div>
                     {clinica && (
-                        <Button
-                            type="button"
-                            variant="destructive"
-                            onClick={handleExcluir}
-                            disabled={isSubmitting}
-                        >
-                            Excluir
-                        </Button>
+                        <Dialog titulo="Deseja realmente deletar a clínica? Essa ação não poderá ser desfeita" conteudo="Confirme para deletar" onConfirm={() => {
+                            deletarClinica()
+                        }}>
+                            <AlertDialogTrigger asChild>
+                                <Button
+                                    className="cursor-pointer"
+                                    type="button"
+                                    variant="destructive"
+                                >
+                                    Excluir
+                                </Button>
+                            </AlertDialogTrigger>
+                        </Dialog>
                     )}
                 </div>
                 <div className="space-x-2">
                     <Button
+                        className="cursor-pointer"
                         type="button"
                         variant="outline"
                         onClick={onClose}
-                        disabled={isSubmitting}
                     >
                         Cancelar
                     </Button>
-                    <Button type="submit" disabled={isSubmitting}>
-                        {isSubmitting ? 'Salvando...' : 'Salvar'}
+                    <Button className="cursor-pointer" type="submit">
+                        Salvar
                     </Button>
                 </div>
             </div>

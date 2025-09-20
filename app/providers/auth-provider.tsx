@@ -18,7 +18,7 @@ type AuthProviderState = {
     loading: boolean,
     setDadosUsuario: (usuario: any) => void,
     dadosUsuario: any,
-    clinica?: any,
+    clinica?: ClinicaView | null | undefined,
     alterarClinicaSelecionada: Function
 }
 
@@ -63,13 +63,14 @@ const AuthProvider = ({children}: any) => {
             setDadosUsuario(usuario?.data)
             setUsuario(usuarioLogado)
         } else {
-            toast('Usuário ou senha inválidos.')
+            toast.warning('Usuário ou senha inválidos.')
         }
 
         return usuarioLogado;
     }
 
     function realizarLogout() {
+        localStorage.removeItem('clinicaSelecionada')
         return signOut(auth);
     }
 

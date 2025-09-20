@@ -1,4 +1,4 @@
-import {Building2, Calendar, Home, Inbox, LogOut, Pencil, Settings, Syringe, User, User2, UserLock} from "lucide-react"
+import { Calendar, Home, Inbox, LogOut, Settings, Syringe, User, User2, UserLock } from "lucide-react"
 import {
     Sidebar,
     SidebarContent,
@@ -10,13 +10,13 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "~/components/ui/sidebar"
-import {Avatar} from "./ui/avatar"
-import {Switch} from "./ui/switch"
-import {useTheme} from "~/providers/theme-provider"
-import {useLocation, useNavigate} from "react-router"
-import {useAuth} from "~/providers/auth-provider"
-import {AlertDialogTrigger} from "./ui/alert-dialog"
-import Dialog from "./dialog"
+import { Avatar } from "./ui/avatar"
+import { Switch } from "./ui/switch"
+import { useTheme } from "~/providers/theme-provider"
+import { useLocation, useNavigate } from "react-router"
+import { useAuth } from "~/providers/auth-provider"
+import { AlertDialogTrigger } from "./ui/alert-dialog"
+import {Dialog} from "./dialog"
 
 interface AppSidebarProps {
     title: string,
@@ -25,7 +25,7 @@ interface AppSidebarProps {
     disabled?: boolean
 }
 
-// Menu items.
+
 const items: Array<AppSidebarProps> = [
     {
         title: "Início",
@@ -33,14 +33,15 @@ const items: Array<AppSidebarProps> = [
         icon: Home,
     },
     {
-        title: "Minhas Clínicas",
+        title: "Administração",
         url: "/clinica",
-        icon: Building2,
+        icon: UserLock,
     },
     {
         title: "Notificações",
         url: "#",
         icon: Inbox,
+        disabled: true
     },
     {
         title: "Agendamentos",
@@ -53,11 +54,6 @@ const items: Array<AppSidebarProps> = [
         icon: User2,
     },
     {
-        title: "Administração",
-        url: "#",
-        icon: UserLock,
-    },
-    {
         title: "Vacinas",
         url: "#",
         icon: Syringe,
@@ -66,8 +62,8 @@ const items: Array<AppSidebarProps> = [
 ]
 
 export function AppSidebar() {
-    const {theme, setTheme} = useTheme()
-    const {realizarLogout, dadosUsuario, clinica} = useAuth()
+    const { theme, setTheme } = useTheme()
+    const { realizarLogout, dadosUsuario, clinica } = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
 
@@ -79,12 +75,12 @@ export function AppSidebar() {
                     className="cursor-pointer"
                 >
                     <Avatar className="h-8 w-8 rounded-lg bg-primary flex justify-center items-center">
-                        <User className="text-background"/>
+                        <User className="text-background" />
                     </Avatar>
                     <div className="grid flex-1 text-left text-sm leading-tight">
                         <span className="truncate font-medium">{dadosUsuario?.nome_completo}</span>
                         <span className="text-muted-foreground truncate text-xs">
-                            {clinica?.data?.nome}    
+                            {clinica?.data?.nome}
                         </span>
                     </div>
                 </SidebarMenuButton>
@@ -95,7 +91,7 @@ export function AppSidebar() {
                         } else {
                             setTheme('dark')
                         }
-                    }}/>
+                    }} />
                     <span className="truncate font-medium text-primary">Tema Escuro</span>
                 </SidebarContent>
 
@@ -106,12 +102,12 @@ export function AppSidebar() {
                         <SidebarMenu>
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton isActive={location?.pathname.includes(item.url)} asChild
-                                                       className={item.disabled ? 'cursor-not-allowed' : ''}>
+                                    <SidebarMenuButton disabled={item.disabled} isActive={location?.pathname.includes(item.url)} asChild
+                                        className={item.disabled ? 'cursor-not-allowed' : ''}>
                                         <a href={item.url}>
-                                            <item.icon/>
+                                            <item.icon />
                                             <span>{item.title}</span> {item.disabled &&
-                                            <i className="text-right"><small>Em breve</small></i>}
+                                                <i className="text-right"><small>Em breve</small></i>}
                                         </a>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
@@ -126,20 +122,20 @@ export function AppSidebar() {
                     className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer"
                 >
                     <span>Configurações</span>
-                    <Settings className="ml-auto size-4"/>
+                    <Settings className="ml-auto size-4" />
                 </SidebarMenuButton>
 
                 <Dialog titulo="Deseja realmente sair?" conteudo="Confirme para sair do VetCloud" onConfirm={() => {
                     realizarLogout()
                     navigate('/')
                 }}>
-                    <AlertDialogTrigger>
+                    <AlertDialogTrigger asChild>
                         <SidebarMenuButton
                             size="lg"
                             className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer"
                         >
                             <span>Sair</span>
-                            <LogOut className="ml-auto size-4"/>
+                            <LogOut className="ml-auto size-4" />
                         </SidebarMenuButton>
                     </AlertDialogTrigger>
                 </Dialog>

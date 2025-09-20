@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
-import { Plus, PawPrint } from "lucide-react";
+import { Plus, PawPrint, Pencil } from "lucide-react";
 import FormularioPet from "./formulario-pet";
 import { obterPets, type PetView } from "~/services/pet-service";
 import { Card } from "~/components/ui/card";
@@ -17,6 +17,7 @@ type ListaPetsProps = {
 export function ListaPets({ tutorId, clinicaId, isOpen, onClose }: ListaPetsProps) {
   const [pets, setPets] = useState<PetView[]>([]);
   const [abrirFormulario, setAbrirFormulario] = useState(false);
+  const [petSelecionado, setPetSelecionado] = useState<PetView | null>(null)
 
   const carregarPets = async () => {
     try {
@@ -42,24 +43,25 @@ export function ListaPets({ tutorId, clinicaId, isOpen, onClose }: ListaPetsProp
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[800px] max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Pets do Tutor</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
-            {!abrirFormulario && <div className="flex justify-end">
-                <Button onClick={() => setAbrirFormulario(true)}>
-                    <Plus className="mr-2 h-4 w-4"/> Adicionar Pet
-                </Button>
-            </div>}
+          {!abrirFormulario && <div className="flex justify-end">
+            <Button className="cursor-pointer" onClick={() => setAbrirFormulario(true)}>
+              <Plus className="mr-2 h-4 w-4" /> Adicionar Pet
+            </Button>
+          </div>}
 
           {abrirFormulario ? (
             <div className="p-4 border rounded-lg">
-              <FormularioPet 
-                tutorId={tutorId} 
-                onSuccess={handlePetAdicionado} 
+              <FormularioPet
+                tutorId={tutorId}
+                onSuccess={handlePetAdicionado}
                 onCancel={() => setAbrirFormulario(false)}
+                pet={petSelecionado ?? null}
               />
             </div>
           ) : (
@@ -70,9 +72,9 @@ export function ListaPets({ tutorId, clinicaId, isOpen, onClose }: ListaPetsProp
                 </div>
               ) : (
                 pets.map((pet) => (
-                  <Card key={pet.id} className="p-4">
+                  <Card key={pet.id} className="p-4 relative">
                     <div className="flex items-center gap-4">
-                      <Avatar className="h-10 w-10">
+                      <Avatar className="h-10 w-10 flex justify-center items-center">
                         <PawPrint className="h-5 w-5" />
                       </Avatar>
                       <div>
@@ -81,6 +83,10 @@ export function ListaPets({ tutorId, clinicaId, isOpen, onClose }: ListaPetsProp
                           {pet.data.raca} • {pet.data.especie}
                         </p>
                       </div>
+                      <Button className="bg-green-600 cursor-pointer absolute right-2" onClick={() => {
+                        setPetSelecionado(pet)
+                        setAbrirFormulario(true)
+                      }}><Pencil /></Button>
                     </div>
                   </Card>
                 ))

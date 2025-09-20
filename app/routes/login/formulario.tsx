@@ -3,69 +3,53 @@ import { Button } from "~/components/ui/button"
 import { Input } from "~/components/ui/input"
 import { Label } from "~/components/ui/label"
 import { useNavigate } from "react-router"
-import { useState } from "react"
-import { type Autenticacao, recuperarSenha, solicitarLogin } from "~/services/autenticacao-service"
+import { type Autenticacao, recuperarSenha } from "~/services/autenticacao-service"
 import Logo from "../../assets/vet.png";
 import { Toaster, toast } from "sonner";
 import { useAuth } from "~/providers/auth-provider"
+import { Dialog, DialogTrigger, DialogContent, DialogTitle } from "~/components/ui/dialog"
+import { useLoading } from "~/providers/loading-provider"
+
 
 export function Formulario({
     className,
-    ...props
 }: React.ComponentProps<"form">) {
     const navigate = useNavigate()
-    const [login, setLogin] = useState<Partial<Autenticacao>>()
-    const { realizarLogin, setDadosUsuario } = useAuth()
+    const { realizarLogin } = useAuth()
+    const {setLoading} = useLoading()
+
+    function solicitarLogin(event) {
+        event.preventDefault()
+        const objeto = Object.fromEntries(new FormData(event.target).entries())
+        const login = objeto as Autenticacao
+        setLoading(true)
+        realizarLogin(login).then((usuarioLogado) => {
+            if (usuarioLogado) navigate('/home')
+        }).finally(() => setLoading(false))
+    }
 
     return (
-        <div className="flex flex-col gap-4 p-6 md:p-10">
-            <Toaster />
+        <div className="flex flex-col gap-4">
+            <Toaster position="top-center" richColors/>
             <div className="flex flex-1 items-center justify-center">
                 <div className="w-full max-w-xs">
                     <img src={Logo} />
-                    <form className={cn("flex flex-col gap-6", className)} {...props}>
+                    <form className={cn("flex flex-col gap-6", className)} onSubmit={solicitarLogin}>
                         <div className="flex flex-col items-center gap-2 text-center">
-                            <h1 className="text-2xl font-bold">Entre e aproveite agora mesmo</h1>
+                            <h1 className="text-2xl font-bold">Acesse agora mesmo</h1>
                         </div>
                         <div className="grid gap-6">
                             <div className="grid gap-3">
                                 <Label htmlFor="email">E-mail</Label>
-                                <Input id="email" type="email" value={login?.email} onChange={(event) => setLogin({
-                                    email: event.target.value,
-                                    senha: login?.senha
-                                })} required />
+                                <Input id="email" type="email" name="email" required />
                             </div>
                             <div className="grid gap-3">
                                 <div className="flex items-center">
-                                    <Label htmlFor="password">Senha</Label>
-                                    <span
-                                        onClick={() => {
-                                            if (login?.email) {
-                                                recuperarSenha(login?.email).then(() => {
-                                                    toast('Instruções para recuperação de conta enviada ao seu e-mail.', {
-                                                        onAutoClose: () => window.location.reload()
-                                                    })
-
-                                                })
-
-                                            }
-                                        }}
-                                        className="ml-auto text-sm underline-offset-4 hover:underline cursor-pointer"
-                                    >
-                                        Esqueci minha senha?
-                                    </span>
+                                    <Label htmlFor="senha">Senha</Label>
                                 </div>
-                                <Input id="password" type="password" value={login?.senha}
-                                    onChange={(event) => setLogin({
-                                        email: login?.email,
-                                        senha: event.target.value
-                                    })} required />
+                                <Input id="senha" type="password" name="senha" required />
                             </div>
-                            <Button type="button" className="w-full" onClick={() => {
-                                realizarLogin(login).then((usuarioLogado) => {
-                                    if (usuarioLogado) navigate('/home')
-                                })
-                            }}>
+                            <Button type="submit" className="w-full cursor-pointer">
                                 Entrar
                             </Button>
                         </div>
@@ -76,6 +60,31 @@ export function Formulario({
                             </a>
                         </div>
                     </form>
+                    <Dialog>
+                        <DialogTrigger className="text-center flex flex-col mt-5" asChild>
+                            <span className="ml-auto text-center  text-sm underline-offset-4 hover:underline cursor-pointer">
+                                Esqueci minha senha?
+                            </span></DialogTrigger>
+                        <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
+                            <DialogTitle>Recuperação de Senha</DialogTitle>
+                            <form className="space-y-4" onSubmit={(event) => {
+                                event.preventDefault()
+                                const objeto = Object.fromEntries(new FormData(event.target).entries())
+                                recuperarSenha(objeto.email_recuperacao as string).then(() => {
+                                    toast.success('Instruções para recuperação de conta enviada ao seu e-mail.', {
+                                        onAutoClose: () =>  window.location.reload()
+                                    })
+                                })
+                            }}>
+                                <div className="grid gap-3">
+                                    <Input id="email-recuperacao" name="email_recuperacao" type="email" placeholder="Digite o e-mail para recuperação de senha..." required />
+                                    <Button type="submit" className="w-full cursor-pointer">
+                                        Enviar
+                                    </Button>
+                                </div>
+                            </form>
+                        </DialogContent>
+                    </Dialog>
                 </div>
             </div>
         </div>
