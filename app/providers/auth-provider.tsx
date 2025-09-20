@@ -63,7 +63,7 @@ const AuthProvider = ({children}: any) => {
             setDadosUsuario(usuario?.data)
             setUsuario(usuarioLogado)
         } else {
-            toast('Usuário ou senha inválidos.')
+            toast.warning('Usuário ou senha inválidos.')
         }
 
         return usuarioLogado;

@@ -1,6 +1,7 @@
 import { Formulario } from "./formulario";
 import Carrossel from "../../components/carrossel";
 import type { Route } from "../../+types/root";
+import Loading from "~/components/loading";
 
 export function meta({ }: Route.MetaArgs) {
   return [
@@ -15,7 +16,8 @@ export default function Login() {
     <div className="grid  lg:grid-cols-3">
       <Carrossel />
       <Formulario />
-      <Carrossel reverse/>
+      <Carrossel reverse />
+      <Loading />
     </div>
   );
 }
