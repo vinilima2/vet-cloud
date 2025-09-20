@@ -15,8 +15,8 @@ export default function Layout() {
                     <Outlet />
                     <Toaster />
                 </SidebarContent>
+                <Loading />
             </SidebarProvider>
-            <Loading />
         </Middleware>
     );
 }

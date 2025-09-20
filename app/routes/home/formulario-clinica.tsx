@@ -15,6 +15,8 @@ import { useAuth } from "~/providers/auth-provider";
 import { toast } from "sonner";
 import { Textarea } from "~/components/ui/textarea";
 import { useLoading } from "~/providers/loading-provider";
+import { Dialog } from "~/components/dialog";
+import { AlertDialogTrigger } from "~/components/ui/alert-dialog";
 
 
 interface FormularioClinicaProps {
@@ -58,8 +60,8 @@ export function FormularioClinica({ clinica, onSuccess, onClose }: FormularioCli
         }
     };
 
-    const handleExcluir = async () => {
-        if (clinica && confirm('Tem certeza que deseja excluir esta clínica?')) {
+    const deletarClinica = async () => {
+        if (clinica) {
             try {
                 await excluirClinica(clinica.id);
                 toast.success('Clínica excluída com sucesso!');
@@ -157,14 +159,19 @@ export function FormularioClinica({ clinica, onSuccess, onClose }: FormularioCli
             <div className="flex justify-between pt-4">
                 <div>
                     {clinica && (
-                        <Button
-                            className="cursor-pointer"
-                            type="button"
-                            variant="destructive"
-                            onClick={handleExcluir}
-                        >
-                            Excluir
-                        </Button>
+                        <Dialog titulo="Deseja realmente deletar a clínica? Essa ação não poderá ser desfeita" conteudo="Confirme para deletar" onConfirm={() => {
+                            deletarClinica()
+                        }}>
+                            <AlertDialogTrigger>
+                                <Button
+                                    className="cursor-pointer"
+                                    type="button"
+                                    variant="destructive"
+                                >
+                                    Excluir
+                                </Button>
+                            </AlertDialogTrigger>
+                        </Dialog>
                     )}
                 </div>
                 <div className="space-x-2">

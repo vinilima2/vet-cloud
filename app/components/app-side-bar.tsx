@@ -16,7 +16,7 @@ import { useTheme } from "~/providers/theme-provider"
 import { useLocation, useNavigate } from "react-router"
 import { useAuth } from "~/providers/auth-provider"
 import { AlertDialogTrigger } from "./ui/alert-dialog"
-import Dialog from "./dialog"
+import {Dialog} from "./dialog"
 
 interface AppSidebarProps {
     title: string,
@@ -41,6 +41,7 @@ const items: Array<AppSidebarProps> = [
         title: "Notificações",
         url: "#",
         icon: Inbox,
+        disabled: true
     },
     {
         title: "Agendamentos",
@@ -101,7 +102,7 @@ export function AppSidebar() {
                         <SidebarMenu>
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton isActive={location?.pathname.includes(item.url)} asChild
+                                    <SidebarMenuButton disabled={item.disabled} isActive={location?.pathname.includes(item.url)} asChild
                                         className={item.disabled ? 'cursor-not-allowed' : ''}>
                                         <a href={item.url}>
                                             <item.icon />

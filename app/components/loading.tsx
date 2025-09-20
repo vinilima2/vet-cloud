@@ -6,7 +6,7 @@ export default function Loading() {
     return (
         <>
             {loading &&
-                <div className="w-full h-dvh absolute flex items-center justify-center z-20 bg-black/80">
+                <div className="w-full h-dvh absolute flex items-center justify-center z-50 bg-black/80">
                     <ThreeDot variant="bounce" color="#4B734B" size="large" text="Aguarde..." textColor="" />
                 </div>}
         </>

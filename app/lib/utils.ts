@@ -18,3 +18,62 @@ export function horaAtual() {
 
   return `${dia}/${mes}/${ano} ${horas}:${minutos}:${segundos}`;
 }
+
+export const ANIMAIS = [
+  { label: 'Cachorro', value: 'cachorro' },
+  { label: 'Gato', value: 'gato' },
+  { label: 'Hamster', value: 'hamster' },
+]
+
+export const CORES = [
+  { label: 'Bege', value: 'bege' },
+  { label: 'Branco', value: 'branco' },
+  { label: 'Caramelo', value: 'caramelo' },
+  { label: 'Cinza', value: 'cinza' },
+  { label: 'Dourado', value: 'dourado' },
+  { label: 'Laranja', value: 'laranja' },
+  { label: 'Marrom', value: 'marrom' },
+  { label: 'Mesclado', value: 'mesclado' },
+  { label: 'Pardo', value: 'pardo' },
+  { label: 'Preto', value: 'preto' },
+  { label: 'Rajado', value: 'rajado' },
+  { label: 'Vermelho', value: 'vermelho' }
+]
+
+export const RACA_CAES = [
+  { label: 'Beagle', value: 'beagle' },
+  { label: 'Border Collie', value: 'border collie' },
+  { label: 'Bulldog Francês', value: 'bulldog francês' },
+  { label: 'Chihuahua', value: 'chihuahua' },
+  { label: 'Golden Retriever', value: 'golden retriever' },
+  { label: 'Labrador', value: 'labrador' },
+  { label: 'Poodle', value: 'poodle' },
+  { label: 'Pug', value: 'pug' },
+  { label: 'Shih Tzu', value: 'shih tzu' },
+  { label: 'Yorkshire Terrier', value: 'yorkshire terrier' },
+  { label: 'Vira Lata', value: 'vira lata' }
+]
+
+export const RACA_GATOS = [
+  { label: 'Abissínio', value: 'abissínio' },
+  { label: 'Angorá', value: 'angorá' },
+  { label: 'Azul Russo', value: 'azul russo' },
+  { label: 'Bengal', value: 'bengal' },
+  { label: 'Himalaio', value: 'himalaio' },
+  { label: 'Maine Coon', value: 'maine coon' },
+  { label: 'Persa', value: 'persa' },
+  { label: 'Ragdoll', value: 'ragdoll' },
+  { label: 'Siamês', value: 'siamês' },
+  { label: 'Sphynx', value: 'sphynx' }
+];
+
+export const RACA_HAMSTERS = [
+  { label: 'Anão Russo', value: 'anão russo' },
+  { label: 'Chinês', value: 'chinês' },
+  { label: 'Roborovski', value: 'roborovski' },
+  { label: 'Sírio Albino', value: 'sírio albino' },
+  { label: 'Sírio Dourado', value: 'sírio dourado' },
+  { label: 'Sírio Longo', value: 'sírio longo' },
+  { label: 'Sírio Pardo', value: 'sírio pardo' },
+  { label: 'Winter White', value: 'winter white' }
+];
