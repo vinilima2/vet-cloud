@@ -33,20 +33,22 @@ export default function Agendamento() {
             <SidebarGroup className="flex-row justify-between p-5 border-b-2 border-b-primary">
                 <h1 className="text-3xl">Agendamentos</h1>
                 <Dialog>
-                    <DialogTrigger><Button>Novo Agendamento <Plus/></Button></DialogTrigger>
+                    <DialogTrigger content="div"><Button>Novo Agendamento <Plus/></Button></DialogTrigger>
                     <FormularioAgendamento/>
                 </Dialog>
             </SidebarGroup>
             <SidebarGroup className="flex-row gap-2">
                 <Calendar
                     mode="multiple"
-                    animate
-                    className="rounded-md w-1/2 border shadow-sm"
-                    captionLayout="label"
+                    className="rounded-md h-10/12 w-1/2 border shadow-sm"
+                    selected={agendamentos.map(agenda => {
+                        const literalDividida = agenda.data.data_marcada.split('-')
+                        return new Date(Number(literalDividida[0]), Number(literalDividida[1]) - 1, Number(literalDividida[2]))
+                    })}
                 />
 
-                <ScrollArea className="h-full w-1/2 rounded-md border p-4">
-                    {agendamentos.map(({data, id}) => <Card className="flex-row p-5 justify-between">
+                <ScrollArea className="h-10/12 w-1/2 rounded-md border p-4">
+                    {agendamentos.map(({data, id}) => <Card className="flex-row p-5 justify-between m-4">
                         <div className="flex-row flex gap-2 items-center justify-center">
                             <div className="flex flex-col items-center ml-2">
                                 <label>{data.email_tutor}</label>

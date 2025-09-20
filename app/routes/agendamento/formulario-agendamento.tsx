@@ -1,38 +1,47 @@
 import Combobox from "~/components/combobox";
-import {Button} from "~/components/ui/button";
-import {DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle} from "~/components/ui/dialog";
-import {Input} from "~/components/ui/input";
-import {Label} from "~/components/ui/label";
-import {Textarea} from "~/components/ui/textarea";
-import {adicionarPet, type Pet, type PetView} from "~/services/pet-service";
-import {toast} from "sonner";
-import {adicionarAgendamento, type Agendamento} from "~/services/agendamento-service";
-import {useAuth} from "~/providers/auth-provider";
-import {useEffect, useState} from "react";
-import {obterTutores, type TutorView} from "~/services/tutor-service";
+import { Button } from "~/components/ui/button";
+import { DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "~/components/ui/dialog";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { Textarea } from "~/components/ui/textarea";
+import { adicionarPet, obterPets, type Pet, type PetView } from "~/services/pet-service";
+import { toast } from "sonner";
+import { adicionarAgendamento, type Agendamento } from "~/services/agendamento-service";
+import { useAuth } from "~/providers/auth-provider";
+import { useEffect, useState } from "react";
+import { buscarTutorPorNome, obterTutores, type TutorView } from "~/services/tutor-service";
 
 export default function FormularioAgendamento() {
-    const {clinica} = useAuth()
-    /*
-    export interface Agendamento {
-    id_usuario: string,
-    id_tutor: string,
-    id_pet: string,
-    atividade: string
-}
-     */
-    const [tutores, setTutores] = useState<any>()
-    const [pets, setPets] = useState<PetView[]>()
+    const { clinica } = useAuth()
+
+    const [tutores, setTutores] = useState<any>([])
+    const [pets, setPets] = useState<any>([])
+
+    const [tutorSelecionado, setTutorSelecionado] = useState(null)
+    const [petSelecionado, setPetSelecionado] = useState(null)
 
     useEffect(() => {
-        console.log(clinica.id)
         obterTutores(clinica.id).then(resultado => {
             if (resultado) {
-                console.log(resultado)
-                setTutores(resultado.map((r) => ({label: r.data.nome_completo, value: r.id})) ?? [])
+                setTutores(resultado.map((r) => ({ label: r.data.nome_completo, value: `${r.data.email}-${r.id}`.trim() })) ?? [])
             }
         })
+
+
     }, [])
+
+    useEffect(() => {
+        if (tutorSelecionado) {
+            console.log((tutorSelecionado as string).split('-')[1])
+            obterPets(clinica.id, (tutorSelecionado as string).split('-')[1]).then(result => {
+                setPets(result?.map(pet => ({
+                    label: `${pet.data.nome} - ${pet.data.raca}`,
+                    value: pet.id
+                })) ?? [])
+            })
+        }
+    }, [tutorSelecionado])
+
     return (
         <DialogContent className="sm:max-w-[425px]">
             <form onSubmit={async (e) => {
@@ -40,6 +49,9 @@ export default function FormularioAgendamento() {
                 const formData = new FormData(e.currentTarget);
                 const dados = Object.fromEntries(formData.entries()) as Agendamento;
                 dados.status = 'EM ABERTO'
+                if (tutorSelecionado) dados.id_tutor = tutorSelecionado.split('-')[1]
+                if (petSelecionado) dados.id_pet = petSelecionado
+
                 await adicionarAgendamento(clinica.id, dados);
                 toast('Agendamento realizado com sucesso.')
             }}>
@@ -68,18 +80,15 @@ export default function FormularioAgendamento() {
                     </div>
                     <div className="grid gap-3">
                         <Label htmlFor="tutor">Tutor</Label>
-                        <Combobox label="Procure pelo tutor" lista={tutores ?? []} onChange={(c) => console.log(c)}
-                                  onSearch={() => {
-
-                                  }}/>
+                        <Combobox label="Procure pelo tutor" lista={tutores} onChange={(valor) => setTutorSelecionado(valor)} />
                     </div>
                     <div className="grid gap-3">
                         <Label htmlFor="pet">Pet</Label>
-                        <Combobox label="Procure pelo Pet" lista={[]}/>
+                        <Combobox label="Procure pelo Pet" lista={pets} onChange={(valor) => setPetSelecionado(valor)} />
                     </div>
                     <div className="grid gap-3">
                         <Label htmlFor="atividade">Atividade</Label>
-                        <Textarea id="atividade" placeholder="Descreva a atividade a ser realizada..."/>
+                        <Textarea id="atividade" placeholder="Descreva a atividade a ser realizada..." />
                     </div>
                 </div>
                 <DialogFooter className="mt-10">

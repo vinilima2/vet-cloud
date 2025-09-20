@@ -27,10 +27,10 @@ export function Formulario({
         const dadosFormulario = objeto as Usuario;
         if (objeto.senha !== objeto.confirmacao_senha) {
             //TODO: Trocar alert por algo mais estilizado.
-            alert('Senhas não coicidem.')
+            toast('Senhas não coicidem.')
             document.getElementById('confirmacao-senha')?.focus()
         }
-        console.log(dadosFormulario)
+        
         dadosFormulario.email_login = dadosFormulario.email_contato;
         const idUsuario = await criarUsuario({
             email: dadosFormulario.email_contato.toString(),

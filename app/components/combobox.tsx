@@ -9,7 +9,6 @@ import { cn } from "~/lib/utils";
 interface ComboboxProps {
     label: string,
     onChange?: (props: any) => any,
-    onSearch?: (props: any) => any,
     lista: Array<any>
 }
 export default function Combobox(props: ComboboxProps) {
@@ -32,8 +31,8 @@ export default function Combobox(props: ComboboxProps) {
             </PopoverTrigger>
             <PopoverContent className="w-full p-0">
                 <Command className="w-full">
-                    <CommandInput placeholder={props.label} className="h-9 w-full" />
-                    <CommandList>
+                    <CommandInput placeholder={props.label}  className="h-9 w-full" />
+                    <CommandList results={5}>
                         <CommandEmpty>Nenhum resultado encontrado.</CommandEmpty>
                         <CommandGroup>
                             {props.lista.map((objeto) => (
@@ -43,7 +42,7 @@ export default function Combobox(props: ComboboxProps) {
                                     onSelect={(currentValue) => {
                                         setValorSelecionado(currentValue === valorSelecionado ? "" : currentValue)
                                         setAbrirPopover(false)
-                                        props.onChange?.(objeto)
+                                        props.onChange?.(currentValue)
                                     }}
                                 >
                                     {objeto.label}
