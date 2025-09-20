@@ -26,7 +26,7 @@ export default function FormularioTutor() {
         const tutor = objeto as Tutor;
         await adicionarTutor(clinica.id, tutor, [])
         toast('Tutor cadastrado com sucesso.')
-        navigate('/home')
+        navigate('/tutor')
     }
 
     return (

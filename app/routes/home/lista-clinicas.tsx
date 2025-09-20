@@ -1,27 +1,32 @@
-import {useEffect, useState} from "react";
-import {type ClinicaView, obterClinicas} from "~/services/clinica-service";
-import {useAuth} from "~/providers/auth-provider";
-import {toast} from "sonner";
-import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "~/components/ui/dialog";
-import {Button} from "~/components/ui/button";
-import {Building, Pencil, Plus, X} from "lucide-react";
-import {FormularioClinica} from "~/routes/home/formulario-clinica";
-import {Card} from "~/components/ui/card";
-import {Avatar} from "~/components/ui/avatar";
+import { useEffect, useState } from "react";
+import { type ClinicaView, obterClinica, obterClinicas } from "~/services/clinica-service";
+import { useAuth } from "~/providers/auth-provider";
+import { toast } from "sonner";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "~/components/ui/dialog";
+import { Button } from "~/components/ui/button";
+import { Building, Pencil, Plus, X } from "lucide-react";
+import { FormularioClinica } from "~/routes/home/formulario-clinica";
+import { Card } from "~/components/ui/card";
+import { Avatar } from "~/components/ui/avatar";
+import { obterClinicasDoUsuario } from "~/services/usuario-service";
 
 export function ListaClinicas() {
     const [clinicas, setClinicas] = useState<ClinicaView[]>([]);
     const [carregando, setCarregando] = useState(true);
     const [dialogAberto, setDialogAberto] = useState(false);
     const [clinicaSelecionada, setClinicaSelecionada] = useState<ClinicaView | null>(null);
-    const { clinica, alterarClinicaSelecionada } = useAuth()
+    const { clinica, alterarClinicaSelecionada, usuario } = useAuth()
 
     const carregarClinicas = async () => {
         try {
-            const clinicasData = await obterClinicas();
-            if (clinicasData) {
-                setClinicas(clinicasData);
-            }
+            obterClinicasDoUsuario(usuario?.uid ?? '').then(async (clinicasUsuario) => {
+                let clinicasDoUsuario = [];
+                for (let clinicaDoUsuario of (clinicasUsuario ?? [])) {
+                    clinicasDoUsuario.push(await obterClinica(clinicaDoUsuario.id))
+                }
+               
+                setClinicas(clinicasDoUsuario ?? [])
+            });
         } catch (error) {
             console.error('Erro ao carregar clínicas:', error);
             toast.error('Erro ao carregar a lista de clínicas');
@@ -94,7 +99,7 @@ export function ListaClinicas() {
             ) : (
                 <div className="space-y-3 grid grid-cols-3 gap-5">
                     {clinicas.map((clinicaCard) => (
-                        <Card key={clinicaCard.id} className={`p-4 flex cursor-pointer ${clinicaCard.id === clinica?.id && 'bg-teal-700' }`}  onClick={()=> alterarClinicaSelecionada(clinicaCard)}>
+                        <Card key={clinicaCard.id} className={`p-4 flex cursor-pointer ${clinicaCard.id === clinica?.id && 'bg-teal-700'}`} onClick={() => alterarClinicaSelecionada(clinicaCard)}>
                             <div className="flex items-center gap-4">
                                 <Avatar className="h-10 w-10 rounded-lg bg-primary flex items-center justify-center">
                                     <Building className="text-background" />

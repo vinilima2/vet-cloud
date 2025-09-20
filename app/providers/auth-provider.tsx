@@ -18,7 +18,7 @@ type AuthProviderState = {
     loading: boolean,
     setDadosUsuario: (usuario: any) => void,
     dadosUsuario: any,
-    clinica?: any,
+    clinica?: ClinicaView | null | undefined,
     alterarClinicaSelecionada: Function
 }
 
@@ -70,6 +70,7 @@ const AuthProvider = ({children}: any) => {
     }
 
     function realizarLogout() {
+        localStorage.removeItem('clinicaSelecionada')
         return signOut(auth);
     }
 

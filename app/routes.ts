@@ -6,6 +6,7 @@ export default [
     layout("routes/home/home-layout.tsx", [
         route("tutor", "routes/tutor/tutor.tsx"),
         route("agendamento", "routes/agendamento/agendamento.tsx"),
+        route("clinica", "routes/clinica/clinica.tsx"),
         ...prefix("home", [
             index("routes/home/home.tsx")
         ]),
