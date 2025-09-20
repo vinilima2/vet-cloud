@@ -13,7 +13,7 @@ export default function Layout() {
                 <SidebarTrigger className="lg:hidden" />
                 <SidebarContent>
                     <Outlet />
-                    <Toaster />
+                    <Toaster position="top-center" richColors/>
                 </SidebarContent>
                 <Loading />
             </SidebarProvider>

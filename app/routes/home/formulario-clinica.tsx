@@ -162,7 +162,7 @@ export function FormularioClinica({ clinica, onSuccess, onClose }: FormularioCli
                         <Dialog titulo="Deseja realmente deletar a clínica? Essa ação não poderá ser desfeita" conteudo="Confirme para deletar" onConfirm={() => {
                             deletarClinica()
                         }}>
-                            <AlertDialogTrigger>
+                            <AlertDialogTrigger asChild>
                                 <Button
                                     className="cursor-pointer"
                                     type="button"

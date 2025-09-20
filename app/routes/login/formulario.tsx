@@ -30,7 +30,7 @@ export function Formulario({
 
     return (
         <div className="flex flex-col gap-4">
-            <Toaster />
+            <Toaster position="top-center" richColors/>
             <div className="flex flex-1 items-center justify-center">
                 <div className="w-full max-w-xs">
                     <img src={Logo} />

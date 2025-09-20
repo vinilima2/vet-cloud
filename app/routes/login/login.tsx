@@ -5,8 +5,8 @@ import Loading from "~/components/loading";
 
 export function meta({ }: Route.MetaArgs) {
   return [
-    { title: "VetCloud" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "VetCloud | Login" },
+    { name: "description", content: "Rota de Login" },
   ];
 }
 

@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { data, useNavigate } from "react-router";
 import { toast } from "sonner";
 import { Button } from "~/components/ui/button";
 import { DialogClose, DialogContent, DialogHeader, DialogTitle } from "~/components/ui/dialog";
@@ -8,10 +8,11 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { adicionarUsuarioClinica, type UsuarioClinica } from "~/services/usuario-clinica-service";
-import { obterIdUsuarioPorEmail } from "~/services/usuario-service";
+import { obterIdUsuarioPorEmail, obterUsuario } from "~/services/usuario-service";
 
-export default function FormularioUsuarioClinica({ nivelAcesso, idClinica }) {
+export default function FormularioUsuarioClinica({ nivelAcesso, idClinica, onClose }) {
     const [usuario, setUsuario] = useState<string | null>(null)
+    const [nomeUsuario, setNomeUsuario] = useState<string | null | undefined>(null)
     const navigate = useNavigate()
 
     function buscarUsuarioPorEmail(event) {
@@ -19,10 +20,13 @@ export default function FormularioUsuarioClinica({ nivelAcesso, idClinica }) {
         if (email?.trim() === '' || !email.includes('@')) return;
         obterIdUsuarioPorEmail(email).then(resultado => {
             if (!resultado.status) {
-                toast(resultado.msg ?? 'Não foi possível retornar o usuário.')
+                toast.error(resultado.msg ?? 'Não foi possível retornar o usuário.')
             } else if (resultado.id_usuario) {
                 setUsuario(resultado.id_usuario)
-                toast(`Usuário encontrado.`)
+                toast.success(`Usuário encontrado.`)
+                obterUsuario(resultado.id_usuario, 'completo').then(resultado => {
+                    setNomeUsuario(resultado?.data?.nome_completo)
+                })
             }
         })
     }
@@ -33,7 +37,9 @@ export default function FormularioUsuarioClinica({ nivelAcesso, idClinica }) {
                 e.preventDefault();
                 const objeto = Object.fromEntries(new FormData(event.target).entries())
                 const usuarioClinica = objeto as UsuarioClinica
-                await adicionarUsuarioClinica(idClinica, usuario as string, usuarioClinica.nivel_acesso)
+                await adicionarUsuarioClinica(idClinica, usuario as string, usuarioClinica.nivel_acesso, nomeUsuario)
+                toast.success('Usuário adicionado com sucesso.')
+                onClose()
                 navigate('/clinica')
             }}>
                 <DialogHeader className="mb-10">
@@ -59,7 +65,7 @@ export default function FormularioUsuarioClinica({ nivelAcesso, idClinica }) {
                 </div>
                 <div className="flex justify-end gap-2 mt-4">
                     <DialogClose asChild>
-                        <Button type="button" variant="outline">
+                        <Button type="button" variant="outline" onClick={onClose}>
                             Cancelar
                         </Button>
                     </DialogClose>

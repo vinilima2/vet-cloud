@@ -11,12 +11,20 @@ import { useAuth } from "~/providers/auth-provider";
 import { type AgendamentoView, obterAgendamentos, obterAgendamentosPor } from "~/services/agendamento-service";
 import { converterDataString } from "~/lib/utils"
 import { isSameDay } from "date-fns"
+import type { Route } from "../../+types/root";
 
+export function meta({ }: Route.MetaArgs) {
+  return [
+    { title: "VetCloud | Agendamento" },
+    { name: "description", content: "Rota agendamento" },
+  ];
+}
 
 export default function Agendamento() {
     const [dataSelecionada, setDataSelecionada] = useState<Date | undefined>(new Date())
     const [agendamentos, setAgendamentos] = useState<AgendamentoView[]>([]);
     const [diasAgendados, setDiasAgendados] = useState<Date[]>([]);
+    const [abrirModal, setAbrirModal] = useState<boolean>(false);
     const { clinica } = useAuth();
 
     async function buscarAgendamentosPorData() {
@@ -46,9 +54,13 @@ export default function Agendamento() {
         <>
             <SidebarGroup className="flex-row justify-between p-5 border-b-2 border-b-primary">
                 <h1 className="text-3xl">Agendamentos</h1>
-                <Dialog>
-                    <DialogTrigger asChild><Button className="cursor-pointer">Novo Agendamento <Plus /></Button></DialogTrigger>
-                    <FormularioAgendamento onClose={buscarAgendamentosPorData().then()} />
+                <Dialog open={abrirModal}>
+                    <DialogTrigger asChild><Button className="cursor-pointer" onClick={() => setAbrirModal(true)}>Novo Agendamento <Plus /></Button></DialogTrigger>
+                    <FormularioAgendamento onClose={() => {
+                        buscarAgendamentosPorData().then()
+                        buscarTodosAgendamentos().then()
+                        setAbrirModal(false)
+                    }} />
                 </Dialog>
             </SidebarGroup>
             <SidebarGroup className="flex-row gap-2">

@@ -4,14 +4,14 @@ import { DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle } f
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Textarea } from "~/components/ui/textarea";
-import { adicionarPet, obterPets} from "~/services/pet-service";
+import { obterPets } from "~/services/pet-service";
 import { toast } from "sonner";
 import { adicionarAgendamento, type Agendamento } from "~/services/agendamento-service";
 import { useAuth } from "~/providers/auth-provider";
 import { useEffect, useState } from "react";
 import { obterTutores } from "~/services/tutor-service";
 
-export default function FormularioAgendamento({onClose}) {
+export default function FormularioAgendamento({ onClose }) {
     const { clinica } = useAuth()
 
     const [tutores, setTutores] = useState<any>([])
@@ -32,7 +32,6 @@ export default function FormularioAgendamento({onClose}) {
 
     useEffect(() => {
         if (tutorSelecionado) {
-            console.log((tutorSelecionado as string).split('-')[1])
             obterPets(clinica.id, (tutorSelecionado as string).split('-')[1]).then(result => {
                 setPets(result?.map(pet => ({
                     label: `${pet.data.nome} - ${pet.data.raca}`,
@@ -49,8 +48,18 @@ export default function FormularioAgendamento({onClose}) {
                 const formData = new FormData(e.currentTarget);
                 const dados = Object.fromEntries(formData.entries()) as Agendamento;
                 dados.status = 'EM ABERTO'
-                if (tutorSelecionado) dados.id_tutor = tutorSelecionado.split('-')[1]
-                if (petSelecionado) dados.id_pet = petSelecionado
+                if (tutorSelecionado) { 
+                    dados.id_tutor = tutorSelecionado.split('-')[1] 
+                } else {
+                    toast.warning('Nenhum tutor selecionado.')
+                    return;
+                }
+                if (petSelecionado) {
+                    dados.id_pet = petSelecionado
+                } else {
+                    toast.warning('Nenhum animal selecionado.')
+                    return;
+                }
 
                 await adicionarAgendamento(clinica.id, dados);
                 toast.success('Agendamento realizado com sucesso.')
@@ -66,8 +75,8 @@ export default function FormularioAgendamento({onClose}) {
                             type="date"
                             id="data"
                             name="data_marcada"
-                            
-                            
+                            required
+
                         />
                     </div>
                     <div className="grid gap-3">
@@ -76,6 +85,7 @@ export default function FormularioAgendamento({onClose}) {
                             type="time"
                             id="hora"
                             step="60"
+                            required
                             name="hora_marcada"
                             className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
                         />
@@ -90,7 +100,7 @@ export default function FormularioAgendamento({onClose}) {
                     </div>
                     <div className="grid gap-3">
                         <Label htmlFor="atividade">Atividade</Label>
-                        <Textarea id="atividade" name="atividade" placeholder="Descreva a atividade a ser realizada..." />
+                        <Textarea id="atividade" required name="atividade" placeholder="Descreva a atividade a ser realizada..." />
                     </div>
                 </div>
                 <DialogFooter className="mt-10">

@@ -14,6 +14,14 @@ import { ListaPets } from "./lista-pets";
 import { useLoading } from "~/providers/loading-provider";
 import { Skeleton } from "~/components/ui/skeleton";
 import { AlertDialogTrigger } from "~/components/ui/alert-dialog";
+import type { Route } from "../../+types/root";
+
+export function meta({ }: Route.MetaArgs) {
+  return [
+    { title: "VetCloud | Tutores" },
+    { name: "description", content: "Rota tutores" },
+  ];
+}
 
 export default function Tutor() {
     const [tutores, setTutores] = useState<TutorView[]>([]);
@@ -75,7 +83,7 @@ export default function Tutor() {
             ))
             }
             {tutores.map(({ data, id }) => (
-                <Card className="flex-row p-3 justify-between m-2">
+                <Card className="flex-row p-3 justify-between m-2" key={id}>
                     <div className="flex-row flex gap-2 items-center justify-center">
                         <Avatar className="h-8 w-8 rounded-lg bg-primary flex justify-center items-center">
                             <User className="text-background" />
@@ -104,7 +112,7 @@ export default function Tutor() {
                         <MyDialog titulo="Deseja realmente deletar o tutor? Essa ação não poderá ser desfeita" conteudo="Confirme para deletar" onConfirm={() => {
                             deletarTutor(id)
                         }}>
-                            <AlertDialogTrigger>
+                            <AlertDialogTrigger asChild>
                                 <Button className="bg-red-600 cursor-pointer"><Trash /></Button>
                             </AlertDialogTrigger>
                         </MyDialog>

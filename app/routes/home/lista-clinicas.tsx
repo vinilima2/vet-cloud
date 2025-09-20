@@ -92,7 +92,7 @@ export function ListaClinicas() {
             ) : (
                 <div className="grid grid-cols-3 gap-5">
                     {clinicas.map((clinicaCard) => (
-                        <Card key={clinicaCard.id} className={`p-4 flex cursor-pointer ${clinicaCard.id === clinica?.id && 'bg-teal-700'}`} onClick={() => alterarClinicaSelecionada(clinicaCard)}>
+                        <Card key={clinicaCard.id} className={`p-4 flex cursor-pointer ${clinicaCard.id === clinica?.id && 'border-green-700'}`} onClick={() => alterarClinicaSelecionada(clinicaCard)}>
                             <div className="flex items-center gap-4 relative">
                                 <Avatar className="h-10 w-10 rounded-lg bg-primary flex items-center justify-center">
                                     <Building className="text-background" />
