@@ -1,6 +1,5 @@
-import { collection, addDoc, doc, deleteDoc, getDocs, updateDoc, getDoc, setDoc, query, where } from 'firebase/firestore';
+import { collection, addDoc, doc, deleteDoc, getDocs, updateDoc, getDoc, query, where } from 'firebase/firestore';
 import { database } from '~/database/firebase-config';
-import { horaAtual } from '~/lib/utils';
 import { obterTutor } from './tutor-service';
 
 export interface Agendamento {
@@ -11,7 +10,8 @@ export interface Agendamento {
     hora_marcada: string,
     atividade: string,
     status: "EM ABERTO" | "CANCELADO" | "REALIZADO"
-    email_tutor?: string // desnormalizado para facilitar na automação de envio de e-mail
+    email_tutor?: string // desnormalizado para facilitar na automação de envio de e-mail,
+    nome_tutor?: string
 }
 
 export interface AgendamentoView {
@@ -22,20 +22,22 @@ export interface AgendamentoView {
 export async function adicionarAgendamento(id_clinica: string, agendamento: Agendamento) {
     try {
         const agendamento_collection = collection(database, `Clinica/${id_clinica}/Agendamento`);
-        agendamento.email_tutor = (await obterTutor(id_clinica, agendamento.id_tutor))?.data.email;
-        const novo_agendamento = await addDoc(agendamento_collection, agendamento);
-    } catch(error) {
+        const tutor = (await obterTutor(id_clinica, agendamento.id_tutor))
+        agendamento.email_tutor = tutor?.data.email;
+        agendamento.nome_tutor = tutor?.data.nome_completo;
+        await addDoc(agendamento_collection, agendamento);
+    } catch (error) {
         console.log("Erro em 'adicionarAgendamento': ", error);
-    }  
+    }
 }
 
 export async function excluirAgendamento(id_clinica: string, id_agendamento: string) {
     try {
         const agendamento_document = doc(database, `Clinica/${id_clinica}/Agendamento/`, id_agendamento);
         deleteDoc(agendamento_document);
-    } catch(error) {
+    } catch (error) {
         console.log("Erro em 'excluirAgendamento': ", error);
-    }       
+    }
 }
 
 export async function excluirAgendamentos(id_clinica: string) {
@@ -45,28 +47,28 @@ export async function excluirAgendamentos(id_clinica: string) {
         agendamento_docs.docs.forEach((agendamento) => {
             excluirAgendamento(id_clinica, agendamento.id);
         });
-    } catch(error) {
+    } catch (error) {
         console.log("Erro em 'excluirAgendamentos': ", error);
-    }    
-}    
+    }
+}
 
 export async function atualizarAgendamento(id_clinica: string, id_agendamento: string, novos_dados: Partial<Agendamento>) {
     try {
         const agendamento_document = doc(database, `Clinica/${id_clinica}/Agendamento`, id_agendamento);
         await updateDoc(agendamento_document, novos_dados);
-    } catch(error) {
+    } catch (error) {
         console.log("Erro em 'atualizarAgendamento': ", error);
-    }       
+    }
 }
 
 export async function obterAgendamento(id_clinica: string, id_agendamento: string): Promise<AgendamentoView | null> {
     try {
         const agendamento_document = doc(database, `Clinica/${id_clinica}/Agendamento`, id_agendamento);
-        const snapshot = await getDoc(agendamento_document); 
+        const snapshot = await getDoc(agendamento_document);
         return snapshot.exists() ? { id: snapshot.id, data: (snapshot.data() as Agendamento) } as AgendamentoView : null;
-    } catch(error) {
+    } catch (error) {
         console.log("Erro em 'obterAgendamento': ", error);
-    }  
+    }
     return null;
 }
 
@@ -79,24 +81,24 @@ export async function obterAgendamentos(id_clinica: string): Promise<Agendamento
             data: agendamento.data() as Agendamento
         } as AgendamentoView));
         return agendamento_docs;
-    } catch(error) {
+    } catch (error) {
         console.log("Erro em 'obterAgendamentos': ", error);
-    }  
+    }
     return null;
 }
 
 export async function obterAgendamentosPor(id_clinica: string, valor: string, filtro_pesquisa: "id_pet" | "id_tutor" | "id_usuario" | "data_marcada" | "status"): Promise<AgendamentoView[] | null> {
     try {
         const agendamento_collection = collection(database, `Clinica/${id_clinica}/Agendamento`);
-        const q = query(agendamento_collection, where(filtro_pesquisa, "==", valor)); 
+        const q = query(agendamento_collection, where(filtro_pesquisa, "==", valor));
         const snapshot = await getDocs(q);
         const agendamentos = snapshot.docs.map((agendamento) => ({
             id: agendamento.id,
             data: agendamento.data() as Agendamento
         } as AgendamentoView));
         return agendamentos;
-    } catch(error) {
+    } catch (error) {
         console.log("Erro em 'obterAgendamentoPor': ", error);
-    }  
-    return null;    
+    }
+    return null;
 }
