@@ -1,6 +1,7 @@
 import { collection, addDoc, doc, deleteDoc, getDocs, updateDoc, getDoc, query, where } from 'firebase/firestore';
 import { database } from '~/database/firebase-config';
 import { obterTutor } from './tutor-service';
+import { enviarEmail } from './email-service';
 
 export interface Agendamento {
     id_usuario: string,
@@ -22,13 +23,37 @@ export interface AgendamentoView {
 export async function adicionarAgendamento(id_clinica: string, agendamento: Agendamento) {
     try {
         const agendamento_collection = collection(database, `Clinica/${id_clinica}/Agendamento`);
-        const tutor = (await obterTutor(id_clinica, agendamento.id_tutor))
-        agendamento.email_tutor = tutor?.data.email;
-        agendamento.nome_tutor = tutor?.data.nome_completo;
-        await addDoc(agendamento_collection, agendamento);
-    } catch (error) {
+        agendamento.email_tutor = (await obterTutor(id_clinica, agendamento.id_tutor))?.data.email;
+        
+        // Salva o agendamento no Firestore
+        const novo_agendamento = await addDoc(agendamento_collection, agendamento);
+        
+        if (agendamento.email_tutor) {
+            try {
+                await enviarEmail({
+                    to: "diegokenjiyoshida2508gmail.com",
+                    subject: 'Seu agendamento na VetCloud foi confirmado!',
+                    text: `Olá, este é um e-mail para confirmar seu agendamento para o dia ${agendamento.data_marcada} às ${agendamento.hora_marcada}. Atividade: ${agendamento.atividade}.`,
+                    html: `
+                        <h2>Agendamento Confirmado!</h2>
+                        <p>Olá!</p>
+                        <p>Seu agendamento na VetCloud foi realizado com sucesso.</p>
+                        <ul>
+                            <li><strong>Data:</strong> ${agendamento.data_marcada}</li>
+                            <li><strong>Hora:</strong> ${agendamento.hora_marcada}</li>
+                            <li><strong>Atividade:</strong> ${agendamento.atividade}</li>
+                        </ul>
+                        <p>Obrigado por confiar na VetCloud!</p>
+                    `
+                });
+            } catch (emailError) {
+                console.error("Erro ao enviar o e-mail de confirmação: ", emailError);
+            }
+        }
+
+    } catch(error) {
         console.log("Erro em 'adicionarAgendamento': ", error);
-    }
+    }  
 }
 
 export async function excluirAgendamento(id_clinica: string, id_agendamento: string) {
