@@ -22,7 +22,7 @@ export async function adicionarClinica(clinica: Clinica, id_usuario_root: string
     try {
         const clinica_collection = collection(database, `Clinica`);
         const nova_clinica = await addDoc(clinica_collection, clinica);
-        adicionarUsuarioClinica(nova_clinica.id, id_usuario_root, "Root");
+        adicionarUsuarioClinica(nova_clinica.id, id_usuario_root, "Root", 'Root');
         return nova_clinica.id;
     } catch(error) {
         console.log("Erro em 'adicionarClinica': ", error);
