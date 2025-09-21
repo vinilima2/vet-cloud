@@ -10,6 +10,7 @@ import { adicionarAgendamento, type Agendamento } from "~/services/agendamento-s
 import { useAuth } from "~/providers/auth-provider";
 import { useEffect, useState } from "react";
 import { obterTutores } from "~/services/tutor-service";
+import { X } from "lucide-react";
 
 export default function FormularioAgendamento({ onClose }) {
     const { clinica } = useAuth()
@@ -42,7 +43,7 @@ export default function FormularioAgendamento({ onClose }) {
     }, [tutorSelecionado])
 
     return (
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px]" showCloseButton={false}>
             <form onSubmit={async (e) => {
                 e.preventDefault();
                 const formData = new FormData(e.currentTarget);
@@ -65,7 +66,8 @@ export default function FormularioAgendamento({ onClose }) {
                 toast.success('Agendamento realizado com sucesso.')
                 onClose()
             }}>
-                <DialogHeader className="mb-10">
+                <DialogHeader className="mb-10 relative">
+                    <DialogClose onClick={onClose} className="absolute right-0 -top-2 cursor-pointer"><X size={18}/></DialogClose>
                     <DialogTitle>Formulário de Agendamento</DialogTitle>
                 </DialogHeader>
                 <div className="grid gap-4">
@@ -104,10 +106,10 @@ export default function FormularioAgendamento({ onClose }) {
                     </div>
                 </div>
                 <DialogFooter className="mt-10">
-                    <DialogClose asChild>
+                    <DialogClose asChild onClick={onClose} className="cursor-pointer">
                         <Button variant="outline">Cancelar</Button>
                     </DialogClose>
-                    <Button type="submit">Salvar</Button>
+                    <Button type="submit" className="cursor-pointer">Salvar</Button>
                 </DialogFooter>
             </form>
         </DialogContent>

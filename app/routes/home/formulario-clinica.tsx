@@ -64,6 +64,7 @@ export function FormularioClinica({ clinica, onSuccess, onClose }: FormularioCli
         if (clinica) {
             try {
                 await excluirClinica(clinica.id);
+                localStorage.removeItem('clinicaSelecionada')
                 toast.success('Clínica excluída com sucesso!');
                 onSuccess();
                 onClose();

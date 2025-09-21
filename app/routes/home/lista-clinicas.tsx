@@ -20,9 +20,13 @@ export function ListaClinicas() {
     const carregarClinicas = async () => {
         try {
             obterClinicasDoUsuario(usuario?.uid ?? '').then(async (clinicasUsuario) => {
-                let clinicasDoUsuario = [];
-                for (let clinicaDoUsuario of (clinicasUsuario ?? [])) {
-                    clinicasDoUsuario.push(await obterClinica(clinicaDoUsuario.id))
+                let clinicasDoUsuario: ClinicaView[] = [];
+                if (!clinicasUsuario) {
+                    clinicasUsuario = []
+                }
+                for (let clinicaDoUsuario of clinicasUsuario) {
+                    let dadosClinica = await obterClinica(clinicaDoUsuario.id)
+                    if (dadosClinica) clinicasDoUsuario.push(dadosClinica)
                 }
                 setClinicas(clinicasDoUsuario ?? [])
             });
@@ -51,7 +55,6 @@ export function ListaClinicas() {
     };
 
     const listaFixa = Array(6).fill(1)
-
 
     return (
         <div className="space-y-4">
