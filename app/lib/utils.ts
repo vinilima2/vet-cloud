@@ -21,7 +21,7 @@ export function horaAtual() {
 
 export function converterDataString(data: string): string {
   const date = new Date(data);
-  const day = String(date.getDate()).padStart(2, '0');
+  const day = String(date.getDate() + 1).padStart(2, '0'); // erro no display de data corrigido
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const year = date.getFullYear();
   return `${day}/${month}/${year}`;

@@ -26,7 +26,6 @@ export default function Agendamento() {
     const [diasAgendados, setDiasAgendados] = useState<Date[]>([]);
     const [abrirModal, setAbrirModal] = useState<boolean>(false);
     const { clinica } = useAuth();
-
     async function buscarAgendamentosPorData() {
         const agendamentos = await obterAgendamentosPor(clinica?.id ?? '', dataSelecionada?.toISOString().split('T')[0] ?? '', 'data_marcada')
         if (agendamentos) {
@@ -38,7 +37,7 @@ export default function Agendamento() {
         const agendas = await obterAgendamentos(clinica?.id ?? '')
         setDiasAgendados(agendas?.map(a => a.data.data_marcada).map(a => {
             const literalDividida = a.split('-')
-            return new Date(Number(literalDividida[0]), Number(literalDividida[1]) - 1, Number(literalDividida[2]))
+            return new Date(Number(literalDividida[0]), Number(literalDividida[1]), Number(literalDividida[2]))
         }) ?? [])
     }
 
@@ -77,7 +76,6 @@ export default function Agendamento() {
                         agendados: "bg-blue-300 text-blue-800 font-bold",
                     }}
                 />
-
                 <ScrollArea className="h-12/12 w-1/2 rounded-md border p-4">
                     {agendamentos.map(({ data, id }) => <Card key={id} className="flex-row p-5 justify-between m-4">
                         <div className="flex-row flex gap-2 items-center justify-center">
