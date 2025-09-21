@@ -8,3 +8,6 @@
 
 # Jetbrains
 .idea
+
+# Variáveis do sistema
+.env
